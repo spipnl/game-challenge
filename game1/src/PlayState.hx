@@ -11,7 +11,8 @@ import flixel.util.FlxColor;
 import openfl.Assets;
 
 /**
- * ...
+ * Initial PlayState
+ * 
  * @author spipnl (Jip Spinnewijn)
  */
 class PlayState extends FlxState
@@ -19,7 +20,7 @@ class PlayState extends FlxState
 	private static var _justDied:Bool = false;
 	
 	private var _level:FlxTilemap;
-	private var _player:FlxSprite;
+	private var _player:Player;
 	private var _exit:FlxSprite;
 	private var _scoreText:FlxText;
 	private var _status:FlxText;
@@ -94,7 +95,7 @@ class PlayState extends FlxState
 		add(_coins);
 		
 		// Create _player
-		_player = new FlxSprite(FlxG.width / 2 - 5);
+		_player = new Player(FlxG.width / 2 - 5);
 		_player.makeGraphic(8, 8, FlxColor.CRIMSON);
 		_player.maxVelocity.set(80, 200);
 		_player.acceleration.y = 200;

@@ -2,7 +2,12 @@ package;
 
 import flash.Lib;
 import flixel.FlxGame;
-	
+
+/**
+ * Initial Game
+ * 
+ * @author spipnl (Jip Spinnewijn)
+ */
 class GameClass extends FlxGame
 {	
 	public function new()

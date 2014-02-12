@@ -10,7 +10,8 @@ import flash.ui.Keyboard;
 import flixel.FlxGame;
 
 /**
- * ...
+ * First game of the Game Challenge
+ * 
  * @author spipnl (Jip Spinnewijn)
  */
 
