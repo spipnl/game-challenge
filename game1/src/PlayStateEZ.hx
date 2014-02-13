@@ -26,21 +26,14 @@ class PlayState extends FlxState
 	private var _status:FlxText;
 	private var _coins:FlxGroup;
 	
-	private var _canon:Canon;
-	
 	override public function create():Void 
 	{
-		//FlxG.mouse.visible = false;
+		FlxG.mouse.visible = false;
 		FlxG.cameras.bgColor = 0xffaaaaaa;
-		FlxG.debugger.visible = true;
-		FlxG.log.add('test');
 		
 		_level = new FlxTilemap();
 		_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
 		add(_level);
-		
-		_canon = new Canon(FlxG.width * 0.5, FlxG.height - 40);
-		add(_canon);
 		
 		// Create the _level _exit
 		_exit = new FlxSprite(35 * 8 + 1 , 25 * 8);
@@ -133,7 +126,6 @@ class PlayState extends FlxState
 		if (FlxG.keys.anyPressed(["LEFT", "A"]))
 		{
 			_player.acceleration.x = -_player.maxVelocity.x * 4;
-		trace('bang!');
 		}
 		
 		if (FlxG.keys.anyPressed(["RIGHT", "D"]))

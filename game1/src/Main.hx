@@ -14,7 +14,6 @@ import flixel.FlxGame;
  * 
  * @author spipnl (Jip Spinnewijn)
  */
-
 class Main extends Sprite 
 {
 	// Entry point
