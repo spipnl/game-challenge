@@ -43,8 +43,9 @@ class Bullet extends FlxSprite
 		if (!isOnScreen(FlxG.camera)) 
 		{
 			kill();
+			trace('kill');
 		}
-		velocity.x = 10;
+		velocity.x = 100;
 		/*
 		// Move toward the target that was assigned in init().
 		

@@ -1,5 +1,6 @@
 package;
 import flixel.FlxG;
+import flixel.group.FlxGroup;
 import flixel.FlxSprite;
 import flixel.group.FlxTypedGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
@@ -9,23 +10,28 @@ import flixel.util.FlxColor;
  * 
  * @author spipnl (Jip Spinnewijn)
  */
-class Canon extends FlxSprite
+class Canon extends FlxGroup
 {
+	private var _canon:FlxSprite;
 	private var _poolSize:UInt = 10;
 	private var _bullets:FlxTypedGroup<Bullet>;
 	
 	public function new(X:Float=0, Y:Float=0) 
 	{
-		super(X, Y);
+		super();
 		
-		makeGraphic(10, 20, FlxColor.CRIMSON);
+		_canon = new FlxSprite(X, Y);
+		_canon.makeGraphic(10, 20, FlxColor.CRIMSON);
+		add(_canon);
 		
 		_bullets = new FlxTypedGroup<Bullet>(_poolSize);
 		for (i in 0..._poolSize)
 		{
-			//_bullets.add(new Bullet().kill());
+			var bullet:Bullet = new Bullet();
+			bullet.kill();
+			_bullets.add(bullet);
 		}
-		trace('bang!');
+		add(_bullets);
 	}
 	
 	override public function update():Void
@@ -40,7 +46,7 @@ class Canon extends FlxSprite
 	private function shootBullet():Void
 	{
 		var bullet:Bullet = _bullets.recycle(Bullet);
-		bullet.init(x, y);
+		bullet.init(_canon.x, _canon.y);
 		trace('bang!');
 	}
 }

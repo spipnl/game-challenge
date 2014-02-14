@@ -133,7 +133,6 @@ class PlayState extends FlxState
 		if (FlxG.keys.anyPressed(["LEFT", "A"]))
 		{
 			_player.acceleration.x = -_player.maxVelocity.x * 4;
-		trace('bang!');
 		}
 		
 		if (FlxG.keys.anyPressed(["RIGHT", "D"]))
