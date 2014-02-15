@@ -32,14 +32,13 @@ class PlayState extends FlxState
 	{
 		//FlxG.mouse.visible = false;
 		FlxG.cameras.bgColor = 0xffaaaaaa;
-		FlxG.debugger.visible = true;
-		FlxG.log.add('test');
+		//FlxG.debugger.visible = true;
 		
 		_level = new FlxTilemap();
 		_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
 		add(_level);
 		
-		_canon = new Canon(FlxG.width * 0.5, FlxG.height - 40);
+		_canon = new Canon(FlxG.width * 0.3, FlxG.height - 120);
 		add(_canon);
 		
 		// Create the _level _exit

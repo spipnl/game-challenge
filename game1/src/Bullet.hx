@@ -19,6 +19,8 @@ class Bullet extends FlxSprite
 	{
 		super();
 		makeGraphic(3, 3);
+		//maxVelocity.set(80, 200);
+		acceleration.y = 200;
 		
 		#if !(cpp || neko || js)
 		blend = BlendMode.INVERT;
@@ -36,6 +38,12 @@ class Bullet extends FlxSprite
 		reset( X, Y );
 	}
 	
+	public function shoot(X:Int, Y:Int):Void 
+	{
+		velocity.x = X * 2;
+		velocity.y = Y * 2;
+	}
+	
 	override public function update():Void
 	{
 		// This bullet missed its target and flew off-screen; no reason to keep it around.
@@ -45,7 +53,9 @@ class Bullet extends FlxSprite
 			kill();
 			trace('kill');
 		}
-		velocity.x = 100;
+		
+		
+		
 		/*
 		// Move toward the target that was assigned in init().
 		
