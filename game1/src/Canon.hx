@@ -111,4 +111,9 @@ class Canon extends FlxGroup
 		bullet.shoot(X, Y);
 		trace('bang!');
 	}
+	
+	public function getBullets():FlxTypedGroup<Bullet>
+	{
+		return _bullets;
+	}
 }

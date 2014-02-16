@@ -21,6 +21,7 @@ class Bullet extends FlxSprite
 		makeGraphic(3, 3);
 		//maxVelocity.set(80, 200);
 		acceleration.y = 200;
+		elasticity = 0.5;
 		
 		#if !(cpp || neko || js)
 		blend = BlendMode.INVERT;
