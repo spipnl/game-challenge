@@ -109,7 +109,6 @@ class Canon extends FlxGroup
 		var bullet:Bullet = _bullets.recycle(Bullet);
 		bullet.init(_canon.x, _canon.y);
 		bullet.shoot(X, Y);
-		trace('bang!');
 	}
 	
 	public function getBullets():FlxTypedGroup<Bullet>

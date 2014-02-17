@@ -50,13 +50,14 @@ class PlayState extends FlxState
 		add(_exit);
 		
 		// Create _player
-		_player = new Player(FlxG.width / 2 - 5);
+		_player = new Player(300, FlxG.height - 96);
 		_player.makeGraphic(8, 8, FlxColor.CRIMSON);
 		_player.maxVelocity.set(80, 200);
 		_player.acceleration.y = 200;
 		_player.drag.x = _player.maxVelocity.x * 4;
 		// Smoother movement by enabling subpixel rendering
 		_player.forceComplexRender = true;
+		
 		add(_player);
 		
 		_scoreText = new FlxText(2, 2, 80, "SCORE: ");
@@ -95,6 +96,15 @@ class PlayState extends FlxState
 			_player.velocity.y = -_player.maxVelocity.y / 2;
 		}
 		
+		var zoom:Float = FlxG.camera.zoom;
+		if (FlxG.mouse.wheel > 0) {
+			zoom += 0.1;
+		}
+		if (FlxG.mouse.wheel < 0) {
+			zoom -= 0.1;
+		}
+		FlxG.camera.zoom = zoom;
+		
 		super.update();
 		
 		FlxG.collide(_level, _player);
@@ -113,7 +123,8 @@ class PlayState extends FlxState
 		_status.text = "Yay, you won!";
 		_scoreText.text = "SCORE: 5000";
 		_player.kill();
-		FlxG.resetState();
+		//FlxG.resetState();
+		FlxG.camera.shake(0.05, 0.5, FlxG.resetState);
 	}
 	
 	private function getCoin(Coin:FlxObject, Player:FlxObject):Void

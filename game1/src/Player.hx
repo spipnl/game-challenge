@@ -8,8 +8,13 @@ import flixel.FlxSprite;
  */
 class Player extends FlxSprite
 {
-	public function new(X:Float=0) 
+	public function new(X:Float=0, Y:Float=0) 
 	{
-		super(X);
+		super(X, Y);
+		/*
+		animation.add("default", [0, 1], 3);
+		animation.add("jump", [2]);
+		animation.play("default");
+		*/
 	}
 }
