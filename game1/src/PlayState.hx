@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.FlxCamera;
 import flixel.group.FlxGroup;
 import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
@@ -51,13 +52,6 @@ class PlayState extends FlxState
 		
 		// Create _player
 		_player = new Player(300, FlxG.height - 96);
-		_player.makeGraphic(8, 8, FlxColor.CRIMSON);
-		_player.maxVelocity.set(80, 200);
-		_player.acceleration.y = 200;
-		_player.drag.x = _player.maxVelocity.x * 4;
-		// Smoother movement by enabling subpixel rendering
-		_player.forceComplexRender = true;
-		
 		add(_player);
 		
 		_scoreText = new FlxText(2, 2, 80, "SCORE: ");
@@ -66,6 +60,9 @@ class PlayState extends FlxState
 		
 		_status = new FlxText(FlxG.width - 160 - 2, 2, 160, "Collect coins.");
 		_status.setFormat(null, 8, FlxColor.WHITE, "right", FlxText.BORDER_NONE, FlxColor.BLACK);
+		
+		FlxG.camera.setBounds(0, 0, 970, 500, true); //Note, the player does weird things when he walks off screen.
+		//FlxG.camera.follow(_player, FlxCamera.STYLE_PLATFORMER);
 		
 		if (_justDied)
 		{
@@ -124,6 +121,7 @@ class PlayState extends FlxState
 		_scoreText.text = "SCORE: 5000";
 		_player.kill();
 		//FlxG.resetState();
+		
 		FlxG.camera.shake(0.05, 0.5, FlxG.resetState);
 	}
 	
