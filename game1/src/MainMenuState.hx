@@ -15,6 +15,8 @@ import flixel.util.FlxColor;
 import openfl.Assets;
 import flash.display.Sprite;
 
+using flixel.util.FlxSpriteUtil;
+
 /**
  * Initial MainMenu
  * 
@@ -22,26 +24,32 @@ import flash.display.Sprite;
  */
 class MainMenuState extends FlxState
 {
+	private var _topMenu:TopMenu;
+	
 	private var _buttons:FlxSpriteGroup;
 	private var _buttonsBG:FlxSprite;
 	private var _startButton:MenuButton;
 	private var _aboutButton:FlxButton;
 	
+	private var _buttonsContainerWidth:Int = 120;
+	private var _buttonsContainerHeight:Int = 72;
+	
 	private var _buttonWidth:Int = 100;
-	private var _buttonHeight:Int = 30;
+	private var _buttonHeight:Int = 22;
 	
 	override public function create():Void 
 	{
-		FlxG.debugger.visible = true;
+		_topMenu = new TopMenu();
 		
-		bgColor = 0xFFFFFFFF;
-		_buttons = new FlxSpriteGroup(50,  50);
+		//FlxG.debugger.visible = true;
+		bgColor = 0xFF34495E;
+		_buttons = new FlxSpriteGroup((FlxG.width - _buttonsContainerWidth) * 0.5,  (FlxG.height - _buttonsContainerHeight) * 0.5);
 		_buttonsBG = new FlxSprite(0, 0);
-		_buttonsBG.makeGraphic(120, 150, 0xFFECF0F1);
+		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 4, 4, 0xFFECF0F1);
 		
 		_startButton = new MenuButton(10, 10, _buttonWidth, _buttonHeight, "Start", onStart);
-		_aboutButton = new FlxButton(10, 60, "About", onAbout);
-		_aboutButton.makeGraphic(_buttonWidth, _buttonHeight, 0x3498DB);
+		_aboutButton = new MenuButton(10, 40, _buttonWidth, _buttonHeight, "About", onAbout);
 		
 		/*
 		var buttonSprite = new Sprite();
@@ -56,6 +64,8 @@ class MainMenuState extends FlxState
 		_buttons.add(_aboutButton);
 		
 		add(_buttons);
+		
+		add(_topMenu);
 	}
 	
 	override public function update():Void 

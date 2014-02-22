@@ -21,17 +21,16 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="tools=1.2.9&#xA;no-compilation&#xA;display&#xA;web" />
+    <option directives="tools=1.2.9&#xA;display&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="Warning: Including &amp;quot;openfl-native&amp;quot; on a target platform that is not native&#xA;--no-output&#xA;-swf-version 11.2&#xA;#--remap nme:flash" />
+    <option additional="--no-output&#xA;-swf-version 11.2&#xA;#--remap nme:flash" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
     <library name="openfl" />
-    <library name="openfl-native" />
     <library name="flixel" />
     <library name="actuate" />
   </haxelib>

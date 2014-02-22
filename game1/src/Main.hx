@@ -8,6 +8,7 @@ import flash.events.KeyboardEvent;
 import flash.Lib;
 import flash.ui.Keyboard;
 import flixel.FlxGame;
+import flixel.FlxG;
 
 /**
  * First game of the Game Challenge
@@ -16,6 +17,8 @@ import flixel.FlxGame;
  */
 class Main extends Sprite 
 {
+	private var _game:FlxGame;
+	
 	// Entry point
 	public static function main():Void
 	{	
@@ -45,13 +48,35 @@ class Main extends Sprite
 		
 		initialize();
 		
-		var game:FlxGame = new GameClass();
-		addChild(game);
+		_game = new GameClass();
+		addChild(_game);
 	}
 	
 	private function initialize():Void 
 	{
 		Lib.current.stage.align = StageAlign.TOP_LEFT;
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+		
+		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyDown);
+	}
+	
+	private function onKeyDown(event:KeyboardEvent ):Void
+	{
+		if ( event.keyCode == 27 ) // 27 == esc == android back key
+		{
+			var currentState = _game.state;
+			if (Type.getClassName(Type.getClass(currentState)) == "MainMenuState")
+			{
+				#if !(flash || js)
+				Lib.exit();
+				#end
+			}
+			else if (Type.getClassName(Type.getClass(currentState)) == "PlayState")
+			{
+				FlxG.switchState(new MainMenuState());
+			}
+			event.stopImmediatePropagation();
+			event.stopPropagation();
+		}
 	}
 }

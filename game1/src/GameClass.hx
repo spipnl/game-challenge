@@ -9,7 +9,7 @@ import flixel.FlxGame;
  * @author spipnl (Jip Spinnewijn)
  */
 class GameClass extends FlxGame
-{	
+{
 	public function new()
 	{
 		var stageWidth:Int = Lib.current.stage.stageWidth;
