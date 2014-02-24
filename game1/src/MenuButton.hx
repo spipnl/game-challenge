@@ -18,11 +18,14 @@ class MenuButton extends FlxButton
 	{
 		super(X, Y, Label, OnClick);
 		makeGraphic(Width, Height, FlxColor.TRANSPARENT);
-		FlxSpriteUtil.drawRoundRect(this, 0, 0, Width, Height, 8, 8, 0xFF3498DB);
+		FlxSpriteUtil.drawRoundRect(this, 0, 0, Width, Height, 8, 8, 0xFF2980b9);
 		
-		var labelOffsetNormal:FlxPoint = new FlxPoint(0, 4);
-		var labelOffsetPress:FlxPoint = new FlxPoint(0, 5);
+		var labelOffsetNormal:FlxPoint = new FlxPoint(0, 8);
+		var labelOffsetPress:FlxPoint = new FlxPoint(0, 9);
 		labelOffsets = [labelOffsetNormal, labelOffsetNormal, labelOffsetPress];
+		label.font = "assets/fonts/OpenSans-Bold.ttf";
 		label.color = 0xFFFFFF;
+		label.size = 16;
+		label.text = label.text.toUpperCase();
 	}
 }

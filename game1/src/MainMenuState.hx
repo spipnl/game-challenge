@@ -31,25 +31,26 @@ class MainMenuState extends FlxState
 	private var _startButton:MenuButton;
 	private var _aboutButton:FlxButton;
 	
-	private var _buttonsContainerWidth:Int = 120;
-	private var _buttonsContainerHeight:Int = 72;
+	private var _buttonsContainerWidth:Int = 240;
+	private var _buttonsContainerHeight:Int = 144;
 	
-	private var _buttonWidth:Int = 100;
-	private var _buttonHeight:Int = 22;
+	private var _buttonWidth:Int = 200;
+	private var _buttonHeight:Int = 44;
 	
 	override public function create():Void 
 	{
 		_topMenu = new TopMenu();
 		
 		//FlxG.debugger.visible = true;
-		bgColor = 0xFF34495E;
+		
+		bgColor = 0xFFbdc3c7;
 		_buttons = new FlxSpriteGroup((FlxG.width - _buttonsContainerWidth) * 0.5,  (FlxG.height - _buttonsContainerHeight) * 0.5);
 		_buttonsBG = new FlxSprite(0, 0);
 		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
-		FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 4, 4, 0xFFECF0F1);
+		FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 8, 8, 0xFFecf0f1);
 		
-		_startButton = new MenuButton(10, 10, _buttonWidth, _buttonHeight, "Start", onStart);
-		_aboutButton = new MenuButton(10, 40, _buttonWidth, _buttonHeight, "About", onAbout);
+		_startButton = new MenuButton(20, 20, _buttonWidth, _buttonHeight, "Start", onStart);
+		_aboutButton = new MenuButton(20, 80, _buttonWidth, _buttonHeight, "About", onAbout);
 		
 		/*
 		var buttonSprite = new Sprite();

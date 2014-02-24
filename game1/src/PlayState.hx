@@ -19,6 +19,8 @@ import openfl.Assets;
  */
 class PlayState extends FlxState
 {
+	private var _topMenu:TopMenu;
+	
 	private static var _justDied:Bool = false;
 	
 	private var _level:FlxTilemap;
@@ -33,6 +35,8 @@ class PlayState extends FlxState
 	
 	override public function create():Void 
 	{
+		_topMenu = new TopMenu();
+		
 		//FlxG.mouse.visible = false;
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
@@ -41,7 +45,7 @@ class PlayState extends FlxState
 		_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
 		add(_level);
 		
-		_canon = new Canon(50, FlxG.height - 62);
+		_canon = new Canon(80, FlxG.height - 62);
 		add(_canon);
 		
 		// Create the _level _exit
@@ -51,12 +55,12 @@ class PlayState extends FlxState
 		add(_exit);
 		
 		// Create _player
-		_player = new Player(300, FlxG.height - 96);
+		_player = new Player(500, FlxG.height - 96);
 		add(_player);
 		
 		_scoreText = new FlxText(2, 2, 80, "SCORE: ");
 		_scoreText.setFormat(null, 8, FlxColor.WHITE, null, FlxText.BORDER_NONE, FlxColor.BLACK);
-		add(_scoreText);
+		//add(_scoreText);
 		
 		_status = new FlxText(FlxG.width - 160 - 2, 2, 160, "Collect coins.");
 		_status.setFormat(null, 8, FlxColor.WHITE, "right", FlxText.BORDER_NONE, FlxColor.BLACK);
@@ -71,7 +75,8 @@ class PlayState extends FlxState
 		
 		_bullets = _canon.getBullets();
 		
-		add(_status);
+		//add(_status);
+		add(_topMenu);
 	}
 	
 	override public function update():Void 
