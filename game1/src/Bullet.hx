@@ -18,7 +18,7 @@ class Bullet extends FlxSprite
 	public function new() 
 	{
 		super();
-		makeGraphic(3, 3);
+		makeGraphic(5, 5);
 		//maxVelocity.set(80, 200);
 		acceleration.y = 200;
 		elasticity = 0.5;

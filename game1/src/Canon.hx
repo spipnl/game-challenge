@@ -5,9 +5,12 @@ import flixel.FlxSprite;
 import flixel.group.FlxTypedGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import flixel.util.FlxMath;
+import flixel.util.FlxAngle;
 import flash.display.Sprite;
 import flixel.util.FlxPoint;
 import flash.display.BlendMode;
+
+using flixel.util.FlxSpriteUtil;
 
 /**
  * The Canon
@@ -70,19 +73,43 @@ class Canon extends FlxGroup
 		
 		if (_dragging)
 		{
-			var range = Std.int(Math.abs(_dragCenter.x - FlxG.mouse.x));
+			
+			var source:FlxPoint = _dragCenter;
+			var mouse:FlxPoint = FlxG.mouse.getWorldPosition();
+			// getAngle return angle with 0 degree point up, but we need the angle start from pointing right
+			var deg:Float = FlxAngle.getAngle(source, mouse)-90;
+			//var groundPoint:FlxPoint = new FlxPoint(source.x + (ground-source.y)/Math.tan(deg*FlxAngle.TO_RAD), ground);
+			var length:Float = FlxMath.getDistance(source, mouse);
+			
+			var range:Int = Std.int(length);
 			if (range < 1)
 			{
 				range = 1;
 			}
-			trace(range);
+			_shootDrag.setPosition(source.x, source.y);
+			_shootDrag.makeGraphic(2, 2, 0xFF444444 );
+			_shootDrag.angle = deg;
+			_shootDrag.scale.set(length / _shootDrag.pixels.width, 1);
+			_shootDrag.origin.set(0, _shootDrag.pixels.height / 2);
+			_shootDrag.visible = true;
+			
+			
+			/*
 			//_shootDrag.angle = 50;
 			_shootDrag.setPosition(_dragCenter.x - range, _dragCenter.y - range);
-			_shootDrag.makeGraphic(range * 2, range * 2, FlxColor.TRANSPARENT );
+			_shootDrag.makeGraphic(range * 2, range * 2, 0x88FF0000 );
 			
 			DRAG_SPRITE = new Sprite();
 			DRAG_SPRITE.graphics.beginFill( 0xFFFFFF );
-			DRAG_SPRITE.graphics.drawCircle(range, range, range);
+			DRAG_SPRITE.graphics.lineStyle(3, 0xFF000000);
+			//DRAG_SPRITE.graphics.drawCircle(range, range, range);
+			//DRAG_SPRITE.graphics.moveTo(0, 0);
+			//DRAG_SPRITE.graphics.lineTo(_dragCenter.x, _dragCenter.y);
+			DRAG_SPRITE.graphics.moveTo(range, range);
+			DRAG_SPRITE.graphics.lineTo(source.x - mouse.x, source.y - mouse.y);
+			DRAG_SPRITE.graphics.lineTo(range * 1.5, range * 0.5);
+			DRAG_SPRITE.graphics.lineTo(range * 0.5, range * 0.5);
+			DRAG_SPRITE.graphics.lineTo(range, range);
 			DRAG_SPRITE.graphics.endFill();
 
 			_shootDrag.pixels.draw(DRAG_SPRITE);
@@ -94,6 +121,7 @@ class Canon extends FlxGroup
 			#end
 			
 			_shootDrag.visible = true;
+			*/
 		}
 		
 		if (FlxG.mouse.justReleased && _dragging)
