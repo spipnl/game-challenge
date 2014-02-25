@@ -45,7 +45,7 @@ class PlayState extends FlxState
 		_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
 		add(_level);
 		
-		_canon = new Canon(80, FlxG.height - 62);
+		_canon = new Canon(80, FlxG.height - 100);
 		add(_canon);
 		
 		// Create the _level _exit

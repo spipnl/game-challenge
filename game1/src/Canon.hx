@@ -9,6 +9,7 @@ import flixel.util.FlxAngle;
 import flash.display.Sprite;
 import flixel.util.FlxPoint;
 import flash.display.BlendMode;
+import flixel.tweens.FlxTween;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -20,11 +21,15 @@ using flixel.util.FlxSpriteUtil;
 class Canon extends FlxGroup
 {
 	private var _canon:FlxSprite;
+	private var _canonBarrel:FlxSprite;
+	private var _canonBarrelTween:FlxTween;
 	private var _shootDrag:FlxSprite;
+	private var _shootDragTween:FlxTween;
 	private var _poolSize:UInt = 10;
 	private var _bullets:FlxTypedGroup<Bullet>;
 	private var _dragging:Bool;
 	private var _dragCenter:FlxPoint;
+	private var _orgScaleX:Float = 1;
 	
 	/**
 	 * Helper Sprite object to draw canon's range graphic
@@ -46,13 +51,19 @@ class Canon extends FlxGroup
 			bullet.kill();
 			_bullets.add(bullet);
 		}
+		_canonBarrel = new FlxSprite(_dragCenter.x - 5, _dragCenter.y - 20);
+		_canonBarrel.makeGraphic(30, 20, FlxColor.CHARCOAL);
+		_canonBarrel.origin.set(5, _canonBarrel.pixels.height * 0.5);
 		
-		_shootDrag = new FlxSprite(Std.int(_canon.x + _canon.width * 0.5), Std.int(_canon.y + _canon.height * 0.5));
-		_shootDrag.makeGraphic(1, 1);
+		_shootDrag = new FlxSprite(_dragCenter.x, _canonBarrel.y + _canonBarrel.pixels.height * 0.5);
+		_shootDrag.makeGraphic(40, 40, FlxColor.SILVER);
+		FlxSpriteUtil.drawRoundRect(_shootDrag, 0, 0, _shootDrag.width, _shootDrag.height, 8, 8, 0xFF2980b9);
 		_shootDrag.antialiasing = true;
 		_shootDrag.visible = false;
+		_shootDrag.alpha = 0.5;
 		
 		add(_bullets);
+		add(_canonBarrel);
 		add(_canon);
 		add(_shootDrag);
 		
@@ -86,56 +97,65 @@ class Canon extends FlxGroup
 			{
 				range = 1;
 			}
-			_shootDrag.setPosition(source.x, source.y);
-			_shootDrag.makeGraphic(2, 2, 0xFF444444 );
+
+			var shootPower = Math.min(8, Math.max(2, length * 0.1));
+
+			//_shootDrag.setPosition(source.x, source.y);
 			_shootDrag.angle = deg;
-			_shootDrag.scale.set(length / _shootDrag.pixels.width, 1);
-			_shootDrag.origin.set(0, _shootDrag.pixels.height / 2);
-			_shootDrag.visible = true;
-			
-			
-			/*
-			//_shootDrag.angle = 50;
-			_shootDrag.setPosition(_dragCenter.x - range, _dragCenter.y - range);
-			_shootDrag.makeGraphic(range * 2, range * 2, 0x88FF0000 );
+			//_shootDrag.scale.set(shootPower * 10 / _shootDrag.pixels.width, shootPower);
+			//_shootDrag.makeGraphic(Std.int(shootPower * 10), Std.int(shootPower * 2), 0xFF000000);
 			
 			DRAG_SPRITE = new Sprite();
 			DRAG_SPRITE.graphics.beginFill( 0xFFFFFF );
-			DRAG_SPRITE.graphics.lineStyle(3, 0xFF000000);
-			//DRAG_SPRITE.graphics.drawCircle(range, range, range);
-			//DRAG_SPRITE.graphics.moveTo(0, 0);
-			//DRAG_SPRITE.graphics.lineTo(_dragCenter.x, _dragCenter.y);
-			DRAG_SPRITE.graphics.moveTo(range, range);
-			DRAG_SPRITE.graphics.lineTo(source.x - mouse.x, source.y - mouse.y);
-			DRAG_SPRITE.graphics.lineTo(range * 1.5, range * 0.5);
-			DRAG_SPRITE.graphics.lineTo(range * 0.5, range * 0.5);
-			DRAG_SPRITE.graphics.lineTo(range, range);
+			DRAG_SPRITE.graphics.moveTo(0, _shootDrag.height * 0.5);
+			DRAG_SPRITE.graphics.lineTo(_shootDrag.width, 0);
+			DRAG_SPRITE.graphics.lineTo(_shootDrag.width, _shootDrag.height);
+			DRAG_SPRITE.graphics.lineTo(0, _shootDrag.height * 0.5);
 			DRAG_SPRITE.graphics.endFill();
 
-			_shootDrag.pixels.draw(DRAG_SPRITE);
+			//_shootDrag.pixels.draw(DRAG_SPRITE);
 			
-			#if !(cpp || neko || js)
-			_shootDrag.blend = BlendMode.INVERT;
-			#else
-			_shootDrag.alpha = 0.3;
-			#end
-			
+			_shootDrag.origin.x = 0;
+			//_shootDrag.origin.y = _shootDrag.height * 0.5;
+			//FlxSpriteUtil.drawRoundRect(_shootDrag, 0, 0, _shootDrag.width, _shootDrag.height, 8, 8, 0xFF2980b9);
+			//_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
 			_shootDrag.visible = true;
+			/*
+			if (_shootDragTween != null && _shootDragTween.active) {
+				_shootDragTween.cancel();
+			}
+			_shootDragTween = flixel.tweens.FlxTween.angle(_shootDrag, _shootDrag.angle, deg, 0.1);
 			*/
+			if (_canonBarrelTween != null && _canonBarrelTween.active) {
+				_canonBarrelTween.cancel();
+			}
+			_canonBarrelTween = FlxTween.angle(_canonBarrel, _canonBarrel.angle, deg + 180, 0.15);
 		}
 		
 		if (FlxG.mouse.justReleased && _dragging)
 		{
 			_dragging = false;
 			_shootDrag.visible = false;
+			_orgScaleX = _canonBarrel.scale.x;
 			shootBullet(Std.int(_dragCenter.x - FlxG.mouse.x), Std.int(_dragCenter.y - FlxG.mouse.y));
+
+			//FlxTween.singleVar(_canonBarrel.scale, "x", _orgScaleX * 0.5, 0.2);
+			//FlxTween.singleVar(_canonBarrel.scale, "x", _orgScaleX * 2, 5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT, delay: 0.5});
+			//FlxTween.linearMotion(_canonBarrel, _canonBarrel.x, _canonBarrel.y, _canonBarrel.x, _canonBarrel.y, 1, true, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT });
 		}
+	}
+
+	private function onShotComplete(tween:FlxTween):Void
+	{
+		FlxTween.singleVar(_canonBarrel.scale, "x", _orgScaleX, 0.5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT});
 	}
 	
 	private function shootBullet(X:Int, Y:Int):Void
 	{
+		FlxTween.singleVar(_canonBarrel.scale, "x", _orgScaleX * 0.7, 0.1, {type: FlxTween.ONESHOT, complete: onShotComplete});
+
 		var bullet:Bullet = _bullets.recycle(Bullet);
-		bullet.init(_canon.x, _canon.y);
+		bullet.init(_canonBarrel.x, _canonBarrel.y + _canonBarrel.pixels.height * 0.5);
 		bullet.shoot(X, Y);
 	}
 	
