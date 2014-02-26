@@ -56,8 +56,7 @@ class Canon extends FlxGroup
 		_canonBarrel.origin.set(5, _canonBarrel.pixels.height * 0.5);
 		
 		_shootDrag = new FlxSprite(_dragCenter.x, _canonBarrel.y + _canonBarrel.pixels.height * 0.5);
-		_shootDrag.makeGraphic(40, 40, FlxColor.SILVER);
-		FlxSpriteUtil.drawRoundRect(_shootDrag, 0, 0, _shootDrag.width, _shootDrag.height, 8, 8, 0xFF2980b9);
+		_shootDrag.makeGraphic(5, 5, 0xFF2980b9);
 		_shootDrag.antialiasing = true;
 		_shootDrag.visible = false;
 		_shootDrag.alpha = 0.5;
@@ -102,23 +101,8 @@ class Canon extends FlxGroup
 
 			//_shootDrag.setPosition(source.x, source.y);
 			_shootDrag.angle = deg;
-			//_shootDrag.scale.set(shootPower * 10 / _shootDrag.pixels.width, shootPower);
-			//_shootDrag.makeGraphic(Std.int(shootPower * 10), Std.int(shootPower * 2), 0xFF000000);
-			
-			DRAG_SPRITE = new Sprite();
-			DRAG_SPRITE.graphics.beginFill( 0xFFFFFF );
-			DRAG_SPRITE.graphics.moveTo(0, _shootDrag.height * 0.5);
-			DRAG_SPRITE.graphics.lineTo(_shootDrag.width, 0);
-			DRAG_SPRITE.graphics.lineTo(_shootDrag.width, _shootDrag.height);
-			DRAG_SPRITE.graphics.lineTo(0, _shootDrag.height * 0.5);
-			DRAG_SPRITE.graphics.endFill();
-
-			//_shootDrag.pixels.draw(DRAG_SPRITE);
-			
-			_shootDrag.origin.x = 0;
-			//_shootDrag.origin.y = _shootDrag.height * 0.5;
-			//FlxSpriteUtil.drawRoundRect(_shootDrag, 0, 0, _shootDrag.width, _shootDrag.height, 8, 8, 0xFF2980b9);
-			//_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
+			_shootDrag.scale.set(shootPower * 10 / _shootDrag.pixels.width, shootPower);
+			_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
 			_shootDrag.visible = true;
 			/*
 			if (_shootDragTween != null && _shootDragTween.active) {
