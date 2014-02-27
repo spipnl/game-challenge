@@ -23,7 +23,7 @@ class PlayState extends FlxState
 	
 	private static var _justDied:Bool = false;
 	
-	private var _level:FlxTilemap;
+	private var _level:TiledLevel;
 	private var _player:Player;
 	private var _exit:FlxSprite;
 	private var _scoreText:FlxText;
@@ -41,9 +41,21 @@ class PlayState extends FlxState
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
 		
-		_level = new FlxTilemap();
-		_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
-		add(_level);
+		_level = new TiledLevel("assets/levels/level.tmx");
+		//_level = new FlxTilemap();
+		//_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
+		
+		//_level.loadMap(Assets.getText("assets/levels/level_base.txt"), GraphicAuto, 8, 8, FlxTilemap.AUTO);
+		
+		// Add tilemaps
+		add(_level.foregroundTiles);
+		
+		// Load player objects
+		_level.loadObjects(this);
+		
+		// Add background tiles after adding level objects, so these tiles render on top of player
+		add(_level.backgroundTiles);
+		
 		
 		_canon = new Canon(80, FlxG.height - 100);
 		add(_canon);
@@ -55,7 +67,7 @@ class PlayState extends FlxState
 		add(_exit);
 		
 		// Create _player
-		_player = new Player(500, FlxG.height - 96);
+		_player = new Player(700, FlxG.height - 96);
 		add(_player);
 		
 		_scoreText = new FlxText(2, 2, 80, "SCORE: ");
@@ -109,8 +121,8 @@ class PlayState extends FlxState
 		
 		super.update();
 		
-		FlxG.collide(_level, _player);
-		FlxG.collide(_level, _bullets);
+		FlxG.collide(_level.foregroundTiles, _player);
+		FlxG.collide(_level.foregroundTiles, _bullets);
 		FlxG.overlap(_bullets, _player, win);
 		
 		if (_player.y > FlxG.height)
