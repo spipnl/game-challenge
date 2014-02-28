@@ -30,18 +30,23 @@ class PlayState extends FlxState
 	private var _status:FlxText;
 	private var _coins:FlxGroup;
 	private var _bullets:FlxTypedGroup<Bullet>;
+	public var targets:FlxGroup;
 	
-	private var _canon:Canon;
+	public var cannon:Cannon;
 	
 	override public function create():Void 
 	{
+		createFloor();
+		
 		_topMenu = new TopMenu();
+		_topMenu.leftTitle = "SHOOT THE COINS!";
 		
 		//FlxG.mouse.visible = false;
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
 		
-		_level = new TiledLevel("assets/levels/level.tmx");
+		//_level = new TiledLevel("assets/levels/level.tmx");
+		_level = new TiledLevel("assets/levels/level_base.tmx");
 		//_level = new FlxTilemap();
 		//_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
 		
@@ -50,15 +55,15 @@ class PlayState extends FlxState
 		// Add tilemaps
 		add(_level.foregroundTiles);
 		
+		// Draw coins first
+		targets = new FlxGroup();
+		add(targets);
+		
 		// Load player objects
 		_level.loadObjects(this);
 		
 		// Add background tiles after adding level objects, so these tiles render on top of player
 		add(_level.backgroundTiles);
-		
-		
-		_canon = new Canon(80, FlxG.height - 100);
-		add(_canon);
 		
 		// Create the _level _exit
 		_exit = new FlxSprite(35 * 8 + 1 , 25 * 8);
@@ -85,10 +90,32 @@ class PlayState extends FlxState
 			_status.text = "Aww, you died!";
 		}
 		
-		_bullets = _canon.getBullets();
+		_bullets = cannon.getBullets();
 		
 		//add(_status);
 		add(_topMenu);
+	}
+	
+	private function createFloor():Void
+	{
+		// CREATE FLOOR TILES
+		var	FloorImg = Assets.getBitmapData("assets/images/fresh_snow.png");
+		var ImgWidth = FloorImg.width;
+		var ImgHeight = FloorImg.height;
+		var i = 0; 
+		var j = 0; 
+		
+		while ( i <= FlxG.width )  
+		{
+			while ( j <= FlxG.height )
+			{
+				var spr = new FlxSprite(i, j, FloorImg);
+				add(spr);
+				j += ImgHeight;
+			}
+			i += ImgWidth;
+			j = 0;
+		}
 	}
 	
 	override public function update():Void 
@@ -123,7 +150,7 @@ class PlayState extends FlxState
 		
 		FlxG.collide(_level.foregroundTiles, _player);
 		FlxG.collide(_level.foregroundTiles, _bullets);
-		FlxG.overlap(_bullets, _player, win);
+		FlxG.overlap(_bullets, targets, hitTarget);
 		
 		if (_player.y > FlxG.height)
 		{
@@ -137,20 +164,18 @@ class PlayState extends FlxState
 		_status.text = "Yay, you won!";
 		_scoreText.text = "SCORE: 5000";
 		_player.kill();
-		//FlxG.resetState();
-		
-		FlxG.camera.shake(0.05, 0.5, FlxG.resetState);
 	}
 	
-	private function getCoin(Coin:FlxObject, Player:FlxObject):Void
+	private function hitTarget(Bullet:FlxObject, Target:FlxObject):Void
 	{
-		Coin.kill();
-		_scoreText.text = "SCORE: " + (_coins.countDead() * 100);
+		Target.kill();
+		_topMenu.leftTitle = "SCORE: " + (targets.countDead() * 100);
 		
-		if (_coins.countLiving() == 0)
+		if (targets.countLiving() == 0)
 		{
-			_status.text = "Find the exit";
-			_exit.exists = true;
+			FlxG.camera.shake(0.01, 0.2, FlxG.resetState);
+			//_status.text = "Find the exit";
+			//_exit.exists = true;
 		}
 	}
 }

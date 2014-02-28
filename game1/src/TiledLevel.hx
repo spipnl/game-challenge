@@ -100,28 +100,21 @@ class TiledLevel extends TiledMap
 		// objects in tiled are aligned bottom-left (top-left in flixel)
 		if (o.gid != -1)
 			y -= g.map.getGidOwner(o.gid).tileHeight;
-		
+		trace(o.type.toLowerCase());
 		switch (o.type.toLowerCase())
 		{
-			case "player_start":
-				var player = new FlxSprite(x, y);
-				player.makeGraphic(16, 16, 0xffaa1111);
-				player.maxVelocity.x = 160;
-				player.maxVelocity.y = 400;
-				player.acceleration.y = 400;
-				player.drag.x = player.maxVelocity.x * 4;
-				//FlxG.camera.follow(player);
-				//state.player = player;
-				//state.add(player);
-				
+			case "cannon_position":
+				var cannon = new Cannon(x, y);
+				state.cannon = cannon;
+				state.add(cannon);
 			case "floor":
 				var floor = new FlxObject(x, y, o.width, o.height);
 				//state.floor = floor;
 				
-			case "coin":
+			case "target":
 				var tileset = g.map.getGidOwner(o.gid);
-				var coin = new FlxSprite(x, y, c_PATH_LEVEL_TILESHEETS + tileset.imageSource);
-				//state.coins.add(coin);
+				var target = new FlxSprite(x, y, c_PATH_LEVEL_TILESHEETS + tileset.imageSource);
+				state.targets.add(target);
 				
 			case "exit":
 				// Create the level exit

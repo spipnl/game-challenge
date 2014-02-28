@@ -14,15 +14,16 @@ import flixel.tweens.FlxTween;
 using flixel.util.FlxSpriteUtil;
 
 /**
- * The Canon
+ * The cannon
  * 
  * @author spipnl (Jip Spinnewijn)
  */
-class Canon extends FlxGroup
+class Cannon extends FlxGroup
 {
-	private var _canon:FlxSprite;
-	private var _canonBarrel:FlxSprite;
-	private var _canonBarrelTween:FlxTween;
+	private var _dragMargin:UInt = 20;
+	private var _cannon:FlxSprite;
+	private var _cannonBarrel:FlxSprite;
+	private var _cannonBarrelTween:FlxTween;
 	private var _shootDrag:FlxSprite;
 	private var _shootDragTween:FlxTween;
 	private var _poolSize:UInt = 10;
@@ -32,7 +33,7 @@ class Canon extends FlxGroup
 	private var _orgScaleX:Float = 1;
 	
 	/**
-	 * Helper Sprite object to draw canon's range graphic
+	 * Helper Sprite object to draw cannon's range graphic
 	 */
 	private static var DRAG_SPRITE:Sprite = null;
 	
@@ -40,9 +41,9 @@ class Canon extends FlxGroup
 	{
 		super();
 		
-		_canon = new FlxSprite(X, Y);
-		_canon.makeGraphic(20, 30, FlxColor.CRIMSON);
-		_dragCenter = _canon.getMidpoint();
+		_cannon = new FlxSprite(X, Y - 14);
+		_cannon.makeGraphic(20, 30, FlxColor.CRIMSON);
+		_dragCenter = _cannon.getMidpoint();
 		
 		_bullets = new FlxTypedGroup<Bullet>(_poolSize);
 		for (i in 0..._poolSize)
@@ -51,19 +52,19 @@ class Canon extends FlxGroup
 			bullet.kill();
 			_bullets.add(bullet);
 		}
-		_canonBarrel = new FlxSprite(_dragCenter.x - 5, _dragCenter.y - 20);
-		_canonBarrel.makeGraphic(30, 20, FlxColor.CHARCOAL);
-		_canonBarrel.origin.set(5, _canonBarrel.pixels.height * 0.5);
+		_cannonBarrel = new FlxSprite(_dragCenter.x - 5, _dragCenter.y - 20);
+		_cannonBarrel.makeGraphic(30, 20, FlxColor.CHARCOAL);
+		_cannonBarrel.origin.set(5, _cannonBarrel.pixels.height * 0.5);
 		
-		_shootDrag = new FlxSprite(_dragCenter.x, _canonBarrel.y + _canonBarrel.pixels.height * 0.5);
+		_shootDrag = new FlxSprite(_dragCenter.x, _cannonBarrel.y + _cannonBarrel.pixels.height * 0.5);
 		_shootDrag.makeGraphic(5, 5, 0xFF2980b9);
 		_shootDrag.antialiasing = true;
 		_shootDrag.visible = false;
-		_shootDrag.alpha = 0.5;
+		_shootDrag.alpha = 0.4;
 		
 		add(_bullets);
-		add(_canonBarrel);
-		add(_canon);
+		add(_cannonBarrel);
+		add(_cannon);
 		add(_shootDrag);
 		
 		_dragging = false;
@@ -75,7 +76,7 @@ class Canon extends FlxGroup
 		
 		if (FlxG.mouse.justPressed)
 		{
-			if (FlxMath.pointInCoordinates(Std.int(FlxG.mouse.x), Std.int(FlxG.mouse.y), Std.int(_canon.x), Std.int(_canon.y), Std.int(_canon.width), Std.int(_canon.height)))
+			if (FlxMath.pointInCoordinates(Std.int(FlxG.mouse.x), Std.int(FlxG.mouse.y), Std.int(_cannon.x) - _dragMargin, Std.int(_cannon.y) - _dragMargin, Std.int(_cannon.width) + _dragMargin * 2, Std.int(_cannon.height) + _dragMargin * 2))
 			{
 				_dragging = true;
 			}
@@ -110,36 +111,36 @@ class Canon extends FlxGroup
 			}
 			_shootDragTween = flixel.tweens.FlxTween.angle(_shootDrag, _shootDrag.angle, deg, 0.1);
 			*/
-			if (_canonBarrelTween != null && _canonBarrelTween.active) {
-				_canonBarrelTween.cancel();
+			if (_cannonBarrelTween != null && _cannonBarrelTween.active) {
+				_cannonBarrelTween.cancel();
 			}
-			_canonBarrelTween = FlxTween.angle(_canonBarrel, _canonBarrel.angle, deg + 180, 0.15);
+			_cannonBarrelTween = FlxTween.angle(_cannonBarrel, _cannonBarrel.angle, deg + 180, 0.15);
 		}
 		
 		if (FlxG.mouse.justReleased && _dragging)
 		{
 			_dragging = false;
 			_shootDrag.visible = false;
-			_orgScaleX = _canonBarrel.scale.x;
+			_orgScaleX = 1;
 			shootBullet(Std.int(_dragCenter.x - FlxG.mouse.x), Std.int(_dragCenter.y - FlxG.mouse.y));
 
-			//FlxTween.singleVar(_canonBarrel.scale, "x", _orgScaleX * 0.5, 0.2);
-			//FlxTween.singleVar(_canonBarrel.scale, "x", _orgScaleX * 2, 5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT, delay: 0.5});
-			//FlxTween.linearMotion(_canonBarrel, _canonBarrel.x, _canonBarrel.y, _canonBarrel.x, _canonBarrel.y, 1, true, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT });
+			//FlxTween.singleVar(_cannonBarrel.scale, "x", _orgScaleX * 0.5, 0.2);
+			//FlxTween.singleVar(_cannonBarrel.scale, "x", _orgScaleX * 2, 5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT, delay: 0.5});
+			//FlxTween.linearMotion(_cannonBarrel, _cannonBarrel.x, _cannonBarrel.y, _cannonBarrel.x, _cannonBarrel.y, 1, true, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT });
 		}
 	}
 
 	private function onShotComplete(tween:FlxTween):Void
 	{
-		FlxTween.singleVar(_canonBarrel.scale, "x", _orgScaleX, 0.5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT});
+		FlxTween.singleVar(_cannonBarrel.scale, "x", 1.0, 0.5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT});
 	}
 	
 	private function shootBullet(X:Int, Y:Int):Void
 	{
-		FlxTween.singleVar(_canonBarrel.scale, "x", _orgScaleX * 0.7, 0.1, {type: FlxTween.ONESHOT, complete: onShotComplete});
+		FlxTween.singleVar(_cannonBarrel.scale, "x", 0.7, 0.1, {type: FlxTween.ONESHOT, complete: onShotComplete});
 
 		var bullet:Bullet = _bullets.recycle(Bullet);
-		bullet.init(_canonBarrel.x, _canonBarrel.y + _canonBarrel.pixels.height * 0.5);
+		bullet.init(_cannonBarrel.x, _cannonBarrel.y + _cannonBarrel.pixels.height * 0.5);
 		bullet.shoot(X, Y);
 	}
 	

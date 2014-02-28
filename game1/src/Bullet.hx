@@ -18,7 +18,8 @@ class Bullet extends FlxSprite
 	public function new() 
 	{
 		super();
-		makeGraphic(5, 5);
+		makeGraphic(5, 5, 0xFF666666);
+		
 		//maxVelocity.set(80, 200);
 		acceleration.y = 200;
 		elasticity = 0.5;
@@ -53,7 +54,6 @@ class Bullet extends FlxSprite
 		if (!isOnScreen(FlxG.camera)) 
 		{
 			kill();
-			trace('kill');
 		}
 		
 		
