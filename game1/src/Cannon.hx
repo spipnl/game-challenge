@@ -30,7 +30,6 @@ class Cannon extends FlxGroup
 	private var _bullets:FlxTypedGroup<Bullet>;
 	private var _dragging:Bool;
 	private var _dragCenter:FlxPoint;
-	private var _orgScaleX:Float = 1;
 	
 	/**
 	 * Helper Sprite object to draw cannon's range graphic
@@ -41,10 +40,13 @@ class Cannon extends FlxGroup
 	{
 		super();
 		
-		_cannon = new FlxSprite(X, Y - 14);
-		_cannon.makeGraphic(20, 30, FlxColor.BROWN);
-		FlxSpriteUtil.drawCircle(_cannon, _cannon.width * 0.5, 6, 3, FlxColor.GOLDEN);
+		_cannon = new FlxSprite(X-7, Y - 19);
+		_cannon.makeGraphic(30, 35, FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawPolygon(_cannon, [new FlxPoint(8, 0), new FlxPoint(_cannon.width - 8, 0), new FlxPoint(_cannon.width, _cannon.height), new FlxPoint(0, _cannon.height)], 0xFF556D75,  {color: 0xFFBAB6B2, thickness: 1});
+		FlxSpriteUtil.drawCircle(_cannon, _cannon.width * 0.5, 6, 3, FlxColor.GOLDEN, {color: 0xFF9A968A, thickness: 1});
+		
 		_dragCenter = _cannon.getMidpoint();
+		_dragCenter.y = _cannon.y + 6;
 		
 		_bullets = new FlxTypedGroup<Bullet>(_poolSize);
 		for (i in 0..._poolSize)
@@ -53,11 +55,12 @@ class Cannon extends FlxGroup
 			bullet.kill();
 			_bullets.add(bullet);
 		}
-		_cannonBarrel = new FlxSprite(_dragCenter.x - 5, _dragCenter.y - 20);
-		_cannonBarrel.makeGraphic(30, 20, FlxColor.CHARCOAL);
+		_cannonBarrel = new FlxSprite(_dragCenter.x - 5, _dragCenter.y - 9);
+		_cannonBarrel.makeGraphic(32, 18, FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawRoundRect(_cannonBarrel, 0, 0, _cannonBarrel.width, _cannonBarrel.height, 12, 12, FlxColor.CHARCOAL);
 		_cannonBarrel.origin.set(5, _cannonBarrel.pixels.height * 0.5);
 		
-		_shootDrag = new FlxSprite(_dragCenter.x, _cannonBarrel.y + _cannonBarrel.pixels.height * 0.5);
+		_shootDrag = new FlxSprite(_dragCenter.x, _dragCenter.y);
 		_shootDrag.makeGraphic(5, 5, 0xFF2980b9);
 		_shootDrag.antialiasing = true;
 		_shootDrag.visible = false;
@@ -98,20 +101,14 @@ class Cannon extends FlxGroup
 			{
 				range = 1;
 			}
-
+			
 			var shootPower = Math.min(8, Math.max(2, length * 0.1));
-
-			//_shootDrag.setPosition(source.x, source.y);
+			
 			_shootDrag.angle = deg;
 			_shootDrag.scale.set(shootPower * 10 / _shootDrag.pixels.width, shootPower);
 			_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
 			_shootDrag.visible = true;
-			/*
-			if (_shootDragTween != null && _shootDragTween.active) {
-				_shootDragTween.cancel();
-			}
-			_shootDragTween = flixel.tweens.FlxTween.angle(_shootDrag, _shootDrag.angle, deg, 0.1);
-			*/
+			
 			if (_cannonBarrelTween != null && _cannonBarrelTween.active) {
 				_cannonBarrelTween.cancel();
 			}
@@ -122,12 +119,7 @@ class Cannon extends FlxGroup
 		{
 			_dragging = false;
 			_shootDrag.visible = false;
-			_orgScaleX = 1;
 			shootBullet(Std.int(_dragCenter.x - FlxG.mouse.x), Std.int(_dragCenter.y - FlxG.mouse.y));
-
-			//FlxTween.singleVar(_cannonBarrel.scale, "x", _orgScaleX * 0.5, 0.2);
-			//FlxTween.singleVar(_cannonBarrel.scale, "x", _orgScaleX * 2, 5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT, delay: 0.5});
-			//FlxTween.linearMotion(_cannonBarrel, _cannonBarrel.x, _cannonBarrel.y, _cannonBarrel.x, _cannonBarrel.y, 1, true, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT });
 		}
 	}
 
@@ -138,8 +130,10 @@ class Cannon extends FlxGroup
 	
 	private function shootBullet(X:Int, Y:Int):Void
 	{
-		FlxTween.singleVar(_cannonBarrel.scale, "x", 0.7, 0.1, {type: FlxTween.ONESHOT, complete: onShotComplete});
-
+		FlxTween.singleVar(_cannonBarrel.scale, "x", 0.7, 0.1, { type: FlxTween.ONESHOT, complete: onShotComplete } );
+		
+		FlxG.sound.play("assets/audio/cannon_shot.mp3");
+		
 		var bullet:Bullet = _bullets.recycle(Bullet);
 		bullet.init(_cannonBarrel.x, _cannonBarrel.y + _cannonBarrel.pixels.height * 0.5);
 		bullet.shoot(X, Y);

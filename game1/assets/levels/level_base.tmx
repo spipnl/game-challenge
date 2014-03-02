@@ -4,7 +4,7 @@
   <image source="walls.png" width="128" height="80"/>
  </tileset>
  <tileset firstgid="41" name="target" tilewidth="32" tileheight="32">
-  <image source="coin.png" width="32" height="32"/>
+  <image source="target.png" width="32" height="32"/>
  </tileset>
  <objectgroup name="targets" width="50" height="30">
   <object type="target" gid="41" x="624" y="256"/>

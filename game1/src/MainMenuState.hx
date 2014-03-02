@@ -1,5 +1,6 @@
 package; 
 
+import flash.display.BitmapData;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -28,11 +29,12 @@ class MainMenuState extends FlxState
 	
 	private var _buttons:FlxSpriteGroup;
 	private var _buttonsBG:FlxSprite;
+	private var _logo:FlxSprite;
 	private var _startButton:MenuButton;
 	private var _aboutButton:FlxButton;
 	
-	private var _buttonsContainerWidth:Int = 240;
-	private var _buttonsContainerHeight:Int = 144;
+	private var _buttonsContainerWidth:Int = 420;
+	private var _buttonsContainerHeight:Int = 160;
 	
 	private var _buttonWidth:Int = 200;
 	private var _buttonHeight:Int = 44;
@@ -51,20 +53,16 @@ class MainMenuState extends FlxState
 		_buttons = new FlxSpriteGroup((FlxG.width - _buttonsContainerWidth) * 0.5,  (FlxG.height - _buttonsContainerHeight) * 0.5);
 		_buttonsBG = new FlxSprite(0, 0);
 		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
-		FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 8, 8, 0xFFecf0f1);
+		FlxSpriteUtil.drawRoundRect(_buttonsBG, 80, 0, _buttonsBG.width - 80, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
 		
-		_startButton = new MenuButton(20, 20, _buttonWidth, _buttonHeight, "Start", onStart);
-		_aboutButton = new MenuButton(20, 80, _buttonWidth, _buttonHeight, "About", onAbout);
+		var _logo:FlxSprite = new FlxSprite(0, 0);
+		_logo.loadGraphic(Assets.getBitmapData("assets/images/logo-menu.png"));
 		
-		/*
-		var buttonSprite = new Sprite();
-		buttonSprite.graphics.beginFill(0x3498DB);
-		buttonSprite.graphics.drawRoundRect(0, 0, _buttonWidth, _buttonHeight, 10);
-		buttonSprite.graphics.endFill();
+		_startButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, 25, _buttonWidth, _buttonHeight, "Start", onStart);
+		_aboutButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, _buttonsContainerHeight - _buttonHeight - 25, _buttonWidth, _buttonHeight, "About", onAbout);
 		
-		_aboutButton.pixels.draw(buttonSprite);
-		*/
 		_buttons.add(_buttonsBG);
+		_buttons.add(_logo);
 		_buttons.add(_startButton);
 		_buttons.add(_aboutButton);
 		
@@ -76,7 +74,7 @@ class MainMenuState extends FlxState
 	private function createBackground():Void
 	{
 		// CREATE FLOOR TILES
-		var	FloorImg = Assets.getBitmapData("assets/images/fresh_snow.png");
+		var	FloorImg:BitmapData = Assets.getBitmapData("assets/images/fresh_snow.png");
 		var ImgWidth = FloorImg.width;
 		var ImgHeight = FloorImg.height;
 		var i = 0; 
