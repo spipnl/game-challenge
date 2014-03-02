@@ -42,7 +42,8 @@ class Cannon extends FlxGroup
 		super();
 		
 		_cannon = new FlxSprite(X, Y - 14);
-		_cannon.makeGraphic(20, 30, FlxColor.CRIMSON);
+		_cannon.makeGraphic(20, 30, FlxColor.BROWN);
+		FlxSpriteUtil.drawCircle(_cannon, _cannon.width * 0.5, 6, 3, FlxColor.GOLDEN);
 		_dragCenter = _cannon.getMidpoint();
 		
 		_bullets = new FlxTypedGroup<Bullet>(_poolSize);

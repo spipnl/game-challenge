@@ -39,6 +39,8 @@ class MainMenuState extends FlxState
 	
 	override public function create():Void 
 	{
+		createBackground();
+		
 		_topMenu = new TopMenu();
 		_topMenu.leftTitle = "spipnl (mobile) { development; }";
 		_topMenu.rightTitle = "game1";
@@ -69,6 +71,28 @@ class MainMenuState extends FlxState
 		add(_buttons);
 		
 		add(_topMenu);
+	}
+	
+	private function createBackground():Void
+	{
+		// CREATE FLOOR TILES
+		var	FloorImg = Assets.getBitmapData("assets/images/fresh_snow.png");
+		var ImgWidth = FloorImg.width;
+		var ImgHeight = FloorImg.height;
+		var i = 0; 
+		var j = 0; 
+		
+		while ( i <= FlxG.width )  
+		{
+			while ( j <= FlxG.height )
+			{
+				var spr = new FlxSprite(i, j, FloorImg);
+				add(spr);
+				j += ImgHeight;
+			}
+			i += ImgWidth;
+			j = 0;
+		}
 	}
 	
 	override public function update():Void 
