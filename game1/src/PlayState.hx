@@ -169,6 +169,7 @@ class PlayState extends FlxState
 	private function hitTarget(Bullet:FlxObject, Target:FlxObject):Void
 	{
 		Target.kill();
+		FlxG.sound.play("pling");
 		_topMenu.leftTitle = "SCORE: " + (targets.countDead() * 100);
 		
 		if (targets.countLiving() == 0)

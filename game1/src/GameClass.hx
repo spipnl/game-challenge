@@ -2,6 +2,7 @@ package;
 
 import flash.Lib;
 import flixel.FlxGame;
+import flixel.FlxG;
 
 /**
  * Initial Game
@@ -22,5 +23,10 @@ class GameClass extends FlxGame
 		var fps:Int = 60;
 		
 		super(Math.ceil(stageWidth / ratio), Math.ceil(stageHeight / ratio), MainMenuState, ratio, fps, fps);
+		
+		#if android
+		FlxG.sound.add("cannonshot");
+		FlxG.sound.add("pling");
+		#end
 	}
 }

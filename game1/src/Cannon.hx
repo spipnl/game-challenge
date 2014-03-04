@@ -130,9 +130,9 @@ class Cannon extends FlxGroup
 	
 	private function shootBullet(X:Int, Y:Int):Void
 	{
-		FlxTween.singleVar(_cannonBarrel.scale, "x", 0.7, 0.1, { type: FlxTween.ONESHOT, complete: onShotComplete } );
+		FlxG.sound.play("cannonshot");
 		
-		FlxG.sound.play("assets/audio/cannon_shot.mp3");
+		FlxTween.singleVar(_cannonBarrel.scale, "x", 0.7, 0.1, { type: FlxTween.ONESHOT, complete: onShotComplete } );
 		
 		var bullet:Bullet = _bullets.recycle(Bullet);
 		bullet.init(_cannonBarrel.x, _cannonBarrel.y + _cannonBarrel.pixels.height * 0.5);

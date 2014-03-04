@@ -20,6 +20,17 @@
 	<haxelib name="actuate" />
 	
 	<!-- assets -->
+	
+	<assets path="assets/sounds" if="flash">
+		<sound path="cannonshot.mp3" id="cannonshot" />
+		<sound path="pling.mp3" id="pling" />
+	</assets>
+
+	<assets path="assets/sounds" unless="flash">
+		<sound path="cannonshot.ogg" id="cannonshot" />
+		<sound path="pling.ogg" id="pling" />
+	</assets>
+
 	<assets path="assets" />
 	<icon path="assets/spipnl-logo.png" />
 	

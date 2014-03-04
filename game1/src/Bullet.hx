@@ -4,6 +4,9 @@ import flash.display.BlendMode;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxVelocity;
+import flixel.util.FlxColor;
+
+using flixel.util.FlxSpriteUtil;
 
 /**
  * The Bullet from the Canon
@@ -18,15 +21,12 @@ class Bullet extends FlxSprite
 	public function new() 
 	{
 		super();
-		makeGraphic(5, 5, 0xFF666666);
+		makeGraphic(10, 10, FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawCircle(this, width * 0.5, width * 0.5, width * 0.5, FlxColor.CHARCOAL);
 		
 		//maxVelocity.set(80, 200);
 		acceleration.y = 200;
 		elasticity = 0.5;
-		
-		#if !(cpp || neko || js)
-		blend = BlendMode.INVERT;
-		#end
 	}
 	
 	/**
