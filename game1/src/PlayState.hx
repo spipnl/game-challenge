@@ -36,6 +36,8 @@ class PlayState extends FlxState
 	
 	override public function create():Void 
 	{
+		FlxG.sound.playMusic("gameloop");
+		
 		createFloor();
 		
 		_topMenu = new TopMenu();

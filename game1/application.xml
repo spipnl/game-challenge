@@ -23,11 +23,13 @@
 	
 	<assets path="assets/sounds" if="flash">
 		<sound path="cannonshot.mp3" id="cannonshot" />
+		<sound path="gameloop.mp3" id="gameloop" />
 		<sound path="pling.mp3" id="pling" />
 	</assets>
 
 	<assets path="assets/sounds" unless="flash">
 		<sound path="cannonshot.ogg" id="cannonshot" />
+		<sound path="gameloop.ogg" id="gameloop" />
 		<sound path="pling.ogg" id="pling" />
 	</assets>
 

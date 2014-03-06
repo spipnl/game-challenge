@@ -26,6 +26,7 @@ class GameClass extends FlxGame
 		
 		#if android
 		FlxG.sound.add("cannonshot");
+		FlxG.sound.add("gameloop");
 		FlxG.sound.add("pling");
 		#end
 	}
