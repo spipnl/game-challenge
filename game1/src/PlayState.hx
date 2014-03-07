@@ -48,7 +48,7 @@ class PlayState extends FlxState
 		//FlxG.debugger.visible = true;
 		
 		//_level = new TiledLevel("assets/levels/level.tmx");
-		_level = new TiledLevel("assets/levels/level_base.tmx");
+		_level = new TiledLevel("assets/levels/level_01.tmx");
 		//_level = new FlxTilemap();
 		//_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
 		
