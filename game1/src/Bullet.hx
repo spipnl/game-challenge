@@ -42,9 +42,10 @@ class Bullet extends FlxSprite
 	
 	public function shoot(X:Int, Y:Int):Void 
 	{
-		velocity.x = X * 6;
-		velocity.y = Y * 6;
-		drag.x = velocity.x * 0.1;
+		velocity = FlxVelocity.velocityFromAngle(-45, 200);
+		//velocity.x = X * 6;
+		//velocity.y = Y * 6;
+		//drag.x = velocity.x * 0.1;
 	}
 	
 	override public function update():Void
