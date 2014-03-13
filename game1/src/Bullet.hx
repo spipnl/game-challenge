@@ -27,6 +27,8 @@ class Bullet extends FlxSprite
 		//maxVelocity.set(80, 200);
 		acceleration.y = 200;
 		elasticity = 0.5;
+		
+		drag.x = 20;
 	}
 	
 	/**
@@ -40,32 +42,19 @@ class Bullet extends FlxSprite
 		reset( X, Y );
 	}
 	
-	public function shoot(X:Int, Y:Int):Void 
+	public function shoot(Deg:Int, Strength:Int):Void 
 	{
-		velocity = FlxVelocity.velocityFromAngle(-45, 200);
-		//velocity.x = X * 6;
-		//velocity.y = Y * 6;
-		//drag.x = velocity.x * 0.1;
+		velocity = FlxVelocity.velocityFromAngle(Deg - 180, Strength * 100);
 	}
 	
 	override public function update():Void
 	{
-		// This bullet missed its target and flew off-screen; no reason to keep it around.
-		
-		if (!isOnScreen(FlxG.camera)) 
+		// Kill the bullet when it gets offscreen or has no velocity.x
+		if (!isOnScreen(FlxG.camera) || velocity.x == 0) 
 		{
 			kill();
 		}
 		
-		
-		/*
-		// Move toward the target that was assigned in init().
-		
-		if (_target.alive)
-		{
-			FlxVelocity.moveTowardsObject(this, _target, 200);
-		}
-		*/
 		super.update();
 	}
 }

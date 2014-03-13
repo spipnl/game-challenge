@@ -92,7 +92,7 @@ class Cannon extends FlxGroup
 			var source:FlxPoint = _dragCenter;
 			var mouse:FlxPoint = FlxG.mouse.getWorldPosition();
 			// getAngle return angle with 0 degree point up, but we need the angle start from pointing right
-			var deg:Float = FlxAngle.getAngle(source, mouse)-90;
+			var deg:Int = Std.int(FlxAngle.getAngle(source, mouse)-90);
 			//var groundPoint:FlxPoint = new FlxPoint(source.x + (ground-source.y)/Math.tan(deg*FlxAngle.TO_RAD), ground);
 			var length:Float = FlxMath.getDistance(source, mouse);
 			
@@ -102,7 +102,7 @@ class Cannon extends FlxGroup
 				range = 1;
 			}
 			
-			var shootPower = Math.min(8, Math.max(2, length * 0.1));
+			var shootPower:Int = Std.int(Math.min(8, Math.max(2, length * 0.1)));
 			
 			_shootDrag.angle = deg;
 			_shootDrag.scale.set(shootPower * 10 / _shootDrag.pixels.width, shootPower);
@@ -113,13 +113,14 @@ class Cannon extends FlxGroup
 				_cannonBarrelTween.cancel();
 			}
 			_cannonBarrelTween = FlxTween.angle(_cannonBarrel, _cannonBarrel.angle, deg + 180, 0.15);
-		}
 		
-		if (FlxG.mouse.justReleased && _dragging)
-		{
-			_dragging = false;
-			_shootDrag.visible = false;
-			shootBullet(Std.int(_dragCenter.x - FlxG.mouse.x), Std.int(_dragCenter.y - FlxG.mouse.y));
+			if (FlxG.mouse.justReleased)
+			{
+				_dragging = false;
+				_shootDrag.visible = false;
+				//shootBullet(Std.int(_dragCenter.x - FlxG.mouse.x), Std.int(_dragCenter.y - FlxG.mouse.y));
+				shootBullet(deg, shootPower);
+			}
 		}
 	}
 
@@ -128,7 +129,7 @@ class Cannon extends FlxGroup
 		FlxTween.singleVar(_cannonBarrel.scale, "x", 1.0, 0.5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT});
 	}
 	
-	private function shootBullet(X:Int, Y:Int):Void
+	private function shootBullet(Deg:Int, Strength:Int):Void
 	{
 		FlxG.sound.play("cannonshot");
 		
@@ -136,7 +137,7 @@ class Cannon extends FlxGroup
 		
 		var bullet:Bullet = _bullets.recycle(Bullet);
 		bullet.init(_cannonBarrel.x, _cannonBarrel.y + _cannonBarrel.pixels.height * 0.5);
-		bullet.shoot(X, Y);
+		bullet.shoot(Deg, Strength);
 	}
 	
 	public function getBullets():FlxTypedGroup<Bullet>
