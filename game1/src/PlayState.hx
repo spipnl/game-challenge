@@ -24,30 +24,23 @@ class PlayState extends FlxState
 	private static var _justDied:Bool = false;
 	
 	private var _level:TiledLevel;
-	private var _player:Player;
-	private var _exit:FlxSprite;
-	private var _scoreText:FlxText;
-	private var _status:FlxText;
-	private var _coins:FlxGroup;
 	private var _bullets:FlxTypedGroup<Bullet>;
-	public var targets:FlxGroup;
 	
+	public var targets:FlxGroup;
 	public var cannon:Cannon;
 	
 	override public function create():Void 
 	{
-		FlxG.sound.playMusic("gameloop");
+		//FlxG.sound.playMusic("gameloop");
 		
 		createFloor();
 		
 		_topMenu = new TopMenu();
 		_topMenu.leftTitle = "SHOOT THE COINS!";
 		
-		//FlxG.mouse.visible = false;
 		FlxG.cameras.bgColor = 0xffaaaaaa;
-		//FlxG.debugger.visible = true;
+		FlxG.debugger.visible = true;
 		
-		//_level = new TiledLevel("assets/levels/level.tmx");
 		_level = new TiledLevel("assets/levels/level_01.tmx");
 		//_level = new FlxTilemap();
 		//_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
@@ -61,36 +54,11 @@ class PlayState extends FlxState
 		targets = new FlxGroup();
 		add(targets);
 		
-		// Load player objects
+		// Load objects
 		_level.loadObjects(this);
 		
 		// Add background tiles after adding level objects, so these tiles render on top of player
 		add(_level.backgroundTiles);
-		
-		// Create the _level _exit
-		_exit = new FlxSprite(35 * 8 + 1 , 25 * 8);
-		_exit.makeGraphic(14, 16, FlxColor.GREEN);
-		_exit.exists = false;
-		add(_exit);
-		
-		// Create _player
-		_player = new Player(700, FlxG.height - 96);
-		add(_player);
-		
-		_scoreText = new FlxText(2, 2, 80, "SCORE: ");
-		_scoreText.setFormat(null, 8, FlxColor.WHITE, null, FlxText.BORDER_NONE, FlxColor.BLACK);
-		//add(_scoreText);
-		
-		_status = new FlxText(FlxG.width - 160 - 2, 2, 160, "Collect coins.");
-		_status.setFormat(null, 8, FlxColor.WHITE, "right", FlxText.BORDER_NONE, FlxColor.BLACK);
-		
-		FlxG.camera.setBounds(0, 0, 970, 500, true); //Note, the player does weird things when he walks off screen.
-		//FlxG.camera.follow(_player, FlxCamera.STYLE_PLATFORMER);
-		
-		if (_justDied)
-		{
-			_status.text = "Aww, you died!";
-		}
 		
 		_bullets = cannon.getBullets();
 		
@@ -122,50 +90,16 @@ class PlayState extends FlxState
 	
 	override public function update():Void 
 	{
-		_player.acceleration.x = 0;
-		
-		if (FlxG.keys.anyPressed(["LEFT", "A"]))
-		{
-			_player.acceleration.x = -_player.maxVelocity.x * 4;
-		}
-		
-		if (FlxG.keys.anyPressed(["RIGHT", "D"]))
-		{
-			_player.acceleration.x = _player.maxVelocity.x * 4;
-		}
-		
-		if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) && _player.isTouching(FlxObject.FLOOR))
-		{
-			_player.velocity.y = -_player.maxVelocity.y / 2;
-		}
-		
-		var zoom:Float = FlxG.camera.zoom;
-		if (FlxG.mouse.wheel > 0) {
-			zoom += 0.1;
-		}
-		if (FlxG.mouse.wheel < 0) {
-			zoom -= 0.1;
-		}
-		FlxG.camera.zoom = zoom;
-		
 		super.update();
 		
-		FlxG.collide(_level.foregroundTiles, _player);
 		FlxG.collide(_level.foregroundTiles, _bullets);
 		FlxG.overlap(_bullets, targets, hitTarget);
 		
-		if (_player.y > FlxG.height)
-		{
-			_justDied = true;
-			FlxG.resetState();
-		}
-	}
-	
-	private function win(Exit:FlxObject, Player:FlxObject):Void
-	{
-		_status.text = "Yay, you won!";
-		_scoreText.text = "SCORE: 5000";
-		_player.kill();
+		_bullets.forEachAlive(function(bullet:Bullet) {
+			if (bullet.velocity.x == 0 && bullet.velocity.y <= 0 && bullet.velocity.y >= -4 && bullet.isTouching(FlxObject.ANY)) {
+				bullet.kill();
+			}
+		});
 	}
 	
 	private function hitTarget(Bullet:FlxObject, Target:FlxObject):Void
@@ -177,8 +111,6 @@ class PlayState extends FlxState
 		if (targets.countLiving() == 0)
 		{
 			FlxG.camera.shake(0.01, 0.2, FlxG.resetState);
-			//_status.text = "Find the exit";
-			//_exit.exists = true;
 		}
 	}
 }

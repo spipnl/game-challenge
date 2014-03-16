@@ -24,11 +24,10 @@ class Bullet extends FlxSprite
 		makeGraphic(10, 10, FlxColor.TRANSPARENT);
 		FlxSpriteUtil.drawCircle(this, width * 0.5, width * 0.5, width * 0.5, FlxColor.CHARCOAL);
 		
-		//maxVelocity.set(80, 200);
 		acceleration.y = 200;
 		elasticity = 0.5;
 		
-		drag.x = 20;
+		drag.x = 10;
 	}
 	
 	/**
@@ -45,16 +44,5 @@ class Bullet extends FlxSprite
 	public function shoot(Deg:Int, Strength:Int):Void 
 	{
 		velocity = FlxVelocity.velocityFromAngle(Deg - 180, Strength * 100);
-	}
-	
-	override public function update():Void
-	{
-		// Kill the bullet when it gets offscreen or has no velocity.x
-		if (!isOnScreen(FlxG.camera) || velocity.x == 0) 
-		{
-			kill();
-		}
-		
-		super.update();
 	}
 }
