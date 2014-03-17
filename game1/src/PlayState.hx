@@ -39,14 +39,9 @@ class PlayState extends FlxState
 		_topMenu.leftTitle = "SHOOT THE COINS!";
 		
 		FlxG.cameras.bgColor = 0xffaaaaaa;
-		FlxG.debugger.visible = true;
+		//FlxG.debugger.visible = true;
 		
 		_level = new TiledLevel("assets/levels/level_01.tmx");
-		//_level = new FlxTilemap();
-		//_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
-		
-		//_level.loadMap(Assets.getText("assets/levels/level_base.txt"), GraphicAuto, 8, 8, FlxTilemap.AUTO);
-		
 		// Add tilemaps
 		add(_level.foregroundTiles);
 		
@@ -75,7 +70,7 @@ class PlayState extends FlxState
 		var i = 0; 
 		var j = 0; 
 		
-		while ( i <= FlxG.width )  
+		while ( i <= FlxG.width )
 		{
 			while ( j <= FlxG.height )
 			{
@@ -95,6 +90,7 @@ class PlayState extends FlxState
 		FlxG.collide(_level.foregroundTiles, _bullets);
 		FlxG.overlap(_bullets, targets, hitTarget);
 		
+		// Remove bullets that are (almost) still
 		_bullets.forEachAlive(function(bullet:Bullet) {
 			if (bullet.velocity.x == 0 && bullet.velocity.y <= 0 && bullet.velocity.y >= -4 && bullet.isTouching(FlxObject.ANY)) {
 				bullet.kill();
