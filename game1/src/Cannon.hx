@@ -118,7 +118,6 @@ class Cannon extends FlxGroup
 			{
 				_dragging = false;
 				_shootDrag.visible = false;
-				//shootBullet(Std.int(_dragCenter.x - FlxG.mouse.x), Std.int(_dragCenter.y - FlxG.mouse.y));
 				shootBullet(deg, shootPower);
 			}
 		}
