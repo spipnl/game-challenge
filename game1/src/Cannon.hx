@@ -76,8 +76,6 @@ class Cannon extends FlxGroup
 	
 	override public function update():Void
 	{
-		super.update();
-		
 		if (FlxG.mouse.justPressed)
 		{
 			if (FlxMath.pointInCoordinates(Std.int(FlxG.mouse.x), Std.int(FlxG.mouse.y), Std.int(_cannon.x) - _dragMargin, Std.int(_cannon.y) - _dragMargin, Std.int(_cannon.width) + _dragMargin * 2, Std.int(_cannon.height) + _dragMargin * 2))
@@ -121,6 +119,8 @@ class Cannon extends FlxGroup
 				shootBullet(deg, shootPower);
 			}
 		}
+		
+		super.update();
 	}
 
 	private function onShotComplete(tween:FlxTween):Void

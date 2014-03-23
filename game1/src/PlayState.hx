@@ -85,8 +85,6 @@ class PlayState extends FlxState
 	
 	override public function update():Void 
 	{
-		super.update();
-		
 		FlxG.collide(_level.foregroundTiles, _bullets);
 		FlxG.overlap(_bullets, targets, hitTarget);
 		
@@ -96,6 +94,8 @@ class PlayState extends FlxState
 				bullet.kill();
 			}
 		});
+		
+		super.update();
 	}
 	
 	private function hitTarget(Bullet:FlxObject, Target:FlxObject):Void
