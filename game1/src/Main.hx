@@ -17,7 +17,7 @@ import flixel.FlxG;
  */
 class Main extends Sprite 
 {
-	private var _game:FlxGame;
+	private var _game:GameClass;
 	
 	// Entry point
 	public static function main():Void
@@ -63,8 +63,8 @@ class Main extends Sprite
 	private function onKeyDown(event:KeyboardEvent ):Void
 	{
 		if ( event.keyCode == 27 ) // 27 == esc == android back key
-		{/*
-			var currentState = _game.state;
+		{
+			var currentState = _game.getCurrentState();
 			if (Type.getClassName(Type.getClass(currentState)) == "MainMenuState")
 			{
 				#if !(flash || js)
@@ -77,6 +77,6 @@ class Main extends Sprite
 			}
 			event.stopImmediatePropagation();
 			event.stopPropagation();
-		*/}
+		}
 	}
 }

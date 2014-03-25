@@ -41,7 +41,7 @@ class PlayState extends FlxState
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
 		
-		_level = new TiledLevel("assets/levels/level_01.tmx");
+		_level = new TiledLevel("assets/levels/level_02.tmx");
 		// Add tilemaps
 		add(_level.foregroundTiles);
 		

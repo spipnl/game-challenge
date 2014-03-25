@@ -3,6 +3,7 @@ package;
 import flash.Lib;
 import flixel.FlxGame;
 import flixel.FlxG;
+import flixel.FlxState;
 
 /**
  * Initial Game
@@ -29,5 +30,10 @@ class GameClass extends FlxGame
 		FlxG.sound.add("gameloop");
 		FlxG.sound.add("pling");
 		#end
+	}
+	
+	public function getCurrentState():FlxState
+	{
+		return _state;
 	}
 }
