@@ -43,6 +43,6 @@ class Bullet extends FlxSprite
 	
 	public function shoot(Deg:Int, Strength:Int):Void 
 	{
-		velocity = FlxVelocity.velocityFromAngle(Deg - 180, Strength * 100);
+		velocity = FlxVelocity.velocityFromAngle(Deg - 180, Strength * 70);
 	}
 }

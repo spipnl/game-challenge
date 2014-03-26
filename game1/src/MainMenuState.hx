@@ -56,7 +56,7 @@ class MainMenuState extends FlxState
 		FlxSpriteUtil.drawRoundRect(_buttonsBG, 80, 0, _buttonsBG.width - 80, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
 		
 		var _logo:FlxSprite = new FlxSprite(0, 0);
-		_logo.loadGraphic(Assets.getBitmapData("assets/images/logo-menu.png"));
+		_logo.loadGraphic(Assets.getBitmapData("images/logo-menu.png"));
 		
 		_startButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, 25, _buttonWidth, _buttonHeight, "Start", onStart);
 		_aboutButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, _buttonsContainerHeight - _buttonHeight - 25, _buttonWidth, _buttonHeight, "About", onAbout);
@@ -74,7 +74,7 @@ class MainMenuState extends FlxState
 	private function createBackground():Void
 	{
 		// CREATE FLOOR TILES
-		var	FloorImg:BitmapData = Assets.getBitmapData("assets/images/fresh_snow.png");
+		var	FloorImg:BitmapData = Assets.getBitmapData("images/fresh_snow.png");
 		var ImgWidth = FloorImg.width;
 		var ImgHeight = FloorImg.height;
 		var i = 0; 

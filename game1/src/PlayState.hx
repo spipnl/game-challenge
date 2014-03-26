@@ -31,7 +31,7 @@ class PlayState extends FlxState
 	
 	override public function create():Void 
 	{
-		//FlxG.sound.playMusic("gameloop");
+		FlxG.sound.playMusic("gameloop");
 		
 		createFloor();
 		
@@ -41,7 +41,7 @@ class PlayState extends FlxState
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
 		
-		_level = new TiledLevel("assets/levels/level_02.tmx");
+		_level = new TiledLevel("levels/level_02.tmx");
 		// Add tilemaps
 		add(_level.foregroundTiles);
 		
@@ -64,7 +64,7 @@ class PlayState extends FlxState
 	private function createFloor():Void
 	{
 		// CREATE FLOOR TILES
-		var	FloorImg = Assets.getBitmapData("assets/images/fresh_snow.png");
+		var	FloorImg = Assets.getBitmapData("images/fresh_snow.png");
 		var ImgWidth = FloorImg.width;
 		var ImgHeight = FloorImg.height;
 		var i = 0; 

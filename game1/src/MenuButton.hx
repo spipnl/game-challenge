@@ -23,7 +23,7 @@ class MenuButton extends FlxButton
 		var labelOffsetNormal:FlxPoint = new FlxPoint(0, 8);
 		var labelOffsetPress:FlxPoint = new FlxPoint(0, 9);
 		labelOffsets = [labelOffsetNormal, labelOffsetNormal, labelOffsetPress];
-		label.font = "assets/fonts/OpenSans-Bold.ttf";
+		label.font = "fonts/OpenSans-Bold.ttf";
 		label.color = 0xFFFFFF;
 		label.size = 18;
 		label.text = label.text.toUpperCase();

@@ -20,13 +20,13 @@ using flixel.util.FlxSpriteUtil;
  */
 class Cannon extends FlxGroup
 {
-	private var _dragMargin:UInt = 20;
+	private var _dragMargin:Int = 20;
 	private var _cannon:FlxSprite;
 	private var _cannonBarrel:FlxSprite;
 	private var _cannonBarrelTween:FlxTween;
 	private var _shootDrag:FlxSprite;
 	private var _shootDragTween:FlxTween;
-	private var _poolSize:UInt = 10;
+	private var _poolSize:Int = 10;
 	private var _bullets:FlxTypedGroup<Bullet>;
 	private var _dragging:Bool;
 	private var _dragCenter:FlxPoint;
@@ -100,10 +100,10 @@ class Cannon extends FlxGroup
 				range = 1;
 			}
 			
-			var shootPower:Int = Std.int(Math.min(8, Math.max(2, length * 0.1)));
+			var shootPower:Int = Std.int(Math.min(16, Math.max(2, length * 0.1)));
 			
 			_shootDrag.angle = deg;
-			_shootDrag.scale.set(shootPower * 10 / _shootDrag.pixels.width, shootPower);
+			_shootDrag.scale.set(shootPower * 12 / _shootDrag.pixels.width, shootPower);
 			_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
 			_shootDrag.visible = true;
 			

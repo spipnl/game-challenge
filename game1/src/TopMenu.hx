@@ -39,13 +39,13 @@ class TopMenu extends FlxGroup
 		var titleWidth = 300;
 		
 		_leftTitleText = new FlxText(10, 6, titleWidth);
-		_leftTitleText.font = "assets/fonts/OpenSans-Bold.ttf";
+		_leftTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_leftTitleText.alignment = "left";
 		_leftTitleText.color = 0xecf0f1;
 		_leftTitleText.size = 16;
 		
 		_rightTitleText = new FlxText(FlxG.width - titleWidth - 10, 6, titleWidth);
-		_rightTitleText.font = "assets/fonts/OpenSans-Bold.ttf";
+		_rightTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_rightTitleText.alignment = "right";
 		_rightTitleText.color = 0xecf0f1;
 		_rightTitleText.size = 16;

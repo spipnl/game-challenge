@@ -31,10 +31,15 @@
 		<sound path="pling.ogg" id="pling" />
 	</assets>
 
-	<assets path="assets" />
+	<assets path="assets/fonts" rename="fonts" />
+	<assets path="assets/images" rename="images" />
+	<assets path="assets/levels" rename="levels" />
+	
 	<icon path="assets/spipnl-logo.png" />
 	
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->
 	
+	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
+	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 </project>
