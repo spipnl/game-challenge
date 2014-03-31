@@ -47,8 +47,6 @@ class MainMenuState extends FlxState
 		_topMenu.leftTitle = "spipnl (mobile) { development; }";
 		_topMenu.rightTitle = "game1";
 		
-		//FlxG.debugger.visible = true;
-		
 		bgColor = 0xFFbdc3c7;
 		_buttons = new FlxSpriteGroup((FlxG.width - _buttonsContainerWidth) * 0.5,  (FlxG.height - _buttonsContainerHeight) * 0.5);
 		_buttonsBG = new FlxSprite(0, 0);

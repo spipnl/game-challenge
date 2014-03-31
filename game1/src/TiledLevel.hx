@@ -100,7 +100,6 @@ class TiledLevel extends TiledMap
 		// objects in tiled are aligned bottom-left (top-left in flixel)
 		if (o.gid != -1)
 			y -= g.map.getGidOwner(o.gid).tileHeight;
-		trace(o.type.toLowerCase());
 		switch (o.type.toLowerCase())
 		{
 			case "cannon_position":
@@ -115,14 +114,6 @@ class TiledLevel extends TiledMap
 				var tileset = g.map.getGidOwner(o.gid);
 				var target = new FlxSprite(x, y, c_PATH_LEVEL_TILESHEETS + tileset.imageSource);
 				state.targets.add(target);
-				
-			case "exit":
-				// Create the level exit
-				var exit = new FlxSprite(x, y);
-				exit.makeGraphic(16, 16, 0xff3f3f3f);
-				exit.exists = false;
-				//state.exit = exit;
-				//state.add(exit);
 		}
 	}
 	
