@@ -29,6 +29,8 @@ class PlayState extends FlxState
 	public var targets:FlxGroup;
 	public var cannon:Cannon;
 	
+	private var _currentMap:Int = 1;
+	
 	override public function create():Void 
 	{
 		FlxG.sound.playMusic("gameloop");
@@ -41,7 +43,11 @@ class PlayState extends FlxState
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
 		
-		_level = new TiledLevel("levels/level_02.tmx");
+		// Build the map path with padded zeros for two digits
+		var mapPath = "levels/level_" + StringTools.lpad(Std.string(_currentMap), "0", 2) + ".tmx";
+		trace(_currentMap);
+		
+		_level = new TiledLevel(mapPath);
 		// Add tilemaps
 		add(_level.foregroundTiles);
 		
@@ -106,6 +112,7 @@ class PlayState extends FlxState
 		
 		if (targets.countLiving() == 0)
 		{
+			_currentMap += 1;
 			FlxG.camera.shake(0.01, 0.2, FlxG.resetState);
 		}
 	}

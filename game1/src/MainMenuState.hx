@@ -98,12 +98,10 @@ class MainMenuState extends FlxState
 	
 	private function onStart():Void
 	{
-		trace("Start");
 		FlxG.switchState(new PlayState());
 	}
 	
 	private function onAbout():Void
 	{
-		trace("About");
 	}
 }

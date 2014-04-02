@@ -102,7 +102,7 @@ class Cannon extends FlxGroup
 			var shootPower:Int = Std.int(Math.min(16, Math.max(2, length * 0.1)));
 			
 			_shootDrag.angle = deg;
-			_shootDrag.scale.set(shootPower * 12 / _shootDrag.pixels.width, shootPower *0.5);
+			_shootDrag.scale.set(shootPower * 12 / _shootDrag.pixels.width, shootPower * 0.5);
 			_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
 			_shootDrag.visible = true;
 			
