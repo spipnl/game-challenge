@@ -27,6 +27,8 @@ class Cannon extends FlxGroup
 	private var _shootDrag:FlxSprite;
 	private var _shootDragTween:FlxTween;
 	private var _poolSize:Int = 10;
+	private var _numberOfBullets:Int = 0;
+	private var _shootPower:Int = 0;
 	private var _bullets:FlxTypedGroup<Bullet>;
 	private var _dragging:Bool;
 	private var _dragCenter:FlxPoint;
@@ -72,6 +74,7 @@ class Cannon extends FlxGroup
 		add(_shootDrag);
 		
 		_dragging = false;
+		_numberOfBullets = 5;
 	}
 	
 	override public function update():Void
@@ -91,18 +94,12 @@ class Cannon extends FlxGroup
 			var mouse:FlxPoint = FlxG.mouse.getWorldPosition();
 			// getAngle return angle with 0 degree point up, but we need the angle start from pointing right
 			var deg:Int = Std.int(FlxAngle.getAngle(source, mouse)-90);
-			var length:Float = FlxMath.getDistance(source, mouse);
+			var length:Float = FlxMath.getDistance(source, mouse) * 1.5;
 			
-			var range:Int = Std.int(length);
-			if (range < 1)
-			{
-				range = 1;
-			}
-			
-			var shootPower:Int = Std.int(Math.min(16, Math.max(2, length * 0.1)));
+			_shootPower = Std.int(Math.min(16, Math.max(2, length * 0.1)));
 			
 			_shootDrag.angle = deg;
-			_shootDrag.scale.set(shootPower * 12 / _shootDrag.pixels.width, shootPower * 0.5);
+			_shootDrag.scale.set(_shootPower * 8 / _shootDrag.pixels.width, _shootPower * 0.5);
 			_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
 			_shootDrag.visible = true;
 			
@@ -115,7 +112,8 @@ class Cannon extends FlxGroup
 			{
 				_dragging = false;
 				_shootDrag.visible = false;
-				shootBullet(deg, shootPower);
+				shootBullet(deg, _shootPower);
+				_shootPower = 0;
 			}
 		}
 		
@@ -130,6 +128,7 @@ class Cannon extends FlxGroup
 	private function shootBullet(Deg:Int, Strength:Int):Void
 	{
 		FlxG.sound.play("cannonshot");
+		_numberOfBullets -= 1;
 		
 		FlxTween.singleVar(_cannonBarrel.scale, "x", 0.7, 0.1, { type: FlxTween.ONESHOT, complete: onShotComplete } );
 		
@@ -141,5 +140,15 @@ class Cannon extends FlxGroup
 	public function getBullets():FlxTypedGroup<Bullet>
 	{
 		return _bullets;
+	}
+	
+	public function getPower():Int
+	{
+		return _shootPower;
+	}
+	
+	public function getBulletsLeft():Int
+	{
+		return _numberOfBullets;
 	}
 }

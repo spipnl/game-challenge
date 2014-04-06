@@ -16,16 +16,18 @@ using flixel.util.FlxSpriteUtil;
  * ...
  * @author spipnl (Jip Spinnewijn)
  */
-class TopMenu extends FlxGroup
+class TitleBar extends FlxGroup
 {
 	public var background:FlxSprite;
 	
-	private var _topMenuHeight:Int = 40;
+	private var _topMenuHeight:Int = 16;
 	
 	private var _leftTitleText:FlxText;
+	private var _middleTitleText:FlxText;
 	private var _rightTitleText:FlxText;
 	
 	@:isVar public var leftTitle(get, set):String;
+	@:isVar public var middleTitle(get, set):String;
 	@:isVar public var rightTitle(get, set):String;
 	
 	public function new() 
@@ -34,24 +36,31 @@ class TopMenu extends FlxGroup
 		
 		background = new FlxSprite(0, 0);
 		background.makeGraphic(FlxG.width, _topMenuHeight, 0xFF2980b9);
-		background.alpha = 0.6;
+		background.alpha = 0.8;
 		
 		var titleWidth = 300;
 		
-		_leftTitleText = new FlxText(10, 6, titleWidth);
+		_leftTitleText = new FlxText(10, background.y - 3, titleWidth);
 		_leftTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_leftTitleText.alignment = "left";
-		_leftTitleText.color = 0xecf0f1;
-		_leftTitleText.size = 16;
+		_leftTitleText.color = 0xFFFFFF;
+		_leftTitleText.size = 12;
 		
-		_rightTitleText = new FlxText(FlxG.width - titleWidth - 10, 6, titleWidth);
+		_middleTitleText = new FlxText((FlxG.width - titleWidth) * 0.5, background.y - 3, titleWidth);
+		_middleTitleText.font = "fonts/OpenSans-Bold.ttf";
+		_middleTitleText.alignment = "center";
+		_middleTitleText.color = 0xFFFFFF;
+		_middleTitleText.size = 12;
+		
+		_rightTitleText = new FlxText(FlxG.width - titleWidth - 10, background.y - 3, titleWidth);
 		_rightTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_rightTitleText.alignment = "right";
-		_rightTitleText.color = 0xecf0f1;
-		_rightTitleText.size = 16;
+		_rightTitleText.color = 0xFFFFFF;
+		_rightTitleText.size = 12;
 		
 		add(background);
 		add(_leftTitleText);
+		add(_middleTitleText);
 		add(_rightTitleText);
 	}
 	
@@ -66,6 +75,19 @@ class TopMenu extends FlxGroup
 		_leftTitleText.text = Title;
 		
 		return leftTitle;
+	}
+	
+	public function get_middleTitle():String
+	{
+		return middleTitle;
+	}
+	
+	public function set_middleTitle(Title:String):String
+	{
+		middleTitle = Title;
+		_middleTitleText.text = Title;
+		
+		return middleTitle;
 	}
 	
 	public function get_rightTitle():String

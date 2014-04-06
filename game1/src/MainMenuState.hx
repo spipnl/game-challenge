@@ -25,7 +25,7 @@ using flixel.util.FlxSpriteUtil;
  */
 class MainMenuState extends FlxState
 {
-	private var _topMenu:TopMenu;
+	private var _topTitleBar:TitleBar;
 	
 	private var _buttons:FlxSpriteGroup;
 	private var _buttonsBG:FlxSprite;
@@ -43,9 +43,9 @@ class MainMenuState extends FlxState
 	{
 		createBackground();
 		
-		_topMenu = new TopMenu();
-		_topMenu.leftTitle = "spipnl (mobile) { development; }";
-		_topMenu.rightTitle = "game1";
+		_topTitleBar = new TitleBar();
+		_topTitleBar.leftTitle = "spipnl (mobile) { development; }";
+		_topTitleBar.rightTitle = "game1";
 		
 		bgColor = 0xFFbdc3c7;
 		_buttons = new FlxSpriteGroup((FlxG.width - _buttonsContainerWidth) * 0.5,  (FlxG.height - _buttonsContainerHeight) * 0.5);
@@ -66,7 +66,7 @@ class MainMenuState extends FlxState
 		
 		add(_buttons);
 		
-		add(_topMenu);
+		add(_topTitleBar);
 	}
 	
 	private function createBackground():Void
@@ -98,7 +98,7 @@ class MainMenuState extends FlxState
 	
 	private function onStart():Void
 	{
-		FlxG.switchState(new PlayState());
+		FlxG.switchState(new PlayState(1));
 	}
 	
 	private function onAbout():Void

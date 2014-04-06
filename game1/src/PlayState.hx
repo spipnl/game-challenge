@@ -19,7 +19,7 @@ import openfl.Assets;
  */
 class PlayState extends FlxState
 {
-	private var _topMenu:TopMenu;
+	private var _topTitleBar:TitleBar;
 	
 	private static var _justDied:Bool = false;
 	
@@ -29,7 +29,13 @@ class PlayState extends FlxState
 	public var targets:FlxGroup;
 	public var cannon:Cannon;
 	
-	private var _currentMap:Int = 1;
+	private var _currentMap:Int;
+	
+	public function new(currentMap)
+	{
+		_currentMap = currentMap;
+		super();
+	}
 	
 	override public function create():Void 
 	{
@@ -37,8 +43,8 @@ class PlayState extends FlxState
 		
 		createFloor();
 		
-		_topMenu = new TopMenu();
-		_topMenu.leftTitle = "SHOOT THE COINS!";
+		_topTitleBar = new TitleBar();
+		_topTitleBar.middleTitle = "Level " + _currentMap;
 		
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
@@ -64,7 +70,7 @@ class PlayState extends FlxState
 		_bullets = cannon.getBullets();
 		
 		//add(_status);
-		add(_topMenu);
+		add(_topTitleBar);
 	}
 	
 	private function createFloor():Void
@@ -100,6 +106,8 @@ class PlayState extends FlxState
 				bullet.kill();
 			}
 		});
+		_topTitleBar.leftTitle = "Power: " + (cannon.getPower());
+		_topTitleBar.rightTitle = "Bullets left: " + (cannon.getBulletsLeft());
 		
 		super.update();
 	}
@@ -108,12 +116,16 @@ class PlayState extends FlxState
 	{
 		Target.kill();
 		FlxG.sound.play("pling");
-		_topMenu.leftTitle = "SCORE: " + (targets.countDead() * 100);
 		
 		if (targets.countLiving() == 0)
 		{
-			_currentMap += 1;
-			FlxG.camera.shake(0.01, 0.2, FlxG.resetState);
+			FlxG.camera.shake(0.01, 0.2, nexLevel);
 		}
+	}
+	
+	private function nexLevel():Void
+	{
+		_currentMap += 1;
+		FlxG.switchState(new PlayState(_currentMap));
 	}
 }
