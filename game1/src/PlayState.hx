@@ -39,8 +39,6 @@ class PlayState extends FlxState
 	
 	override public function create():Void 
 	{
-		FlxG.sound.playMusic("gameloop");
-		
 		createFloor();
 		
 		_topTitleBar = new TitleBar();
@@ -71,6 +69,8 @@ class PlayState extends FlxState
 		
 		//add(_status);
 		add(_topTitleBar);
+		
+		FlxG.camera.fade(FlxColor.WHITE, 1, true);
 	}
 	
 	private function createFloor():Void
@@ -126,6 +126,8 @@ class PlayState extends FlxState
 	private function nexLevel():Void
 	{
 		_currentMap += 1;
-		FlxG.switchState(new PlayState(_currentMap));
+		FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
+			FlxG.switchState(new PlayState(_currentMap));
+		});
 	}
 }

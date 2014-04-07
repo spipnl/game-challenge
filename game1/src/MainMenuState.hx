@@ -41,6 +41,7 @@ class MainMenuState extends FlxState
 	
 	override public function create():Void 
 	{
+		FlxG.sound.playMusic("gameloop");
 		createBackground();
 		
 		_topTitleBar = new TitleBar();
