@@ -96,7 +96,7 @@ class Cannon extends FlxGroup
 			var deg:Int = Std.int(FlxAngle.getAngle(source, mouse)-90);
 			var length:Float = FlxMath.getDistance(source, mouse) * 1.5;
 			
-			_shootPower = Std.int(Math.min(16, Math.max(2, length * 0.1)));
+			_shootPower = Std.int(Math.min(16, Math.max(1, length * 0.1)));
 			
 			_shootDrag.angle = deg;
 			_shootDrag.scale.set(_shootPower * 8 / _shootDrag.pixels.width, _shootPower * 0.5);
