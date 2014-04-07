@@ -11,9 +11,19 @@ One bullet can destroy multiple targets and will vanish when it's velocity becom
 
 ### Credits
 Background graphics
+
 [Simple duotone tileset] (http://opengameart.org/content/simple-duotone-tileset) by [Eris] (http://opengameart.org/users/eris)
+
 Music 
+
 [Shoot Everbody That Isn't You] (http://www.newgrounds.com/audio/listen/546917) by [WarmanSteve] (http://warmansteve.newgrounds.com/)
+
 SFX
+
 [Cannon shot] (http://soundbible.com/1706-Shot-Gun.html)
+
 [Target plop] (http://soundbible.com/2018-Plop.html)
+
+Font
+
+[Open Sans] (http://www.google.com/fonts/specimen/Open+Sans)

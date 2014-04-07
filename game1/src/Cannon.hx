@@ -42,7 +42,7 @@ class Cannon extends FlxGroup
 	{
 		super();
 		
-		_cannon = new FlxSprite(X-7, Y - 19);
+		_cannon = new FlxSprite(X + 1, Y - 19);
 		_cannon.makeGraphic(30, 35, FlxColor.TRANSPARENT);
 		FlxSpriteUtil.drawPolygon(_cannon, [new FlxPoint(8, 0), new FlxPoint(_cannon.width - 8, 0), new FlxPoint(_cannon.width, _cannon.height), new FlxPoint(0, _cannon.height)], 0xFF556D75,  {color: 0xFFBAB6B2, thickness: 1});
 		FlxSpriteUtil.drawCircle(_cannon, _cannon.width * 0.5, 6, 3, FlxColor.GOLDEN, {color: 0xFF9A968A, thickness: 1});
@@ -127,6 +127,7 @@ class Cannon extends FlxGroup
 	
 	private function shootBullet(Deg:Int, Strength:Int):Void
 	{
+	    FlxG.camera.shake(0.002, 0.2);
 		FlxG.sound.play("cannonshot");
 		_numberOfBullets -= 1;
 		

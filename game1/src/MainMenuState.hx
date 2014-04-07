@@ -45,8 +45,8 @@ class MainMenuState extends FlxState
 		createBackground();
 		
 		_topTitleBar = new TitleBar();
-		_topTitleBar.leftTitle = "spipnl (mobile) { development; }";
-		_topTitleBar.rightTitle = "game1";
+		_topTitleBar.leftTitle = "spipnl (mobile) development;";
+		_topTitleBar.rightTitle = "Game 1 - Shoot the Targets!";
 		
 		bgColor = 0xFFbdc3c7;
 		_buttons = new FlxSpriteGroup((FlxG.width - _buttonsContainerWidth) * 0.5,  (FlxG.height - _buttonsContainerHeight) * 0.5);

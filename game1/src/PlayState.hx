@@ -1,5 +1,6 @@
 package; 
 
+import flixel.effects.particles.FlxEmitterExt;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -28,6 +29,8 @@ class PlayState extends FlxState
 	
 	public var targets:FlxGroup;
 	public var cannon:Cannon;
+	
+	private var _explosion:FlxEmitterExt;
 	
 	private var _currentMap:Int;
 	
@@ -70,7 +73,26 @@ class PlayState extends FlxState
 		//add(_status);
 		add(_topTitleBar);
 		
-		FlxG.camera.fade(FlxColor.WHITE, 1, true);
+		
+		// Add exlposion emitter
+		_explosion = new FlxEmitterExt();
+		_explosion.setRotation(0, 0);
+		_explosion.setMotion(0, 5, 0.2, 360, 200, 1.8);
+		_explosion.makeParticles("images/particles.png", 1200, 0, true, 0);
+		_explosion.setAlpha(1, 1, 0, 0);
+		_explosion.gravity = 400;
+		add(_explosion);
+		
+		var levelText = new FlxText(0, 150, FlxG.width, "LEVEL " + _currentMap );
+		levelText.font = "fonts/OpenSans-Bold.ttf";
+		levelText.alignment = "center";
+		levelText.color = 0x84494a;
+		levelText.size = 48;
+		add(levelText);
+		
+		FlxG.camera.fade(FlxColor.WHITE, 1, true, function() {
+			remove(levelText);
+		});
 	}
 	
 	private function createFloor():Void
@@ -112,22 +134,29 @@ class PlayState extends FlxState
 		super.update();
 	}
 	
+	private function explode(X:Float = 0, Y:Float = 0):Void
+	{
+		if (_explosion.visible)
+		{
+			_explosion.x = X;
+			_explosion.y = Y;
+			_explosion.start(true, 2, 0, 400);
+			_explosion.update();
+		}
+	}
+	
 	private function hitTarget(Bullet:FlxObject, Target:FlxObject):Void
 	{
+		explode(Target.x + Target.width * 0.5, Target.y + Target.height * 0.5);
 		Target.kill();
 		FlxG.sound.play("pling");
 		
 		if (targets.countLiving() == 0)
 		{
-			FlxG.camera.shake(0.01, 0.2, nexLevel);
+			_currentMap += 1;
+			FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
+				FlxG.switchState(new PlayState(_currentMap));
+			});
 		}
-	}
-	
-	private function nexLevel():Void
-	{
-		_currentMap += 1;
-		FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
-			FlxG.switchState(new PlayState(_currentMap));
-		});
 	}
 }

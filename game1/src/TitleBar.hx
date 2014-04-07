@@ -20,7 +20,7 @@ class TitleBar extends FlxGroup
 {
 	public var background:FlxSprite;
 	
-	private var _topMenuHeight:Int = 16;
+	private var _topMenuHeight:Int = 24;
 	
 	private var _leftTitleText:FlxText;
 	private var _middleTitleText:FlxText;
@@ -36,7 +36,7 @@ class TitleBar extends FlxGroup
 		
 		background = new FlxSprite(0, 0);
 		background.makeGraphic(FlxG.width, _topMenuHeight, 0xFF2980b9);
-		background.alpha = 0.8;
+		background.alpha = 0.5;
 		
 		var titleWidth = 300;
 		
@@ -44,19 +44,19 @@ class TitleBar extends FlxGroup
 		_leftTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_leftTitleText.alignment = "left";
 		_leftTitleText.color = 0xFFFFFF;
-		_leftTitleText.size = 12;
+		_leftTitleText.size = 15;
 		
-		_middleTitleText = new FlxText((FlxG.width - titleWidth) * 0.5, background.y - 3, titleWidth);
+		_middleTitleText = new FlxText((FlxG.width - titleWidth) * 0.5, background.y - 2, titleWidth);
 		_middleTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_middleTitleText.alignment = "center";
 		_middleTitleText.color = 0xFFFFFF;
-		_middleTitleText.size = 12;
+		_middleTitleText.size = 15;
 		
-		_rightTitleText = new FlxText(FlxG.width - titleWidth - 10, background.y - 3, titleWidth);
+		_rightTitleText = new FlxText(FlxG.width - titleWidth - 10, background.y - 1, titleWidth);
 		_rightTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_rightTitleText.alignment = "right";
 		_rightTitleText.color = 0xFFFFFF;
-		_rightTitleText.size = 12;
+		_rightTitleText.size = 15;
 		
 		add(background);
 		add(_leftTitleText);
