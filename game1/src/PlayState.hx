@@ -11,6 +11,7 @@ import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
+import flixel.tweens.FlxTween;
 import openfl.Assets;
 
 /**
@@ -21,6 +22,7 @@ import openfl.Assets;
 class PlayState extends FlxState
 {
 	private var _topTitleBar:TitleBar;
+	private var _levelText:FlxText;
 	
 	private static var _justDied:Bool = false;
 	
@@ -52,7 +54,6 @@ class PlayState extends FlxState
 		
 		// Build the map path with padded zeros for two digits
 		var mapPath = "levels/level_" + StringTools.lpad(Std.string(_currentMap), "0", 2) + ".tmx";
-		trace(_currentMap);
 		
 		_level = new TiledLevel(mapPath);
 		// Add tilemaps
@@ -83,15 +84,17 @@ class PlayState extends FlxState
 		_explosion.gravity = 400;
 		add(_explosion);
 		
-		var levelText = new FlxText(0, 150, FlxG.width, "LEVEL " + _currentMap );
-		levelText.font = "fonts/OpenSans-Bold.ttf";
-		levelText.alignment = "center";
-		levelText.color = 0x84494a;
-		levelText.size = 48;
-		add(levelText);
+		_levelText = new FlxText(0, 150, FlxG.width);
+		_levelText.font = "fonts/OpenSans-Bold.ttf";
+		_levelText.alignment = "center";
+		_levelText.color = 0x84494a;
+		_levelText.size = 48;
+		_levelText.text = "LEVEL " + _currentMap;
+		_levelText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.WHITE, 4, 1);
+		add(_levelText);
 		
-		FlxG.camera.fade(FlxColor.WHITE, 1, true, function() {
-			remove(levelText);
+		FlxG.camera.fade(FlxColor.WHITE, 0.5, true, function() {
+			FlxTween.singleVar(_levelText, "alpha", 0, 1);
 		});
 	}
 	
@@ -131,7 +134,28 @@ class PlayState extends FlxState
 		_topTitleBar.leftTitle = "Power: " + (cannon.getPower());
 		_topTitleBar.rightTitle = "Bullets left: " + (cannon.getBulletsLeft());
 		
+		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0) {
+			_levelText.text = "YOU LOST";
+			FlxTween.singleVar(_levelText, "alpha", 1, 2, {complete: onLost});
+		}
+		
 		super.update();
+	}
+	
+	private function onLost(tween:FlxTween):Void
+	{
+		FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
+			FlxG.switchState(new MainMenuState());
+		});
+	}
+	
+	private function onWon(tween:FlxTween):Void
+	{
+		_currentMap += 1;
+		
+		FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
+			FlxG.switchState(new PlayState(_currentMap));
+		});
 	}
 	
 	private function explode(X:Float = 0, Y:Float = 0):Void
@@ -153,10 +177,8 @@ class PlayState extends FlxState
 		
 		if (targets.countLiving() == 0)
 		{
-			_currentMap += 1;
-			FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
-				FlxG.switchState(new PlayState(_currentMap));
-			});
+			_levelText.text = "SUCCESS!";
+			FlxTween.singleVar(_levelText, "alpha", 1, 2, { complete: onWon } );
 		}
 	}
 }

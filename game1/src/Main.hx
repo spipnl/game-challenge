@@ -65,18 +65,19 @@ class Main extends Sprite
 		if ( event.keyCode == 27 ) // 27 == esc == android back key
 		{
 			var currentState = _game.getCurrentState();
-			if (Type.getClassName(Type.getClass(currentState)) == "MainMenuState")
+			var stateType = Type.getClassName(Type.getClass(currentState));
+			
+			switch (stateType)
 			{
-				#if !(flash || js)
-				Lib.exit();
-				#end
+				case "MainMenuState":
+					#if !(flash || js)
+					Lib.exit();
+					#end
+				case "PlayState":
+					FlxG.switchState(new MainMenuState());
+				case "AboutState":
+					FlxG.switchState(new MainMenuState(false));
 			}
-			else if (Type.getClassName(Type.getClass(currentState)) == "PlayState")
-			{
-				FlxG.switchState(new MainMenuState());
-			}
-			event.stopImmediatePropagation();
-			event.stopPropagation();
 		}
 	}
 }

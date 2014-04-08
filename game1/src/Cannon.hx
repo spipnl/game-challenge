@@ -79,41 +79,42 @@ class Cannon extends FlxGroup
 	
 	override public function update():Void
 	{
-		if (FlxG.mouse.justPressed)
-		{
-			if (FlxMath.pointInCoordinates(Std.int(FlxG.mouse.x), Std.int(FlxG.mouse.y), Std.int(_cannon.x) - _dragMargin, Std.int(_cannon.y) - _dragMargin, Std.int(_cannon.width) + _dragMargin * 2, Std.int(_cannon.height) + _dragMargin * 2))
+		if (_numberOfBullets > 0) {
+			if (FlxG.mouse.justPressed)
 			{
-				_dragging = true;
+				if (FlxMath.pointInCoordinates(Std.int(FlxG.mouse.x), Std.int(FlxG.mouse.y), Std.int(_cannon.x) - _dragMargin, Std.int(_cannon.y) - _dragMargin, Std.int(_cannon.width) + _dragMargin * 2, Std.int(_cannon.height) + _dragMargin * 2))
+				{
+					_dragging = true;
+				}
 			}
-		}
-		
-		if (_dragging)
-		{
 			
-			var source:FlxPoint = _dragCenter;
-			var mouse:FlxPoint = FlxG.mouse.getWorldPosition();
-			// getAngle return angle with 0 degree point up, but we need the angle start from pointing right
-			var deg:Int = Std.int(FlxAngle.getAngle(source, mouse)-90);
-			var length:Float = FlxMath.getDistance(source, mouse) * 1.5;
-			
-			_shootPower = Std.int(Math.min(16, Math.max(1, length * 0.1)));
-			
-			_shootDrag.angle = deg;
-			_shootDrag.scale.set(_shootPower * 8 / _shootDrag.pixels.width, _shootPower * 0.5);
-			_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
-			_shootDrag.visible = true;
-			
-			if (_cannonBarrelTween != null && _cannonBarrelTween.active) {
-				_cannonBarrelTween.cancel();
-			}
-			_cannonBarrelTween = FlxTween.angle(_cannonBarrel, _cannonBarrel.angle, deg + 180, 0.15);
-		
-			if (FlxG.mouse.justReleased)
+			if (_dragging)
 			{
-				_dragging = false;
-				_shootDrag.visible = false;
-				shootBullet(deg, _shootPower);
-				_shootPower = 0;
+				var source:FlxPoint = _dragCenter;
+				var mouse:FlxPoint = FlxG.mouse.getWorldPosition();
+				// getAngle return angle with 0 degree point up, but we need the angle start from pointing right
+				var deg:Int = Std.int(FlxAngle.getAngle(source, mouse)-90);
+				var length:Float = FlxMath.getDistance(source, mouse) * 0.75;
+				
+				_shootPower = Std.int(Math.min(12, Math.max(1, length * 0.1)));
+				
+				_shootDrag.angle = deg;
+				_shootDrag.scale.set(_shootPower * 16 / _shootDrag.pixels.width, _shootPower * 0.7);
+				_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
+				_shootDrag.visible = true;
+				
+				if (_cannonBarrelTween != null && _cannonBarrelTween.active) {
+					_cannonBarrelTween.cancel();
+				}
+				_cannonBarrelTween = FlxTween.angle(_cannonBarrel, _cannonBarrel.angle, deg + 180, 0.15);
+			
+				if (FlxG.mouse.justReleased)
+				{
+					_dragging = false;
+					_shootDrag.visible = false;
+					shootBullet(deg, _shootPower);
+					_shootPower = 0;
+				}
 			}
 		}
 		

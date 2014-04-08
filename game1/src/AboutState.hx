@@ -23,33 +23,25 @@ using flixel.util.FlxSpriteUtil;
  * 
  * @author spipnl (Jip Spinnewijn)
  */
-class MainMenuState extends FlxState
+class AboutState extends FlxState
 {
 	private var _topTitleBar:TitleBar;
+	
+	private var _aboutText:FlxText;
 	
 	private var _buttons:FlxSpriteGroup;
 	private var _buttonsBG:FlxSprite;
 	private var _logo:FlxSprite;
-	private var _startButton:MenuButton;
-	private var _aboutButton:MenuButton;
+	private var _backButton:MenuButton;
 	
-	private var _buttonsContainerWidth:Int = 420;
-	private var _buttonsContainerHeight:Int = 160;
+	private var _buttonsContainerWidth:Int = 600;
+	private var _buttonsContainerHeight:Int = 400;
 	
 	private var _buttonWidth:Int = 200;
 	private var _buttonHeight:Int = 44;
 	
-	private var _fade:Bool = true;
-	
-	public function new(fade = true)
-	{
-		_fade = fade;
-		super();
-	}
-	
 	override public function create():Void 
 	{
-		FlxG.sound.playMusic("gameloop");
 		createBackground();
 		
 		_topTitleBar = new TitleBar();
@@ -62,25 +54,23 @@ class MainMenuState extends FlxState
 		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
 		FlxSpriteUtil.drawRoundRect(_buttonsBG, 80, 0, _buttonsBG.width - 80, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
 		
-		var _logo:FlxSprite = new FlxSprite(0, 0);
-		_logo.loadGraphic(Assets.getBitmapData("images/logo-menu.png"));
+		_backButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, _buttonsContainerHeight - _buttonHeight - 25, _buttonWidth, _buttonHeight, "Back", onBack);
 		
-		_startButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, 25, _buttonWidth, _buttonHeight, "Start", onStart);
-		_aboutButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, _buttonsContainerHeight - _buttonHeight - 25, _buttonWidth, _buttonHeight, "About", onAbout);
+		_aboutText = new FlxText(100, 20, 480);
+		_aboutText.font = "fonts/OpenSans-Bold.ttf";
+		_aboutText.alignment = "left";
+		_aboutText.color = 0xF576C75;
+		_aboutText.size = 16;
+		_aboutText.text = "You are a lonely cannon on a mission to save the world form the evil targets.\n\nUse mouse or touch controls to set up the power and radius of the bullets. Release when satisfied and watch your bullet destroy the targets. Bullets are limited to five per level, so use them wisely.\nOne bullet can destroy multiple targets and will vanish when it's velocity becomes zero or when it leaves the map.";
+		_aboutText.text += "\n\nFor credits, see the GitHub repository (https://github.com/spipnl)";
 		
 		_buttons.add(_buttonsBG);
-		_buttons.add(_logo);
-		_buttons.add(_startButton);
-		_buttons.add(_aboutButton);
+		_buttons.add(_aboutText);
+		_buttons.add(_backButton);
 		
 		add(_buttons);
 		
 		add(_topTitleBar);
-		
-		if (_fade)
-		{
-			FlxG.camera.fade(FlxColor.WHITE, 1, true);
-		}
 	}
 	
 	private function createBackground():Void
@@ -110,13 +100,8 @@ class MainMenuState extends FlxState
 		super.update();
 	}
 	
-	private function onStart():Void
+	private function onBack():Void
 	{
-		FlxG.switchState(new PlayState(1));
-	}
-	
-	private function onAbout():Void
-	{
-		FlxG.switchState(new AboutState());
+		FlxG.switchState(new MainMenuState(false));
 	}
 }

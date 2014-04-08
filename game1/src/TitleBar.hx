@@ -40,13 +40,13 @@ class TitleBar extends FlxGroup
 		
 		var titleWidth = 300;
 		
-		_leftTitleText = new FlxText(10, background.y - 3, titleWidth);
+		_leftTitleText = new FlxText(10, background.y - 1, titleWidth);
 		_leftTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_leftTitleText.alignment = "left";
 		_leftTitleText.color = 0xFFFFFF;
 		_leftTitleText.size = 15;
 		
-		_middleTitleText = new FlxText((FlxG.width - titleWidth) * 0.5, background.y - 2, titleWidth);
+		_middleTitleText = new FlxText((FlxG.width - titleWidth) * 0.5, background.y - 1, titleWidth);
 		_middleTitleText.font = "fonts/OpenSans-Bold.ttf";
 		_middleTitleText.alignment = "center";
 		_middleTitleText.color = 0xFFFFFF;
