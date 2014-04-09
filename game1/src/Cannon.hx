@@ -94,12 +94,12 @@ class Cannon extends FlxGroup
 				var mouse:FlxPoint = FlxG.mouse.getWorldPosition();
 				// getAngle return angle with 0 degree point up, but we need the angle start from pointing right
 				var deg:Int = Std.int(FlxAngle.getAngle(source, mouse)-90);
-				var length:Float = FlxMath.getDistance(source, mouse) * 0.75;
+				var length:Float = FlxMath.getDistance(source, mouse);
 				
-				_shootPower = Std.int(Math.min(12, Math.max(1, length * 0.1)));
+				_shootPower = Std.int(Math.min(30, Math.max(1, (length * 0.3 - 6))));
 				
 				_shootDrag.angle = deg;
-				_shootDrag.scale.set(_shootPower * 16 / _shootDrag.pixels.width, _shootPower * 0.7);
+				_shootDrag.scale.set(_shootPower * 4 / _shootDrag.pixels.width, _shootPower * 0.3);
 				_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
 				_shootDrag.visible = true;
 				
