@@ -112,7 +112,7 @@ class MainMenuState extends FlxState
 	
 	private function onStart():Void
 	{
-		FlxG.switchState(new PlayState(1));
+		FlxG.switchState(new PlayState(7));
 	}
 	
 	private function onAbout():Void

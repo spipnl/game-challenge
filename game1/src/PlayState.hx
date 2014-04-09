@@ -130,12 +130,17 @@ class PlayState extends FlxState
 			if (bullet.velocity.x == 0 && bullet.velocity.y <= 0 && bullet.velocity.y >= -4 && bullet.isTouching(FlxObject.ANY)) {
 				bullet.kill();
 			}
+			if (bullet.y > FlxG.height) {
+				//trace ("kill " + bullet.y);
+				bullet.kill();
+			}
 		});
+
 		_topTitleBar.leftTitle = "Power: " + (cannon.getPower());
 		_topTitleBar.rightTitle = "Bullets left: " + (cannon.getBulletsLeft());
 		
 		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0) {
-			_levelText.text = "YOU LOST";
+			_levelText.text = "YOU LOSE";
 			FlxTween.singleVar(_levelText, "alpha", 1, 2, {complete: onLost});
 		}
 		
@@ -164,7 +169,7 @@ class PlayState extends FlxState
 		{
 			_explosion.x = X;
 			_explosion.y = Y;
-			_explosion.start(true, 2, 0, 400);
+			_explosion.start(true, 2, 0, 100);
 			_explosion.update();
 		}
 	}
