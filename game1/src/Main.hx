@@ -19,7 +19,9 @@ class Main extends Sprite
 {
 	private var _game:GameClass;
 	
-	// Entry point
+	/**
+	 * Entry point
+	 */
 	public static function main():Void
 	{	
 		Lib.current.addChild(new Main());
@@ -39,6 +41,9 @@ class Main extends Sprite
 		}
 	}
 	
+	/**
+	 * Initialize the Game
+	 */
 	private function init(?E:Event):Void 
 	{
 		if (hasEventListener(Event.ADDED_TO_STAGE))
@@ -52,6 +57,9 @@ class Main extends Sprite
 		addChild(_game);
 	}
 	
+	/**
+	 * Setup of the stage
+	 */
 	private function initialize():Void 
 	{
 		Lib.current.stage.align = StageAlign.TOP_LEFT;
@@ -60,9 +68,14 @@ class Main extends Sprite
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyDown);
 	}
 	
-	private function onKeyDown(event:KeyboardEvent ):Void
+	/**
+	 * Listen to keydowns to switch to different states
+	 *
+	 * @param Event 		The KeyboardEvent
+	 */
+	private function onKeyDown(Event:KeyboardEvent ):Void
 	{
-		if ( event.keyCode == 27 ) // 27 == esc == android back key
+		if ( Event.keyCode == 27 ) // 27 == esc == android back key
 		{
 			var currentState = _game.getCurrentState();
 			var stateType = Type.getClassName(Type.getClass(currentState));

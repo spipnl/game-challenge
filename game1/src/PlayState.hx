@@ -44,7 +44,7 @@ class PlayState extends FlxState
 	
 	override public function create():Void 
 	{
-		createFloor();
+		createBackground();
 		
 		_topTitleBar = new TitleBar();
 		_topTitleBar.middleTitle = "Level " + _currentMap;
@@ -98,7 +98,10 @@ class PlayState extends FlxState
 		});
 	}
 	
-	private function createFloor():Void
+	/**
+	 * Create the default background with a repeating image
+	 */
+	private function createBackground():Void
 	{
 		// CREATE FLOOR TILES
 		var	FloorImg = Assets.getBitmapData("images/fresh_snow.png");

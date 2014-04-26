@@ -16,7 +16,7 @@ using flixel.util.FlxSpriteUtil;
 class Bullet extends FlxSprite 
 {
 	/**
-	 * Create a new Bullet object. Generally this would be used by the game to create a pool of bullets that can be recycled later on, as needed.
+	 * Create a new Bullet object.
 	 */
 	public function new() 
 	{
@@ -24,14 +24,16 @@ class Bullet extends FlxSprite
 		makeGraphic(10, 10, FlxColor.TRANSPARENT);
 		FlxSpriteUtil.drawCircle(this, width * 0.5, width * 0.5, width * 0.5, FlxColor.CHARCOAL);
 		
+		// Gravity of the bullet
 		acceleration.y = 200;
+		// Bounce of the bullet
 		elasticity = 0.5;
-		
+		// Add drag to slow the bullet down
 		drag.x = 10;
 	}
 	
 	/**
-	 * Initialize this bullet by giving it a position, target, and damage amount. Usually used to create a new bullet as it is fired by a tower.
+	 * Initialize this bullet by giving it a position.
 	 * 
 	 * @param	X			The desired X position.
 	 * @param	Y			The desired Y position.
@@ -41,6 +43,12 @@ class Bullet extends FlxSprite
 		reset( X, Y );
 	}
 	
+	/**
+	 * Shoot the bullet
+	 *
+	 * @param Deg			The degrees to fire the bullet at
+	 * @param Strength		The strength of the power of the bullet
+	 */
 	public function shoot(Deg:Int, Strength:Int):Void 
 	{
 		velocity = FlxVelocity.velocityFromAngle(Deg - 180, Strength * 40);

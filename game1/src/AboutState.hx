@@ -19,7 +19,7 @@ import flash.display.Sprite;
 using flixel.util.FlxSpriteUtil;
 
 /**
- * Initial MainMenu
+ * About state with description and credits
  * 
  * @author spipnl (Jip Spinnewijn)
  */
@@ -73,6 +73,9 @@ class AboutState extends FlxState
 		add(_topTitleBar);
 	}
 	
+	/**
+	 * Create the default background with a repeating image
+	 */
 	private function createBackground():Void
 	{
 		// CREATE FLOOR TILES
@@ -95,11 +98,9 @@ class AboutState extends FlxState
 		}
 	}
 	
-	override public function update():Void 
-	{
-		super.update();
-	}
-	
+	/**
+	 * When the users clicks on close, switch to main menu state
+	 */
 	private function onBack():Void
 	{
 		FlxG.switchState(new MainMenuState(false));

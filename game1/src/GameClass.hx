@@ -32,6 +32,11 @@ class GameClass extends FlxGame
 		#end
 	}
 	
+	/**
+	 * Return the current active state
+	 *
+	 * @return FlxState
+	 */
 	public function getCurrentState():FlxState
 	{
 		return _state;

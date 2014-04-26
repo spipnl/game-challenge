@@ -9,7 +9,8 @@ import flixel.util.FlxMath;
 using flixel.util.FlxSpriteUtil;
 
 /**
- * ...
+ * A button with Open Sans Bold font and rounded corners
+ * 
  * @author spipnl (Jip Spinnewijn)
  */
 class MenuButton extends FlxButton

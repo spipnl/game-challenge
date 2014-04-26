@@ -83,6 +83,9 @@ class MainMenuState extends FlxState
 		}
 	}
 	
+	/**
+	 * Create the default background with a repeating image
+	 */
 	private function createBackground():Void
 	{
 		// CREATE FLOOR TILES
@@ -103,11 +106,6 @@ class MainMenuState extends FlxState
 			i += ImgWidth;
 			j = 0;
 		}
-	}
-	
-	override public function update():Void 
-	{
-		super.update();
 	}
 	
 	private function onStart():Void
