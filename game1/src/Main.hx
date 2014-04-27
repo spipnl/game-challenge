@@ -86,10 +86,12 @@ class Main extends Sprite
 					#if !(flash || js)
 					Lib.exit();
 					#end
-				case "PlayState":
-					FlxG.switchState(new MainMenuState());
 				case "AboutState":
 					FlxG.switchState(new MainMenuState(false));
+				case "PlayState":
+					FlxG.switchState(new MainMenuState());
+				case "FinishedState":
+					FlxG.switchState(new MainMenuState());
 			}
 		}
 	}

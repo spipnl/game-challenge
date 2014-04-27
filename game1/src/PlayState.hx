@@ -48,6 +48,8 @@ class PlayState extends FlxState
 		
 		_topTitleBar = new TitleBar();
 		_topTitleBar.middleTitle = "Level " + _currentMap;
+
+		_topTitleBar.middleTitle = "BULLETS:" + FlxG.game.height + "!!!";
 		
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
@@ -134,7 +136,6 @@ class PlayState extends FlxState
 				bullet.kill();
 			}
 			if (bullet.y > FlxG.height) {
-				//trace ("kill " + bullet.y);
 				bullet.kill();
 			}
 		});
@@ -162,10 +163,20 @@ class PlayState extends FlxState
 		_currentMap += 1;
 		
 		FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
-			FlxG.switchState(new PlayState(_currentMap));
+			if (_currentMap > 10) {
+				FlxG.switchState(new FinishedState());
+			} else {
+				FlxG.switchState(new PlayState(_currentMap));
+			}
 		});
 	}
 	
+	/**
+	 * Create an explosion at given position
+	 *
+	 * @param X 		The x position of the explosion
+	 * @param Y 		The y position of the explosion
+	 */
 	private function explode(X:Float = 0, Y:Float = 0):Void
 	{
 		if (_explosion.visible)
@@ -177,6 +188,12 @@ class PlayState extends FlxState
 		}
 	}
 	
+	/**
+	 * Action when a bullet hits a target
+	 *
+	 * @param Bullet		The bullet
+	 * @param Target 		The target
+	 */
 	private function hitTarget(Bullet:FlxObject, Target:FlxObject):Void
 	{
 		explode(Target.x + Target.width * 0.5, Target.y + Target.height * 0.5);

@@ -12,6 +12,8 @@ import flixel.FlxState;
  */
 class GameClass extends FlxGame
 {
+	@:isVar public var totalNumberOfBullets(get, set):Int;
+
 	public function new()
 	{
 		var stageWidth:Int = Lib.current.stage.stageWidth;
@@ -22,6 +24,7 @@ class GameClass extends FlxGame
 		var ratio:Float = Math.min(ratioX, ratioY);
 		
 		var fps:Int = 60;
+		totalNumberOfBullets = 4;
 		
 		super(Math.ceil(stageWidth / ratio), Math.ceil(stageHeight / ratio), MainMenuState, ratio, fps, fps);
 		
@@ -40,5 +43,17 @@ class GameClass extends FlxGame
 	public function getCurrentState():FlxState
 	{
 		return _state;
+	}
+
+	public function get_totalNumberOfBullets():Int
+	{
+		return totalNumberOfBullets;
+	}
+	
+	public function set_totalNumberOfBullets(NumberOfBullets:Int):Int
+	{
+		totalNumberOfBullets = NumberOfBullets;
+
+		return totalNumberOfBullets;
 	}
 }
