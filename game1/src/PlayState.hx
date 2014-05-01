@@ -11,8 +11,11 @@ import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
+import flixel.util.FlxPoint;
 import flixel.tweens.FlxTween;
 import openfl.Assets;
+
+using flixel.util.FlxSpriteUtil;
 
 /**
  * Initial PlayState
@@ -31,6 +34,9 @@ class PlayState extends FlxState
 	
 	public var targets:FlxGroup;
 	public var cannon:Cannon;
+	
+	private var _helpArrow:FlxSprite;
+	private var _helpText:FlxText;
 	
 	private var _explosion:FlxEmitterExt;
 	
@@ -76,6 +82,10 @@ class PlayState extends FlxState
 		//add(_status);
 		add(_topTitleBar);
 		
+		// Add helpers for the first level
+		if (_currentMap == 1) {
+			addHelpArrow();
+		}
 		
 		// Add exlposion emitter
 		_explosion = new FlxEmitterExt();
@@ -98,6 +108,38 @@ class PlayState extends FlxState
 		FlxG.camera.fade(FlxColor.WHITE, 0.5, true, function() {
 			FlxTween.singleVar(_levelText, "alpha", 0, 1);
 		});
+		
+	}
+	
+	private function addHelpArrow():Void
+	{
+		// Get the position of the cannon and place the arrow above it.
+		var cannonPosition = cannon.getDragCenter();
+		_helpArrow = new FlxSprite(cannonPosition.x - 15, cannonPosition.y - 100);
+		
+		_helpArrow.makeGraphic(30, 60, FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawPolygon(_helpArrow, [
+			new FlxPoint(_helpArrow.width * 0.1, 0), 
+			new FlxPoint(_helpArrow.width * 0.9, 0),
+			new FlxPoint(_helpArrow.width * 0.7, _helpArrow.height * 0.7),
+			new FlxPoint(_helpArrow.width,  _helpArrow.height * 0.7),
+			new FlxPoint(_helpArrow.width * 0.5,  _helpArrow.height),
+			new FlxPoint(0, _helpArrow.height * 0.7),
+			new FlxPoint(_helpArrow.width * 0.3, _helpArrow.height * 0.7),
+			new FlxPoint(_helpArrow.width * 0.1, 0)],
+			0xFF84494A,  {color: FlxColor.WHITE, thickness: 2}
+		);
+		
+		_helpText = new FlxText(_helpArrow.x - 100 + _helpArrow.width * 0.5, _helpArrow.y - 50, 200);
+		_helpText.font = "fonts/OpenSans-Bold.ttf";
+		_helpText.alignment = "center";
+		_helpText.color = 0x84494a;
+		_helpText.size = 22;
+		_helpText.text = "DRAG & RELEASE!";
+		_helpText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.WHITE, 3, 1);
+		
+		add(_helpText);
+		add(_helpArrow);
 	}
 	
 	/**
@@ -142,6 +184,12 @@ class PlayState extends FlxState
 
 		_topTitleBar.leftTitle = "Power: " + (cannon.getPower());
 		_topTitleBar.rightTitle = "Bullets left: " + (cannon.getBulletsLeft());
+		
+		// Hide helpers when the users starts dragging
+		if (cannon.getDragging() && _helpArrow != null) {
+			FlxTween.singleVar(_helpArrow, "alpha", 0, 0.5);
+			FlxTween.singleVar(_helpText, "alpha", 0, 0.5);
+		}
 		
 		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0) {
 			_levelText.text = "YOU LOSE";

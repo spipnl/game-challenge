@@ -166,6 +166,26 @@ class Cannon extends FlxGroup
 	}
 	
 	/**
+	 * Retrieve the boolean indicating the user is dragging
+	 *
+	 * @return Bool
+	 */
+	public function getDragging():Bool
+	{
+		return _dragging;
+	}
+	
+	/**
+	 * Retrieve the drag center of the cannon
+	 *
+	 * @return FlxTypedGroup
+	 */
+	public function getDragCenter():FlxPoint
+	{
+		return _dragCenter;
+	}
+	
+	/**
 	 * Retrieve the bullet group
 	 *
 	 * @return FlxTypedGroup

@@ -139,9 +139,9 @@ class FinishedState extends FlxState
 	{
 		_frameCounter += 1;
 
-		if (_frameCounter >= 180) {
+		if (_frameCounter >= 60) {
 			_frameCounter = 0;
-			// Every three seconds, create an explosion at a random position on the screen (30 pixels margin)
+			// Every second, create an explosion at a random position on the screen (30 pixels margin)
 			explode(30 + Math.random() * (FlxG.width - 60), 30 + Math.random() * (FlxG.height - 60));
 		}
 
