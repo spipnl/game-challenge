@@ -28,20 +28,23 @@ class FinishedState extends FlxState
 {
 	private var _topTitleBar:TitleBar;
 	
-	private var _aboutText:FlxText;
+	private var _finishedText:FlxText;
+	private var _bulletCountText:FlxText;
 	
 	private var _buttons:FlxSpriteGroup;
 	private var _buttonsBG:FlxSprite;
 	private var _logo:FlxSprite;
 	private var _backButton:MenuButton;
 	
-	private var _buttonsContainerWidth:Int = 600;
-	private var _buttonsContainerHeight:Int = 400;
+	private var _buttonsContainerWidth:Int = 400;
+	private var _buttonsContainerHeight:Int = 250;
 	
-	private var _buttonWidth:Int = 200;
+	private var _buttonWidth:Int = 300;
 	private var _buttonHeight:Int = 44;
 
 	private var _frameCounter:Int = 0;
+	private var _targetCount:Int = 0;
+	
 	private var _explosion:FlxEmitterExt;
 	
 	override public function create():Void 
@@ -55,20 +58,27 @@ class FinishedState extends FlxState
 		_buttons = new FlxSpriteGroup((FlxG.width - _buttonsContainerWidth) * 0.5,  (FlxG.height - _buttonsContainerHeight) * 0.5);
 		_buttonsBG = new FlxSprite(0, 0);
 		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
-		FlxSpriteUtil.drawRoundRect(_buttonsBG, 80, 0, _buttonsBG.width - 80, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
+		FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
 		
 		_backButton = new MenuButton((_buttonsContainerWidth - _buttonWidth) * 0.5, _buttonsContainerHeight - _buttonHeight - 25, _buttonWidth, _buttonHeight, "Back to Main Menu", onBack);
 
-		_aboutText = new FlxText(100, 20, 480);
-		_aboutText.font = "fonts/OpenSans-Bold.ttf";
-		_aboutText.alignment = "center";
-		_aboutText.color = 0xF576C75;
-		_aboutText.size = 16;
-		_aboutText.text = "You have finished the game!";
-		_aboutText.text += "\n\nTotal number of bullets: ";
+		_finishedText = new FlxText(0, 35, _buttonsContainerWidth);
+		_finishedText.font = "fonts/OpenSans-Bold.ttf";
+		_finishedText.alignment = "center";
+		_finishedText.color = 0x84494a;
+		_finishedText.size = 22;
+		_finishedText.text = "You have finished the game!";
+		
+		_bulletCountText = new FlxText(0, 90, _buttonsContainerWidth);
+		_bulletCountText.font = "fonts/OpenSans-Bold.ttf";
+		_bulletCountText.alignment = "center";
+		_bulletCountText.color = 0xF576C75;
+		_bulletCountText.size = 16;
+		_bulletCountText.text = "Total number of bullets:\n" + Reg.bulletsFired;
 		
 		_buttons.add(_buttonsBG);
-		_buttons.add(_aboutText);
+		_buttons.add(_finishedText);
+		_buttons.add(_bulletCountText);
 		_buttons.add(_backButton);
 		
 		add(_buttons);
@@ -83,6 +93,8 @@ class FinishedState extends FlxState
 		_explosion.setAlpha(1, 1, 0, 0);
 		_explosion.gravity = 400;
 		add(_explosion);
+		
+		FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
 	}
 	
 	/**
@@ -130,7 +142,7 @@ class FinishedState extends FlxState
 		{
 			_explosion.x = X;
 			_explosion.y = Y;
-			_explosion.start(true, 2, 0, 100);
+			_explosion.start(true, 2, 0, 300);
 			_explosion.update();
 		}
 	}
@@ -139,10 +151,12 @@ class FinishedState extends FlxState
 	{
 		_frameCounter += 1;
 
-		if (_frameCounter >= 60) {
+		if (_frameCounter >= _targetCount) {
 			_frameCounter = 0;
-			// Every second, create an explosion at a random position on the screen (30 pixels margin)
-			explode(30 + Math.random() * (FlxG.width - 60), 30 + Math.random() * (FlxG.height - 60));
+			_targetCount = 30 + Std.int(30 * Math.random());
+			// Create an explosion at a random position on the screen (50 pixels margin)
+			explode(50 + Math.random() * (FlxG.width - 100), 50 + Math.random() * (FlxG.height - 100));
+			FlxG.sound.play("pling");
 		}
 
 		super.update();

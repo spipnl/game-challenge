@@ -79,7 +79,7 @@ class MainMenuState extends FlxState
 		
 		if (_fade)
 		{
-			FlxG.camera.fade(FlxColor.WHITE, 1, true);
+			FlxG.camera.fade(FlxColor.BLACK, 0.5, true);
 		}
 	}
 	
@@ -110,6 +110,7 @@ class MainMenuState extends FlxState
 	
 	private function onStart():Void
 	{
+		Reg.bulletsFired = 0;
 		FlxG.switchState(new PlayState(1));
 	}
 	

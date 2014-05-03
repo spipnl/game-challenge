@@ -73,9 +73,10 @@ class Main extends Sprite
 	 *
 	 * @param Event 		The KeyboardEvent
 	 */
-	private function onKeyDown(Event:KeyboardEvent ):Void
+	private function onKeyDown(event:KeyboardEvent ):Void
 	{
-		if ( Event.keyCode == 27 ) // 27 == esc == android back key
+		event.stopImmediatePropagation();
+		if ( event.keyCode == 27 ) // 27 == esc == android back key
 		{
 			var currentState = _game.getCurrentState();
 			var stateType = Type.getClassName(Type.getClass(currentState));

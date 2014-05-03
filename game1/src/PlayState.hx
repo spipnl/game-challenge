@@ -54,8 +54,6 @@ class PlayState extends FlxState
 		
 		_topTitleBar = new TitleBar();
 		_topTitleBar.middleTitle = "Level " + _currentMap;
-
-		_topTitleBar.middleTitle = "BULLETS:" + FlxG.game.height + "!!!";
 		
 		FlxG.cameras.bgColor = 0xffaaaaaa;
 		//FlxG.debugger.visible = true;
@@ -106,11 +104,13 @@ class PlayState extends FlxState
 		add(_levelText);
 		
 		FlxG.camera.fade(FlxColor.WHITE, 0.5, true, function() {
-			FlxTween.singleVar(_levelText, "alpha", 0, 1);
+			FlxTween.tween(_levelText, {alpha: 0}, 1);
 		});
-		
 	}
 	
+	/**
+	 * Create an arrow pointing downwards to the cannon with instruction text
+	 */
 	private function addHelpArrow():Void
 	{
 		// Get the position of the cannon and place the arrow above it.
@@ -187,13 +187,13 @@ class PlayState extends FlxState
 		
 		// Hide helpers when the users starts dragging
 		if (cannon.getDragging() && _helpArrow != null) {
-			FlxTween.singleVar(_helpArrow, "alpha", 0, 0.5);
-			FlxTween.singleVar(_helpText, "alpha", 0, 0.5);
+			FlxTween.tween(_helpArrow, {alpha: 0}, 0.5);
+			FlxTween.tween(_helpText, {alpha: 0}, 0.5);
 		}
 		
 		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0) {
 			_levelText.text = "YOU LOSE";
-			FlxTween.singleVar(_levelText, "alpha", 1, 2, {complete: onLost});
+			FlxTween.tween(_levelText, {alpha: 1}, 2, {complete: onLost});
 		}
 		
 		super.update();
@@ -251,7 +251,7 @@ class PlayState extends FlxState
 		if (targets.countLiving() == 0)
 		{
 			_levelText.text = "SUCCESS!";
-			FlxTween.singleVar(_levelText, "alpha", 1, 2, { complete: onWon } );
+			FlxTween.tween(_levelText, {alpha: 1}, 2, { complete: onWon } );
 		}
 	}
 }

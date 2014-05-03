@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
 	<meta title="spipnl game1" package="nl.spip.gamechallenge.game1" version="1.0.0" company="spipnl (Jip Spinnewijn)" />
 	
 	<!-- output -->

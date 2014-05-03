@@ -141,7 +141,7 @@ class Cannon extends FlxGroup
 	 */
 	private function onShotComplete(Tween:FlxTween):Void
 	{
-		FlxTween.singleVar(_cannonBarrel.scale, "x", 1.0, 0.5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT});
+		FlxTween.tween(_cannonBarrel.scale, {x: 1.0}, 0.5, { ease: flixel.tweens.FlxEase.bounceOut, type: FlxTween.ONESHOT});
 	}
 	
 	/**
@@ -155,9 +155,10 @@ class Cannon extends FlxGroup
 	    FlxG.camera.shake(0.002, 0.2);
 		FlxG.sound.play("cannonshot");
 		_numberOfBullets -= 1;
+		Reg.bulletsFired += 1;
 		
 		// Animate backfire on the barrel
-		FlxTween.singleVar(_cannonBarrel.scale, "x", 0.7, 0.1, { type: FlxTween.ONESHOT, complete: onShotComplete } );
+		FlxTween.tween(_cannonBarrel.scale, {x: 0.7}, 0.1, { type: FlxTween.ONESHOT, complete: onShotComplete } );
 		
 		// Fetch a bullet from the bullet pool and shoot
 		var bullet:Bullet = _bullets.recycle(Bullet);
