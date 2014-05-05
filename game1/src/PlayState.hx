@@ -191,7 +191,7 @@ class PlayState extends FlxState
 			FlxTween.tween(_helpText, {alpha: 0}, 0.5);
 		}
 		
-		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0) {
+		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0 && targets.countLiving() != 0) {
 			_levelText.text = "YOU LOSE";
 			FlxTween.tween(_levelText, {alpha: 1}, 2, {complete: onLost});
 		}

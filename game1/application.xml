@@ -9,8 +9,11 @@
 	<window width="800" height="480" unless="mobile" />
 	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
 	
+	<set name="SWF_VERSION" value="11.8" />
+	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
+	<set name="html5-backend" value="openfl-bitfive" />
 	<haxelib name="openfl" />
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" />
