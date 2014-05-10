@@ -13,7 +13,6 @@
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
-	<set name="html5-backend" value="openfl-bitfive" />
 	<haxelib name="openfl" />
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" />
