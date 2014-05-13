@@ -49,7 +49,6 @@ class MainMenuState extends FlxState
 	
 	override public function create():Void 
 	{
-		FlxG.sound.playMusic("gameloop");
 		createBackground();
 		
 		_topTitleBar = new TitleBar();
@@ -79,6 +78,7 @@ class MainMenuState extends FlxState
 		
 		if (_fade)
 		{
+			FlxG.sound.playMusic("gameloop");
 			FlxG.camera.fade(FlxColor.BLACK, 0.5, true);
 		}
 	}

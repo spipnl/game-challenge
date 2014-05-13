@@ -34,7 +34,7 @@ class AboutState extends FlxState
 	private var _logo:FlxSprite;
 	private var _backButton:MenuButton;
 	
-	private var _buttonsContainerWidth:Int = 600;
+	private var _buttonsContainerWidth:Int = 680;
 	private var _buttonsContainerHeight:Int = 400;
 	
 	private var _buttonWidth:Int = 200;
@@ -52,11 +52,11 @@ class AboutState extends FlxState
 		_buttons = new FlxSpriteGroup((FlxG.width - _buttonsContainerWidth) * 0.5,  (FlxG.height - _buttonsContainerHeight) * 0.5);
 		_buttonsBG = new FlxSprite(0, 0);
 		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
-		FlxSpriteUtil.drawRoundRect(_buttonsBG, 80, 0, _buttonsBG.width - 80, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
+		FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
 		
 		_backButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, _buttonsContainerHeight - _buttonHeight - 25, _buttonWidth, _buttonHeight, "Back", onBack);
 		
-		_aboutText = new FlxText(100, 20, 480);
+		_aboutText = new FlxText(20, 20, _buttonsContainerWidth - 40);
 		_aboutText.font = "fonts/OpenSans-Bold.ttf";
 		_aboutText.alignment = "left";
 		_aboutText.color = 0xF576C75;

@@ -75,7 +75,9 @@ class Main extends Sprite
 	 */
 	private function onKeyDown(event:KeyboardEvent ):Void
 	{
-		//event.stopImmediatePropagation();
+		#if android
+		event.stopImmediatePropagation();
+		#end
 		if ( event.keyCode == 27 ) // 27 == esc == android back key
 		{
 			var currentState = _game.getCurrentState();
