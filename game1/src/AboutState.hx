@@ -1,6 +1,8 @@
 package; 
 
 import flash.display.BitmapData;
+import flash.Lib;
+import flash.net.URLRequest;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -33,11 +35,12 @@ class AboutState extends FlxState
 	private var _buttonsBG:FlxSprite;
 	private var _logo:FlxSprite;
 	private var _backButton:MenuButton;
+	private var _githubButton:MenuButton;
 	
 	private var _buttonsContainerWidth:Int = 680;
 	private var _buttonsContainerHeight:Int = 400;
 	
-	private var _buttonWidth:Int = 200;
+	private var _buttonWidth:Int = 160;
 	private var _buttonHeight:Int = 44;
 	
 	override public function create():Void 
@@ -54,7 +57,7 @@ class AboutState extends FlxState
 		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
 		FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
 		
-		_backButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 25, _buttonsContainerHeight - _buttonHeight - 25, _buttonWidth, _buttonHeight, "Back", onBack);
+		_backButton = new MenuButton(25, _buttonsContainerHeight - _buttonHeight - 25, _buttonWidth, _buttonHeight, "Back", onBack);
 		
 		_aboutText = new FlxText(20, 20, _buttonsContainerWidth - 40);
 		_aboutText.font = "fonts/OpenSans-Bold.ttf";
@@ -62,11 +65,15 @@ class AboutState extends FlxState
 		_aboutText.color = 0xF576C75;
 		_aboutText.size = 16;
 		_aboutText.text = "You are a lonely cannon on a mission to save the world form the evil targets.\n\nUse mouse or touch controls to set up the power and radius of the bullets. Release when satisfied and watch your bullet destroy the targets. Bullets are limited to five per level, so use them wisely.\nOne bullet can destroy multiple targets and will vanish when it's velocity becomes zero or when it leaves the map.";
-		_aboutText.text += "\n\nFor credits, see the GitHub repository (https://github.com/spipnl)";
+		_aboutText.text += "\n\nFor source and credits, visit the GitHub repository:";
+		
+		_githubButton = new MenuButton(_buttonsContainerWidth - _buttonWidth - 50, _buttonsContainerHeight - _buttonHeight - 172, _buttonWidth, _buttonHeight, "GitHub", onGithub);
+		
 		
 		_buttons.add(_buttonsBG);
 		_buttons.add(_aboutText);
 		_buttons.add(_backButton);
+		_buttons.add(_githubButton);
 		
 		add(_buttons);
 		
@@ -96,6 +103,14 @@ class AboutState extends FlxState
 			i += ImgWidth;
 			j = 0;
 		}
+	}
+	
+	/**
+	 * When the users clicks on the GitHub button, launch the browser with the github repo url
+	 */
+	private function onGithub():Void
+	{
+		Lib.getURL(new URLRequest("https://github.com/spipnl/game-challenge/tree/master/game1"));
 	}
 	
 	/**
