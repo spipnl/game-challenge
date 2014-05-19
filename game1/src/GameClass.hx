@@ -27,12 +27,6 @@ class GameClass extends FlxGame
 		totalNumberOfBullets = 4;
 		
 		super(Math.ceil(stageWidth / ratio), Math.ceil(stageHeight / ratio), MainMenuState, ratio, fps, fps);
-		
-		#if android
-		//FlxG.sound.add("cannonshot");
-		//FlxG.sound.add("gameloop");
-		//FlxG.sound.add("pling");
-		#end
 	}
 	
 	/**
