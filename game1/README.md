@@ -1,7 +1,7 @@
 # Game Challenge
 
 ## Game 1 - Shoot the Targets!
-[![OpenFL](http://img.shields.io/badge/OpenFL-1.4.0-brightgreen.svg)](http://www.openfl.org/) [![HaxeFlixel](http://img.shields.io/badge/HaxeFlixel-3.3.3-brightgreen.svg)](http://haxeflixel.com/)
+[![OpenFL](http://img.shields.io/badge/OpenFL-2.0.0-brightgreen.svg)](http://www.openfl.org/) [![HaxeFlixel](http://img.shields.io/badge/HaxeFlixel-3.3.4-brightgreen.svg)](http://haxeflixel.com/)
 
 The first game (obviously) of the game challenge.
 
