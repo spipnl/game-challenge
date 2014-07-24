@@ -35,7 +35,7 @@
 	<assets path="assets/images" rename="images" />
 	<assets path="assets/levels" rename="levels" />
 	
-	<icon path="assets/spipnl-logo.png" />
+	<icon path="assets/images/appicon.png" />
 	
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->
