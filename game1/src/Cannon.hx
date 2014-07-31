@@ -105,12 +105,12 @@ class Cannon extends FlxGroup
 				var deg:Int = Std.int(FlxAngle.getAngle(source, mouse)-90);
 				var length:Float = FlxMath.getDistance(source, mouse);
 				
-				// Limit the shoot power from min 1 and max 30. Substraction of 6 is a margin to prevent counting from the beginning.
-				_shootPower = Std.int(Math.min(30, Math.max(1, (length * 0.3 - 6))));
+				// Limit the shoot power from min 1 and max 30. Substraction of 12 is a margin to prevent counting from the beginning.
+				_shootPower = Std.int(Math.min(30, Math.max(1, (length * 0.3 - 12))));
 				
 				// Draw the drag
 				_shootDrag.angle = deg;
-				_shootDrag.scale.set(_shootPower * 4 / _shootDrag.pixels.width, _shootPower * 0.3);
+				_shootDrag.scale.set(_shootPower * 5 / _shootDrag.pixels.width, _shootPower * 0.3);
 				_shootDrag.origin.set(0, _shootDrag.pixels.height * 0.5);
 				_shootDrag.visible = true;
 				
