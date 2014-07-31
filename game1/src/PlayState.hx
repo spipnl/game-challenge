@@ -193,7 +193,7 @@ class PlayState extends FlxState
 		
 		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0 && targets.countLiving() != 0) {
 			_levelText.text = "YOU LOSE";
-			FlxTween.tween(_levelText, {alpha: 1}, 2, {complete: onLost});
+			FlxTween.tween(_levelText, {alpha: 1}, 1, {complete: onLost});
 		}
 		
 		super.update();
@@ -201,7 +201,7 @@ class PlayState extends FlxState
 	
 	private function onLost(tween:FlxTween):Void
 	{
-		FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
+		FlxG.camera.fade(FlxColor.WHITE, 0.5, false, function() {
 			FlxG.switchState(new MainMenuState());
 		});
 	}
@@ -210,7 +210,7 @@ class PlayState extends FlxState
 	{
 		_currentMap += 1;
 		
-		FlxG.camera.fade(FlxColor.WHITE, 1, false, function() {
+		FlxG.camera.fade(FlxColor.WHITE, 0.5, false, function() {
 			if (_currentMap > 10) {
 				FlxG.switchState(new FinishedState());
 			} else {
@@ -251,7 +251,7 @@ class PlayState extends FlxState
 		if (targets.countLiving() == 0)
 		{
 			_levelText.text = "SUCCESS!";
-			FlxTween.tween(_levelText, {alpha: 1}, 2, { complete: onWon } );
+			FlxTween.tween(_levelText, {alpha: 1}, 1, { complete: onWon } );
 		}
 	}
 }
