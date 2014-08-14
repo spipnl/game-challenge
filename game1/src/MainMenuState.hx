@@ -55,7 +55,6 @@ class MainMenuState extends FlxState
 		
 		_topTitleBar = new TitleBar();
 		_topTitleBar.leftTitle = "spipnl (mobile) development;";
-		//_topTitleBar.leftTitle = ;
 		_topTitleBar.rightTitle = "Game 1 - Shoot the Targets!";
 		
 		bgColor = 0xFFbdc3c7;
