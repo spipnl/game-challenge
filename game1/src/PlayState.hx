@@ -50,6 +50,8 @@ class PlayState extends FlxState
 	
 	override public function create():Void 
 	{
+		GAnalytics.trackScreen("Level " + _currentMap);
+		
 		createBackground();
 		
 		_topTitleBar = new TitleBar();
@@ -193,6 +195,7 @@ class PlayState extends FlxState
 		
 		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0 && targets.countLiving() != 0) {
 			_levelText.text = "YOU LOSE";
+			GAnalytics.trackEvent("Player", "Lost", "Level " + _currentMap);
 			FlxTween.tween(_levelText, {alpha: 1}, 1, {complete: onLost});
 		}
 		
@@ -251,6 +254,7 @@ class PlayState extends FlxState
 		if (targets.countLiving() == 0)
 		{
 			_levelText.text = "SUCCESS!";
+			GAnalytics.trackEvent("Player", "Won", "Level " + _currentMap);
 			FlxTween.tween(_levelText, {alpha: 1}, 1, { complete: onWon } );
 		}
 	}

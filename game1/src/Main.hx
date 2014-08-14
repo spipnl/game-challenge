@@ -87,6 +87,8 @@ class Main extends Sprite
 			{
 				case "MainMenuState":
 					#if !(flash || js)
+					GAnalytics.trackEvent("Player", "Stopped", "The Game");
+					GAnalytics.stopSession();
 					Lib.exit();
 					#end
 				case "AboutState":

@@ -49,6 +49,8 @@ class FinishedState extends FlxState
 	
 	override public function create():Void 
 	{
+		GAnalytics.trackScreen("Finished");
+		
 		createBackground();
 		
 		_topTitleBar = new TitleBar();

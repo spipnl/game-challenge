@@ -4,6 +4,8 @@ import flash.Lib;
 import flixel.FlxGame;
 import flixel.FlxG;
 import flixel.FlxState;
+import haxe.xml.Fast;
+import openfl.Assets;
 
 /**
  * Initial Game
@@ -16,6 +18,12 @@ class GameClass extends FlxGame
 
 	public function new()
 	{
+		// Load the local settings xml and fetch the Google Analytics code
+		var xml = new Fast(Xml.parse(Assets.getText("../local.xml")).firstElement());
+
+		GAnalytics.startSession(xml.node.gacode.att.value);
+		GAnalytics.trackEvent("Player", "Started", "The Game");
+		
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 		

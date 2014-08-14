@@ -49,10 +49,13 @@ class MainMenuState extends FlxState
 	
 	override public function create():Void 
 	{
+		GAnalytics.trackScreen("Main Menu");
+		
 		createBackground();
 		
 		_topTitleBar = new TitleBar();
 		_topTitleBar.leftTitle = "spipnl (mobile) development;";
+		//_topTitleBar.leftTitle = ;
 		_topTitleBar.rightTitle = "Game 1 - Shoot the Targets!";
 		
 		bgColor = 0xFFbdc3c7;
@@ -110,12 +113,16 @@ class MainMenuState extends FlxState
 	
 	private function onStart():Void
 	{
+		GAnalytics.trackEvent("Button", "Clicked", "Start");
+		
 		Reg.bulletsFired = 0;
 		FlxG.switchState(new PlayState(1));
 	}
 	
 	private function onAbout():Void
 	{
+		GAnalytics.trackEvent("Button", "Clicked", "About");
+		
 		FlxG.switchState(new AboutState());
 	}
 }

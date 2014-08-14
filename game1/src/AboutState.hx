@@ -45,6 +45,8 @@ class AboutState extends FlxState
 	
 	override public function create():Void 
 	{
+		GAnalytics.trackScreen("About Menu");
+		
 		createBackground();
 		
 		_topTitleBar = new TitleBar();
@@ -110,6 +112,8 @@ class AboutState extends FlxState
 	 */
 	private function onGithub():Void
 	{
+		GAnalytics.trackEvent("Button", "Clicked", "GitHub");
+		
 		Lib.getURL(new URLRequest("https://github.com/spipnl/game-challenge/tree/master/game1"));
 	}
 	
