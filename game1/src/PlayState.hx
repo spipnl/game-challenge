@@ -41,6 +41,7 @@ class PlayState extends FlxState
 	private var _explosion:FlxEmitterExt;
 	
 	private var _currentMap:Int;
+	private var _levelEnded:Bool = false;
 	
 	public function new(currentMap)
 	{
@@ -193,9 +194,9 @@ class PlayState extends FlxState
 			FlxTween.tween(_helpText, {alpha: 0}, 0.5);
 		}
 		
-		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0 && targets.countLiving() != 0) {
+		if (_bullets.countLiving() == 0 && cannon.getBulletsLeft() == 0 && targets.countLiving() != 0 && !_levelEnded) {
+			_levelEnded = true;
 			_levelText.text = "YOU LOSE";
-			GAnalytics.trackEvent("Player", "Lost", "Level " + _currentMap);
 			FlxTween.tween(_levelText, {alpha: 1}, 1, {complete: onLost});
 		}
 		
@@ -204,6 +205,8 @@ class PlayState extends FlxState
 	
 	private function onLost(tween:FlxTween):Void
 	{
+		GAnalytics.trackEvent("Player", "Lost", "Level " + _currentMap);
+		
 		FlxG.camera.fade(FlxColor.WHITE, 0.5, false, function() {
 			FlxG.switchState(new MainMenuState());
 		});
@@ -211,6 +214,7 @@ class PlayState extends FlxState
 	
 	private function onWon(tween:FlxTween):Void
 	{
+		GAnalytics.trackEvent("Player", "Won", "Level " + _currentMap);
 		_currentMap += 1;
 		
 		FlxG.camera.fade(FlxColor.WHITE, 0.5, false, function() {
@@ -251,10 +255,10 @@ class PlayState extends FlxState
 		Target.kill();
 		FlxG.sound.play("pling");
 		
-		if (targets.countLiving() == 0)
+		if (targets.countLiving() == 0 && !_levelEnded)
 		{
+			_levelEnded = true;
 			_levelText.text = "SUCCESS!";
-			GAnalytics.trackEvent("Player", "Won", "Level " + _currentMap);
 			FlxTween.tween(_levelText, {alpha: 1}, 1, { complete: onWon } );
 		}
 	}

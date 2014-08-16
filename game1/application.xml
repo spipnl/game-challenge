@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="Shoot the Targets!" package="nl.spip.gamechallenge.game1" version="1.0.0" company="spipnl (Jip Spinnewijn)" />
+	<meta title="Shoot the Targets!" package="nl.spip.gamechallenge.game1" version="1.0.1" company="spipnl (Jip Spinnewijn)" />
 	
-	<!-- load the global local settings file of the game challenge -->
-	<include path="../local.xml" />
-	<assets path="../local.xml" />
+	<!-- load the global settings file of the game challenge -->
+	<include path="../global.xml" />
 	
 	<!-- output -->
 	<app main="Main" file="spipnl-game1" path="bin" />
-	<android install-location="preferExternal" /> 
+	<android install-location="preferExternal" />
 	
 	<window background="#000000" fps="60" />
 	<window width="800" height="480" unless="mobile" />
@@ -30,13 +29,13 @@
 		<sound path="gameloop.mp3" id="gameloop" />
 		<sound path="pling.mp3" id="pling" />
 	</assets>
-
+	
 	<assets path="assets/sounds" unless="flash">
 		<sound path="cannonshot.ogg" id="cannonshot" />
 		<sound path="gameloop.ogg" id="gameloop" />
 		<sound path="pling.ogg" id="pling" />
 	</assets>
-
+	
 	<assets path="assets/fonts" rename="fonts" />
 	<assets path="assets/images" rename="images" />
 	<assets path="assets/levels" rename="levels" />
