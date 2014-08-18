@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<meta title="TBD" package="nl.spip.gamechallenge.game2" version="0.0.1" company="spipnl (Jip Spinnewijn)" />
+	
+	<!-- load the global settings file of the game challenge -->
+	<include path="../global.xml" />
+	
+	<!-- output -->
+	<app main="Main" file="spipnl-game2" path="bin" />
+	<android install-location="preferExternal" />
+	
+	<window background="#000000" fps="60" />
+	<window width="480" height="800" unless="mobile" />
+	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
+	
+	<set name="SWF_VERSION" value="11.8" />
+	
+	<!-- classpath, haxe libs -->
+	<source path="src" />
+	<haxelib name="openfl" />
+	<haxelib name="flixel"/>
+	<haxelib name="flixel-addons" />
+	<haxelib name="ganalytics" />
+	
+	<!-- assets -->
+	
+	<assets path="assets/sounds" if="flash">
+	</assets>
+	
+	<assets path="assets/sounds" unless="flash">
+	</assets>
+	
+	<assets path="assets/fonts" rename="fonts" />
+	<assets path="assets/images" rename="images" />
+	
+	<icon path="assets/images/appicon.png" />
+	
+	<!-- optimize output
+	<haxeflag name="-dce full" /> -->
+	
+	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
+	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+</project>
