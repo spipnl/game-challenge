@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="Shoot the Targets!" package="nl.spip.gamechallenge.game1" version="1.0.1" company="spipnl (Jip Spinnewijn)" />
+	<meta title="Shoot the Targets!" package="nl.spip.gamechallenge.game1" version="1.1.0" company="spipnl (Jip Spinnewijn)" />
 	
 	<!-- load the global settings file of the game challenge -->
 	<include path="../global.xml" />
@@ -39,6 +39,7 @@
 	<assets path="assets/fonts" rename="fonts" />
 	<assets path="assets/images" rename="images" />
 	<assets path="assets/levels" rename="levels" />
+	<assets path="assets/texts" rename="texts" />
 	
 	<icon path="assets/images/appicon.png" />
 	
