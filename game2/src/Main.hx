@@ -80,6 +80,9 @@ class Main extends Sprite
 		#end
 		if ( event.keyCode == 27 ) // 27 == esc == android back key
 		{
+			#if !(flash || js)
+			Lib.exit();
+			#end
 		}
 	}
 }

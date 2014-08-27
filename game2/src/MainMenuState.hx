@@ -3,6 +3,8 @@ package;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.FlxSprite;
+import flixel.tweens.FlxTween;
+import flixel.ui.FlxButton;
 import openfl.Assets;
 
 /**
@@ -12,7 +14,7 @@ import openfl.Assets;
  */
 class MainMenuState extends FlxState
 {
-	public var player:Player;
+	private var _menuTitle:FlxSprite;
 	
 	public function new()
 	{
@@ -23,16 +25,16 @@ class MainMenuState extends FlxState
 	{
 		createBackground();
 		
-		var menuTitle = new FlxSprite(0, 0, Assets.getBitmapData("images/menutitle.png"));
-		menuTitle.x = (FlxG.width - menuTitle.width) * 0.5;
-		menuTitle.y = 200;
+		_menuTitle = new FlxSprite(0, 0, Assets.getBitmapData("images/menutitle.png"));
+		_menuTitle.x = (FlxG.width - _menuTitle.width) * 0.5;
+		_menuTitle.y = 200;
 		
-		player = new Player();
-		player.x = (FlxG.width - player.width) * 0.5;
-		player.y = (FlxG.height - player.height) * 0.5;
+		var startButton:FlxButton = new FlxButton(0, 0, "Start", onStart);
+		startButton.x = (FlxG.width - startButton.width) * 0.5;
+		startButton.y = 380;
 		
-		add(player);
-		add(menuTitle);
+		add(startButton);
+		add(_menuTitle);
 	}
 	
 	/**
@@ -49,5 +51,12 @@ class MainMenuState extends FlxState
 		var backgroundSprite = new FlxSprite(bgX, bgY, backgroundImage);
 		
 		add(backgroundSprite);
+	}
+	
+	private function onStart():Void
+	{
+		FlxTween.tween(_menuTitle, {alpha: 0}, 0.5, {complete: function(tween:FlxTween){
+			FlxG.switchState(new PlayState());
+		}});
 	}
 }

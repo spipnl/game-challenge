@@ -4,6 +4,7 @@
 	
 	<!-- load the global settings file of the game challenge -->
 	<include path="../global.xml" />
+	<include path="../lib/include.xml" />
 	
 	<!-- output -->
 	<app main="Main" file="spipnl-game2" path="bin" />
@@ -11,7 +12,7 @@
 	
 	<window background="#000000" fps="60" />
 	<window width="480" height="800" unless="mobile" />
-	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
+	<window orientation="portrait" vsync="false" antialiasing="0" if="cpp" />
 	
 	<set name="SWF_VERSION" value="11.8" />
 	
@@ -32,6 +33,7 @@
 	
 	<assets path="assets/fonts" rename="fonts" />
 	<assets path="assets/images" rename="images" />
+	<assets path="assets/texts" rename="texts" />
 	
 	<icon path="assets/images/appicon.png" />
 	

@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import openfl.Assets;
 
@@ -15,5 +16,17 @@ class Player extends FlxSprite
 		super();
 		
 		loadGraphic(Assets.getBitmapData("images/player.png"));
+		
+		// Gravity of the player
+		acceleration.y = 600;
+	}
+	
+	override public function update():Void
+	{
+		if (FlxG.mouse.justPressed) {
+			velocity.y = -600;
+		}
+		
+		super.update();
 	}
 }

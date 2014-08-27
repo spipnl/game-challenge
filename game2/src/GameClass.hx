@@ -4,6 +4,7 @@ import flash.Lib;
 import flixel.FlxGame;
 import flixel.FlxG;
 import flixel.FlxState;
+import spipnl.Settings;
 
 /**
  * Initial Game
@@ -14,6 +15,8 @@ class GameClass extends FlxGame
 {
 	public function new()
 	{
+		Settings.loadXml("texts/local.xml");
+		
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 		
