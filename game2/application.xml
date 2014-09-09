@@ -21,6 +21,7 @@
 	<haxelib name="openfl" />
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" />
+	<haxelib name="nape" />
 	<haxelib name="ganalytics" />
 	
 	<!-- assets -->
