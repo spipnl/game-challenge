@@ -1,6 +1,8 @@
 package;
 
 import flixel.FlxG;
+import flixel.text.FlxText;
+import flixel.util.FlxMath;
 import flixel.FlxObject;
 import flixel.addons.nape.FlxNapeSprite;
 import nape.geom.Vec2;
@@ -16,10 +18,12 @@ using flixel.util.FlxAngle;
  */
 class Player extends FlxNapeSprite
 {
-	private var playerAcceleration:Float = 300;
-	private var maxSpeed:Float = 300;
-	private var zeroFriction:Material = new Material(0,0,0);
-	private var normalFriction:Material = new Material(0,1,2);
+	private var moveSpeed:Float = 80;
+	private var jumpSpeed:Float = 800;
+	
+	private var xText:FlxText;
+	private var yText:FlxText;
+	private var zText:FlxText;
 	
 	public function new(X:Float, Y:Float)
 	{
@@ -35,22 +39,35 @@ class Player extends FlxNapeSprite
 	
 	private function movement():Void
 	{
-		var speed = 50;
-		if (FlxG.keys.anyPressed(["LEFT", "A"]))
-		{
-			body.applyImpulse(new Vec2( -speed, 0));
-		}
-		
-		if (FlxG.keys.anyPressed(["RIGHT", "D"]))
-		{
-			body.applyImpulse(new Vec2(speed, 0));
-		}
-		
-		
-		if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) /*&& isTouching(FlxObject.FLOOR)*/)
-		{
-			body.velocity.y = -500;
-		}
+		#if (android || ios)
+			if (FlxG.accelerometer.isSupported) {
+				var accelX = -Math.max(-1, Math.min(1, FlxG.accelerometer.x * 5));
+				
+				body.applyImpulse(new Vec2(moveSpeed * accelX, 0));
+				
+				if (FlxG.mouse.justPressed /*&& isTouching(FlxObject.FLOOR)*/)
+				{
+					body.velocity.y = -jumpSpeed;
+				}
+			} else {
+				trace("No Accelerometer support");
+			}
+		#else
+			if (FlxG.keys.anyPressed(["LEFT", "A"]))
+			{
+				body.applyImpulse(new Vec2(-moveSpeed, 0));
+			}
+			
+			if (FlxG.keys.anyPressed(["RIGHT", "D"]))
+			{
+				body.applyImpulse(new Vec2(moveSpeed, 0));
+			}
+			
+			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) /*&& isTouching(FlxObject.FLOOR)*/)
+			{
+				body.velocity.y = -jumpSpeed;
+			}
+		#end
 	}
 	
 	override public function update():Void

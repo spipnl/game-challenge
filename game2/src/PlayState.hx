@@ -28,11 +28,15 @@ class PlayState extends FlxNapeState
 	
 	override public function create():Void 
 	{
+		//FlxG.debugger.visible = true;
+		
 		super.create();
 		
 		add(new FlxSprite(0, 0, "images/colored_desert.png"));
 		
-		FlxNapeState.space.gravity.setxy(0, 500);
+		FlxNapeState.space.gravity.setxy(0, 1000);
+		
+		createWalls(0, 0, FlxG.width, FlxG.height);
 		
 		var floorBody:Body = new Body(BodyType.STATIC);
 		var floorShape:Polygon = new Polygon(Polygon.rect(0, FlxG.height, FlxG.width, 1));
