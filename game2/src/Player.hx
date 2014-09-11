@@ -6,7 +6,6 @@ import flixel.util.FlxMath;
 import flixel.FlxObject;
 import flixel.addons.nape.FlxNapeSprite;
 import nape.geom.Vec2;
-import nape.phys.Material;
 import openfl.Assets;
 
 using flixel.util.FlxAngle;
@@ -19,7 +18,7 @@ using flixel.util.FlxAngle;
 class Player extends FlxNapeSprite
 {
 	private var moveSpeed:Float = 80;
-	private var jumpSpeed:Float = 800;
+	private var jumpSpeed:Float = 1200;
 	
 	private var xText:FlxText;
 	private var yText:FlxText;
@@ -33,7 +32,7 @@ class Player extends FlxNapeSprite
 		loadGraphic(Assets.getBitmapData("images/player.png"));
 		createCircularBody(width * 0.5);
 		antialiasing = true;
-		setBodyMaterial(0.8,1.0,1.4,1.5,0.01);
+		setBodyMaterial(-1.0,1.0,1.4,1.5,0.01);
 		setDrag(0.98, 1);
 	}
 	
@@ -45,7 +44,7 @@ class Player extends FlxNapeSprite
 				
 				body.applyImpulse(new Vec2(moveSpeed * accelX, 0));
 				
-				if (FlxG.mouse.justPressed /*&& isTouching(FlxObject.FLOOR)*/)
+				if (FlxG.mouse.justPressed && body.velocity.y == 0)
 				{
 					body.velocity.y = -jumpSpeed;
 				}
@@ -63,7 +62,7 @@ class Player extends FlxNapeSprite
 				body.applyImpulse(new Vec2(moveSpeed, 0));
 			}
 			
-			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) /*&& isTouching(FlxObject.FLOOR)*/)
+			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) && body.velocity.y == 0)
 			{
 				body.velocity.y = -jumpSpeed;
 			}

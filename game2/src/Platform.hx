@@ -19,7 +19,7 @@ class Platform extends FlxNapeSprite
 		
 		setPosition(X, Y);
 		loadGraphic("images/level/elementStone032.png");
-		createRectangularBody(width, height, BodyType.STATIC);
+		createRectangularBody(width, height, BodyType.KINEMATIC);
 		antialiasing = true;
 		setBodyMaterial(.5, .5, .5, 2);
 	}
