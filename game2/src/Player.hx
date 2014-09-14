@@ -5,6 +5,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxMath;
 import flixel.FlxObject;
 import flixel.addons.nape.FlxNapeSprite;
+import nape.callbacks.CbType;
 import nape.geom.Vec2;
 import openfl.Assets;
 
@@ -17,8 +18,12 @@ using flixel.util.FlxAngle;
  */
 class Player extends FlxNapeSprite
 {
-	private var moveSpeed:Float = 80;
-	private var jumpSpeed:Float = 1200;
+	public static var CB_PLAYER:CbType = new CbType();
+	
+	@:isVar public var canJump(get, set):Bool = true;
+	
+	private var moveSpeed:Float = 60;
+	private var jumpSpeed:Float = 1000;
 	
 	private var xText:FlxText;
 	private var yText:FlxText;
@@ -32,8 +37,24 @@ class Player extends FlxNapeSprite
 		loadGraphic(Assets.getBitmapData("images/player.png"));
 		createCircularBody(width * 0.5);
 		antialiasing = true;
-		setBodyMaterial(-1.0,1.0,1.4,1.5,0.01);
+		//setBodyMaterial(-1.0,1.0,1.4,1.5,0.01);
+		setBodyMaterial(-1.0, .5, .5, 2);
 		setDrag(0.98, 1);
+		
+		body.cbTypes.add(Player.CB_PLAYER);
+		body.userData.data = this;
+	}
+	
+	public function get_canJump():Bool
+	{
+		return canJump;
+	}
+	
+	public function set_canJump(CanJump:Bool):Bool
+	{
+		canJump = CanJump;
+
+		return canJump;
 	}
 	
 	private function movement():Void
@@ -44,7 +65,7 @@ class Player extends FlxNapeSprite
 				
 				body.applyImpulse(new Vec2(moveSpeed * accelX, 0));
 				
-				if (FlxG.mouse.justPressed && body.velocity.y == 0)
+				if (FlxG.mouse.justPressed && canJump)
 				{
 					body.velocity.y = -jumpSpeed;
 				}
@@ -62,7 +83,7 @@ class Player extends FlxNapeSprite
 				body.applyImpulse(new Vec2(moveSpeed, 0));
 			}
 			
-			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) && body.velocity.y == 0)
+			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) && canJump)
 			{
 				body.velocity.y = -jumpSpeed;
 			}
