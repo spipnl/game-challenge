@@ -12,7 +12,6 @@ class Settings {
 		
 		settings = new Map();
 		for (setting in xmlFast.nodes.setting) {
-			trace(setting.att.key + ' - ' + setting.att.value);
 			settings.set(setting.att.key, setting.att.value);
 		}
 	}
