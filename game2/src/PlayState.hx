@@ -32,6 +32,7 @@ class PlayState extends FlxNapeState
 	public var floorBody:Body;
 	public var floorShape:Polygon;
 	public var player:Player;
+	public var lava:Lava;
 	public var cirt:FlxShapeCircle;
 	
 	private var gameSpeed:Int = 1;
@@ -45,7 +46,7 @@ class PlayState extends FlxNapeState
 		
 		add(new FlxSprite(0, 0, "images/colored_desert.png"));
 		
-		FlxNapeState.space.gravity.setxy(0, 1000);
+		FlxNapeState.space.gravity.setxy(0, 1500);
 		
 		//createWalls(0, 0, FlxG.width, FlxG.height);
 		
@@ -100,6 +101,11 @@ class PlayState extends FlxNapeState
 			Platform.CB_PLATFORM,
 			onPlayerStopsCollidingWithPlatform
 		));
+		
+		lava = new Lava();
+		lava.y = FlxG.height - lava.height;
+		trace(lava.width);
+		add(lava);
 	}
 	
 	function onPlayerIsCollidingWithPlatform(i:InteractionCallback) 
