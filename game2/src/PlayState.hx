@@ -28,11 +28,12 @@ import openfl.Assets;
  */
 class PlayState extends FlxNapeState
 {
+	public var background:Background;
 	public var platforms:Array<FlxNapeSprite>;
 	public var floorBody:Body;
 	public var floorShape:Polygon;
 	public var player:Player;
-	public var lava:Lava;
+	public var quicksand:Quicksand;
 	public var cirt:FlxShapeCircle;
 	
 	private var gameSpeed:Int = 1;
@@ -44,7 +45,8 @@ class PlayState extends FlxNapeState
 		
 		super.create();
 		
-		add(new FlxSprite(0, 0, "images/colored_desert.png"));
+		background = new Background();
+		add(background);
 		
 		FlxNapeState.space.gravity.setxy(0, 1500);
 		
@@ -102,10 +104,8 @@ class PlayState extends FlxNapeState
 			onPlayerStopsCollidingWithPlatform
 		));
 		
-		lava = new Lava();
-		lava.y = FlxG.height - lava.height;
-		trace(lava.width);
-		add(lava);
+		quicksand = new Quicksand();
+		add(quicksand);
 	}
 	
 	function onPlayerIsCollidingWithPlatform(i:InteractionCallback) 
