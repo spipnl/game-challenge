@@ -25,7 +25,7 @@ class Platform extends FlxNapeSprite
 		createRectangularBody(width, height, BodyType.KINEMATIC);
 		antialiasing = true;
 		setBodyMaterial(.5, .5, .5, 2);
-		body.velocity.y = 100;
+		body.velocity.y = 75;
 		
 		body.cbTypes.add(Platform.CB_PLATFORM);
 	}

@@ -104,8 +104,8 @@ class PlayState extends FlxNapeState
 			onPlayerStopsCollidingWithPlatform
 		));
 		
-		quicksand = new Quicksand();
-		add(quicksand);
+		//quicksand = new Quicksand();
+		//add(quicksand);
 	}
 	
 	function onPlayerIsCollidingWithPlatform(i:InteractionCallback) 

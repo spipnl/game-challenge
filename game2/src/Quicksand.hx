@@ -6,6 +6,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
+import flixel.util.FlxTimer;
 import openfl.Assets;
 
 /**
@@ -14,9 +15,6 @@ import openfl.Assets;
  */
 class Quicksand extends FlxSpriteGroup
 {
-	private var lavaOffset:Float = 1;
-	private var lavaWidth:Float;
-	private var grains:FlxSpriteGroup;
 	private var quicksand1:FlxSprite;
 	private var quicksand2:FlxSprite;
 	private var quicksand3:FlxSprite;
@@ -29,12 +27,12 @@ class Quicksand extends FlxSpriteGroup
 		add(quicksand1);
 		quicksand2 = new FlxSprite(0, FlxG.height, "images/quicksand.png");
 		add(quicksand2);
-	    quicksand3 = new FlxSprite(0, FlxG.height, "images/quicksand.png");
+		quicksand3 = new FlxSprite(0, FlxG.height, "images/quicksand.png");
 		add(quicksand3);
 		
-		FlxTween.tween(quicksand1, {y: FlxG.height - 80}, 0.9, {type: FlxTween.PINGPONG, ease: FlxEase.quartIn, complete: onQuicksandComplete});
-		FlxTween.tween(quicksand2, {y: FlxG.height - 80}, 0.9, {type: FlxTween.PINGPONG, ease: FlxEase.quartIn, complete: onQuicksandComplete, startDelay: 0.6});
-		FlxTween.tween(quicksand3, {y: FlxG.height - 80}, 0.9, {type: FlxTween.PINGPONG, ease: FlxEase.quartIn, complete: onQuicksandComplete, startDelay: 1.2});
+		FlxTween.tween(quicksand1, {y: FlxG.height - 80}, 0.9, {type: FlxTween.PINGPONG, ease: FlxEase.quadIn, complete: onQuicksandComplete});
+		FlxTween.tween(quicksand2, {y: FlxG.height - 80}, 0.9, {type: FlxTween.PINGPONG, ease: FlxEase.quadIn, complete: onQuicksandComplete, startDelay: 0.6});
+		FlxTween.tween(quicksand3, {y: FlxG.height - 80}, 0.9, {type: FlxTween.PINGPONG, ease: FlxEase.quadIn, complete: onQuicksandComplete, startDelay: 1.2});
 		
 	}
 	
