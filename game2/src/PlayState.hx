@@ -6,6 +6,7 @@ import flixel.addons.nape.FlxNapeSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
+import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 import nape.callbacks.CbEvent;
 import nape.callbacks.CbType;
@@ -29,14 +30,15 @@ import openfl.Assets;
 class PlayState extends FlxNapeState
 {
 	public var background:Background;
-	public var platforms:Array<FlxNapeSprite>;
+	public var platforms:FlxSpriteGroup;
 	public var floorBody:Body;
 	public var floorShape:Polygon;
 	public var player:Player;
 	public var quicksand:Quicksand;
 	public var cirt:FlxShapeCircle;
 	
-	private var gameSpeed:Int = 1;
+	private var gameSpeed:Int = 100;
+	private var levelRowCounter:Int = 0;
 	
 	override public function create():Void 
 	{
@@ -65,20 +67,13 @@ class PlayState extends FlxNapeState
 		//floorShape.body = floorBody;
 		floorBody.space = FlxNapeState.space;
 		
-		platforms = new Array<FlxNapeSprite>();
-		
-		var platform1:Platform = new Platform(80, 100);
-		var platform2:Platform = new Platform(240, 300);
-		var platform3:Platform = new Platform(400, 500);
-		var platform4:Platform = new Platform(200, 700);
-		platforms.push(platform1);
-		platforms.push(platform2);
-		platforms.push(platform3);
-		platforms.push(platform4);
-		add(platform1);
-		add(platform2);
-		add(platform3);
-		add(platform4);
+		platforms = new FlxSpriteGroup();
+		for (i in 0...20) {
+			var platform:Platform = new Platform(0, 0, 100, Platform.MATERIAL_STONE);
+			platform.kill();
+			platforms.add(platform);
+		}
+		add(platforms);
 		
 		player = new Player(FlxG.width * 0.5, FlxG.height * 0.5);
 		
@@ -125,13 +120,18 @@ class PlayState extends FlxNapeState
 	
 	override public function update():Void
 	{
-		for (platform in platforms) {
-			
+		platforms.forEachAlive(function(platform:FlxSprite) {
+			var platform:Platform = cast(platform);
 			if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) {
-				var newX = platform.width * 0.5 + (FlxG.width - platform.width) * Math.random();
-				var newY = FlxG.camera.bounds.y - platform.height * 0.5;
-				platform.body.position.setxy(newX, newY);
+				platform.kill();
 			}
+		});
+		
+		levelRowCounter += 1;
+		if (levelRowCounter > 100)
+		{
+			levelRowCounter = 0;
+			var levelRow:LevelRow = new LevelRow(0, 0, platforms);
 		}
 		
 		if (FlxG.keys.justPressed.G)
