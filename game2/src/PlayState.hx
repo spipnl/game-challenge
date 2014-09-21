@@ -13,6 +13,9 @@ import nape.callbacks.CbType;
 import nape.callbacks.InteractionCallback;
 import nape.callbacks.InteractionListener;
 import nape.callbacks.InteractionType;
+import nape.callbacks.PreCallback;
+import nape.callbacks.PreFlag;
+import nape.callbacks.PreListener;
 import nape.dynamics.CollisionArbiter;
 import nape.geom.Vec2;
 import nape.phys.Body;
@@ -60,7 +63,8 @@ class PlayState extends FlxNapeState
 		floorBody.shapes.add(new Polygon(Polygon.rect(FlxG.width, 0, 2, FlxG.height)));
 		floorBody.shapes.add(new Polygon(Polygon.rect(0, FlxG.height, FlxG.width, 2)));
 		
-		floorBody.cbTypes.add(Platform.CB_PLATFORM);
+		var CB_FLOOR:CbType = new CbType();
+		floorBody.cbTypes.add(CB_FLOOR);
 		
 		//floorBody = new Body(BodyType.KINEMATIC);
 		//floorShape = new Polygon(Polygon.rect(0, FlxG.height, FlxG.width, 1));
@@ -68,11 +72,15 @@ class PlayState extends FlxNapeState
 		floorBody.space = FlxNapeState.space;
 		
 		platforms = new FlxSpriteGroup();
-		for (i in 0...20) {
-			var platform:Platform = new Platform(0, 0, 100, Platform.MATERIAL_STONE);
-			platform.kill();
-			platforms.add(platform);
-		}
+		platforms = generatePlatforms(platforms, 100, Platform.MATERIAL_STONE, 10);
+		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_STONE, 10);
+		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_STONE, 10);
+		platforms = generatePlatforms(platforms, 100, Platform.MATERIAL_GLASS, 10);
+		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_GLASS, 10);
+		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_GLASS, 10);
+		platforms = generatePlatforms(platforms, 100, Platform.MATERIAL_WOOD, 10);
+		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_WOOD, 10);
+		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_WOOD, 10);
 		add(platforms);
 		
 		player = new Player(FlxG.width * 0.5, FlxG.height * 0.5);
@@ -82,6 +90,21 @@ class PlayState extends FlxNapeState
 		FlxG.cameras.bgColor = 0xffd0f4f7;
 		
 		add(player);
+		
+		FlxNapeState.space.listeners.add(new PreListener(
+			InteractionType.COLLISION,
+			Platform.CB_PLATFORM_ONE_WAY,
+			Player.CB_PLAYER,
+			onPlayerStartsCollidingWithOneWayPlatform
+		));
+		
+		FlxNapeState.space.listeners.add(new InteractionListener(
+			CbEvent.ONGOING,
+			InteractionType.COLLISION,
+			Player.CB_PLAYER,
+			CB_FLOOR,
+			onPlayerIsCollidingWithFloor
+		));
 		
 		FlxNapeState.space.listeners.add(new InteractionListener(
 			CbEvent.ONGOING,
@@ -103,17 +126,56 @@ class PlayState extends FlxNapeState
 		//add(quicksand);
 	}
 	
-	function onPlayerIsCollidingWithPlatform(i:InteractionCallback) 
+	private function generatePlatforms(platforms:FlxSpriteGroup, platformWidth:Float, platformMaterial:String, amount:Int):FlxSpriteGroup
 	{
-		//var player:Player = cast(i.int2, Body).userData.data;
-		//var platform:Platform = cast(i.int2, Body).userData.data;
+		for (i in 0...amount)
+		{
+			var platform:Platform;
+			platform = new Platform(0, 0, platformWidth, platformMaterial);
+			platform.kill();
+			platforms.add(platform);
+		}
 		
+		return platforms;
+	}
+	
+	private function onPlayerStartsCollidingWithOneWayPlatform(cb:PreCallback):PreFlag
+	{
+		var colArb:CollisionArbiter = cb.arbiter.collisionArbiter;
+		
+		if (colArb.normal.y >= 0)
+		{
+			return PreFlag.IGNORE;
+		}
+		else
+		{
+			return PreFlag.ACCEPT;
+		}
+	}
+	
+	private function onPlayerIsCollidingWithFloor(i:InteractionCallback):Void
+	{
 		var colArb:CollisionArbiter = cast(i.arbiters.at(0));
 		
 		player.canJump = colArb.normal.y < 0;
 	}
 	
-	function onPlayerStopsCollidingWithPlatform(i:InteractionCallback) 
+	private function onPlayerIsCollidingWithPlatform(i:InteractionCallback):Void
+	{
+		var platform:Platform = cast(i.int2, Body).userData.data;
+		platform.health -= 2;
+		
+		var colArb:CollisionArbiter = cast(i.arbiters.at(0));
+		
+		player.canJump = colArb.normal.y < 0;
+		
+		if (colArb.normal.y >= 0 && platform.breakable)
+		{
+			platform.health -= 30;
+		}
+	}
+	
+	private function onPlayerStopsCollidingWithPlatform(i:InteractionCallback):Void
 	{
 		player.canJump = false;
 	}
@@ -122,7 +184,8 @@ class PlayState extends FlxNapeState
 	{
 		platforms.forEachAlive(function(platform:FlxSprite) {
 			var platform:Platform = cast(platform);
-			if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) {
+			if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
+			{
 				platform.kill();
 			}
 		});

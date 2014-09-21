@@ -20,14 +20,22 @@ class LevelRow extends FlxSpriteGroup
 	{
 		super();
 		
-		var platform1:Platform = cast(platforms.recycle(FlxSprite));
+		var beginPosition:Float = 0;
 		
-		platform1.body.position.x = platform1.width + 200 * Math.random();
-		platform1.body.position.y = - 32;
-		
-		var platform2:Platform = cast(platforms.recycle(FlxSprite));
-		
-		platform2.body.position.x = platform1.body.position.x + platform1.width * 2;
-		platform2.body.position.y = platform1.body.position.y;
+		do
+		{
+			var platform:Platform;
+			do
+			{
+				platform = cast(platforms.getRandom());
+			} while (platform.alive);
+			
+			platform.body.position.x = beginPosition + platform.width * 0.5;
+			platform.body.position.y = - 32;
+			platform.revive();
+			platform.health = 100;
+			
+			beginPosition += platform.width;
+		} while (beginPosition < FlxG.width);
 	}
 }
