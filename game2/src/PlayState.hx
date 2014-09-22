@@ -3,6 +3,8 @@ package;
 import flixel.addons.display.shapes.FlxShapeCircle;
 import flixel.addons.nape.FlxNapeState;
 import flixel.addons.nape.FlxNapeSprite;
+import openfl.events.KeyboardEvent;
+import openfl.Lib;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
@@ -34,11 +36,14 @@ class PlayState extends FlxNapeState
 {
 	public var background:Background;
 	public var platforms:FlxSpriteGroup;
+	public var enemies:FlxSpriteGroup;
 	public var floorBody:Body;
 	public var floorShape:Polygon;
 	public var player:Player;
 	public var quicksand:Quicksand;
 	public var cirt:FlxShapeCircle;
+	
+	public var hud:HUD;
 	
 	private var gameSpeed:Int = 100;
 	private var levelRowCounter:Int = 0;
@@ -52,6 +57,7 @@ class PlayState extends FlxNapeState
 		
 		background = new Background();
 		add(background);
+		add(background.smallClouds);
 		
 		FlxNapeState.space.gravity.setxy(0, 1500);
 		
@@ -82,6 +88,10 @@ class PlayState extends FlxNapeState
 		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_WOOD, 10);
 		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_WOOD, 10);
 		add(platforms);
+		
+		enemies = new FlxSpriteGroup();
+		enemies = generateEnemies(enemies, 5);
+		add(enemies);
 		
 		player = new Player(FlxG.width * 0.5, FlxG.height * 0.5);
 		
@@ -122,8 +132,42 @@ class PlayState extends FlxNapeState
 			onPlayerStopsCollidingWithPlatform
 		));
 		
+		add(background.bigClouds);
+		
+		hud = new HUD(0, 20);
+		add(hud);
 		//quicksand = new Quicksand();
 		//add(quicksand);
+		
+		
+		
+		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+	}
+	
+	/**
+	 * Listen to keydowns to switch to different states
+	 *
+	 * @param Event 		The KeyboardEvent
+	 */
+	private function onKeyUp(event:KeyboardEvent ):Void
+	{
+		#if android
+		event.stopImmediatePropagation();
+		#end
+		
+		hud.test = event.keyCode;
+	}
+	
+	private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup
+	{
+		for (i in 0...amount)
+		{
+			var enemy:Enemy = new Enemy(0, 0);
+			enemy.kill();
+			enemies.add(enemy);
+		}
+		
+		return enemies;
 	}
 	
 	private function generatePlatforms(platforms:FlxSpriteGroup, platformWidth:Float, platformMaterial:String, amount:Int):FlxSpriteGroup
@@ -191,10 +235,18 @@ class PlayState extends FlxNapeState
 		});
 		
 		levelRowCounter += 1;
-		if (levelRowCounter > 100)
+		if (levelRowCounter > 150)
 		{
 			levelRowCounter = 0;
 			var levelRow:LevelRow = new LevelRow(0, 0, platforms);
+		
+			if (enemies.countLiving() < 5) {
+				var enemy:Enemy = cast(enemies.getFirstDead());
+				enemy.body.position.x = Math.random() * FlxG.width;
+				enemy.body.position.y = -100;
+				enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
+				enemy.revive();
+			}
 		}
 		
 		if (FlxG.keys.justPressed.G)
@@ -206,6 +258,9 @@ class PlayState extends FlxNapeState
 		{
 			FlxG.resetState();
 		}
+		
+		Reg.score += Std.int(gameSpeed / 100);
+		hud.score = Reg.score;
 		
 		super.update();
 	}

@@ -18,8 +18,8 @@ class Background extends FlxSpriteGroup
 	private var _smallCloudInterval:Int = 50;
 	
 	private var _startBackground:FlxSprite;
-	private var _bigClouds:FlxSpriteGroup;
-	private var _smallClouds:FlxSpriteGroup;
+	public var bigClouds:FlxSpriteGroup;
+	public var smallClouds:FlxSpriteGroup;
 	
 	public function new(X:Float=0, Y:Float=0) 
 	{
@@ -27,25 +27,26 @@ class Background extends FlxSpriteGroup
 		
 		_startBackground = new FlxSprite(0, 0, "images/colored_desert.png");
 		
-		_bigClouds = new FlxSpriteGroup();
+		bigClouds = new FlxSpriteGroup();
 		for (i in 0...10) {
 			var bigCloud:FlxSprite = new FlxSprite();
 			bigCloud.loadGraphic("images/bigCloud.png");
+			bigCloud.alpha = 0.5;
 			bigCloud.kill();
-			_bigClouds.add(bigCloud);
+			bigClouds.add(bigCloud);
 		}
 		
-		_smallClouds = new FlxSpriteGroup();
+		smallClouds = new FlxSpriteGroup();
 		for (i in 0...20) {
 			var smallCloud:FlxSprite = new FlxSprite();
 			smallCloud.loadGraphic("images/smallCloud.png");
 			smallCloud.kill();
-			_smallClouds.add(smallCloud);
+			smallClouds.add(smallCloud);
 		}
 		
 		add(_startBackground);
-		add(_bigClouds);
-		add(_smallClouds);
+		//add(bigClouds);
+		//add(smallClouds);
 	}
 	
 	override public function update():Void
@@ -55,7 +56,7 @@ class Background extends FlxSpriteGroup
 		}
 		
 		var newBigCloud:Bool = true;
-		_bigClouds.forEachAlive(function(bigCloud:FlxSprite) {
+		bigClouds.forEachAlive(function(bigCloud:FlxSprite) {
 			bigCloud.y += bigCloud.velocity.y;
 			if (bigCloud.y < _bigCloudInterval) {
 				newBigCloud = false;
@@ -66,14 +67,14 @@ class Background extends FlxSpriteGroup
 		});
 		
 		if (newBigCloud) {
-			var bigCloud:FlxSprite = _bigClouds.recycle(FlxSprite);
+			var bigCloud:FlxSprite = bigClouds.recycle(FlxSprite);
 			bigCloud.x = FlxG.width * Math.random() - bigCloud.width * 0.5;
 			bigCloud.y = -bigCloud.height;
-			bigCloud.velocity.y = _gameSpeed / (70 + 30 * Math.random());
+			bigCloud.velocity.y = _gameSpeed / (40 + 10 * Math.random());
 		}
 		
 		var newSmallCloud:Bool = true;
-		_smallClouds.forEachAlive(function(smallCloud:FlxSprite) {
+		smallClouds.forEachAlive(function(smallCloud:FlxSprite) {
 			smallCloud.y += smallCloud.velocity.y;
 			if (smallCloud.y < _smallCloudInterval) {
 				newSmallCloud = false;
@@ -84,10 +85,10 @@ class Background extends FlxSpriteGroup
 		});
 		
 		if (newSmallCloud) {
-			var smallCloud:FlxSprite = _smallClouds.recycle(FlxSprite);
+			var smallCloud:FlxSprite = smallClouds.recycle(FlxSprite);
 			smallCloud.x = FlxG.width * Math.random() - smallCloud.width * 0.5;
 			smallCloud.y = -smallCloud.height;
-			smallCloud.velocity.y = _gameSpeed / (50 + 20 * Math.random());
+			smallCloud.velocity.y = _gameSpeed / (60 + 20 * Math.random());
 		}
 	}
 }

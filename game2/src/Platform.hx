@@ -28,7 +28,7 @@ class Platform extends FlxNapeSprite
 		super();
 		
 		setPosition(X, Y);
-		loadGraphic("images/level/" + Material + "-" + Std.string(Width) + ".png");
+		loadGraphic("images/level/" + Material + "-" + Std.string(Width) + ".png", true, Std.int(Width), 32);
 		createRectangularBody(width, height, BodyType.KINEMATIC);
 		antialiasing = true;
 		setBodyMaterial(.5, .5, .5, 2);
@@ -54,6 +54,18 @@ class Platform extends FlxNapeSprite
 		{
 			kill();
 		}
+		
+		if (breakable) {
+			if (health >= 80) {
+				animation.frameIndex = 0;
+			} else if (health >= 30 && animation.frameIndex == 0) {
+				animation.frameIndex = 1;
+			} else if (health < 30 && animation.frameIndex == 1) {
+				animation.frameIndex = 2;
+			}
+		}
+		
+		
 		
 		super.update();
 	}
