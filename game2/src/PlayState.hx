@@ -26,6 +26,7 @@ import nape.phys.Material;
 import nape.shape.Circle;
 import nape.shape.Polygon;
 import openfl.Assets;
+import Portals;
 
 /**
  * Initial PlayState
@@ -64,9 +65,9 @@ class PlayState extends FlxNapeState
 		//createWalls(0, 0, FlxG.width, FlxG.height);
 		
 		floorBody = new Body(BodyType.KINEMATIC);
-		floorBody.shapes.add(new Polygon(Polygon.rect(0, 0, -2, FlxG.height)));
+		//floorBody.shapes.add(new Polygon(Polygon.rect(0, 0, -2, FlxG.height)));
 		//floorBody.shapes.add(new Polygon(Polygon.rect(0, 0, FlxG.width, -2)));
-		floorBody.shapes.add(new Polygon(Polygon.rect(FlxG.width, 0, 2, FlxG.height)));
+		//floorBody.shapes.add(new Polygon(Polygon.rect(FlxG.width, 0, 2, FlxG.height)));
 		floorBody.shapes.add(new Polygon(Polygon.rect(0, FlxG.height, FlxG.width, 2)));
 		
 		var CB_FLOOR:CbType = new CbType();
@@ -107,7 +108,7 @@ class PlayState extends FlxNapeState
 			Player.CB_PLAYER,
 			onPlayerStartsCollidingWithOneWayPlatform
 		));
-		
+		/*
 		FlxNapeState.space.listeners.add(new InteractionListener(
 			CbEvent.ONGOING,
 			InteractionType.COLLISION,
@@ -115,7 +116,7 @@ class PlayState extends FlxNapeState
 			CB_FLOOR,
 			onPlayerIsCollidingWithFloor
 		));
-		
+		*/
 		FlxNapeState.space.listeners.add(new InteractionListener(
 			CbEvent.ONGOING,
 			InteractionType.COLLISION,
@@ -139,7 +140,20 @@ class PlayState extends FlxNapeState
 		//quicksand = new Quicksand();
 		//add(quicksand);
 		
+		var portalsBody:Body = new Body(BodyType.STATIC);
+		var portalsManager:PortalManager = new PortalManager(FlxNapeState.space);
 		
+		var portalLeft:Portal = Portals.genPortal(FlxG.height, Vec2.get(0, FlxG.height * 0.5), 0, portalsBody, portalsManager);
+		var portalRight:Portal = Portals.genPortal(FlxG.height, Vec2.get(FlxG.width, FlxG.height * 0.5), Math.PI, portalsBody, portalsManager);
+		
+		portalLeft.target = portalRight;
+		portalRight.target = portalLeft;
+		
+        portalsBody.setShapeMaterials(Material.steel());
+		portalsBody.space = FlxNapeState.space;
+		
+		trace(player.body.shapes);
+        player.body.shapes.at(0).cbTypes.add(portalsManager.PORTABLE);
 		
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 	}
@@ -225,7 +239,7 @@ class PlayState extends FlxNapeState
 	}
 	
 	override public function update():Void
-	{
+	{/*
 		platforms.forEachAlive(function(platform:FlxSprite) {
 			var platform:Platform = cast(platform);
 			if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
@@ -248,7 +262,7 @@ class PlayState extends FlxNapeState
 				enemy.revive();
 			}
 		}
-		
+		*/
 		if (FlxG.keys.justPressed.G)
 		{
 			napeDebugEnabled = !napeDebugEnabled;
