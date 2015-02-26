@@ -52,7 +52,7 @@ class Main extends Sprite
 		}
 		
 		initialize();
-		
+		FlxG.log.redirectTraces = true;
 		_game = new GameClass();
 		addChild(_game);
 	}

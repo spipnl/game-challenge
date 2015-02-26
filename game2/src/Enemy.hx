@@ -39,7 +39,15 @@ class Enemy extends FlxNapeSprite
 		if (body.position.y > FlxG.height + height) {
 			kill();
 		}
+		/*
+		if (body.position.x > FlxG.width + width * 0.5) {
+			body.position.x = 0 - width * 0.5;
+		}
 		
+		if (body.position.x < 0 - width * 0.5) {
+			body.position.x = FlxG.width + width * 0.5;
+		}
+		*/
 		super.update();
 	}
 }

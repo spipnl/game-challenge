@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxMath;
 import flixel.FlxObject;
@@ -93,6 +94,14 @@ class Player extends FlxNapeSprite
 	override public function update():Void
 	{
 		movement();
+		
+		if (body.position.x > FlxG.width + width * 0.5) {
+			body.position.x = 0 - width * 0.5;
+		}
+		
+		if (body.position.x < 0 - width * 0.5) {
+			body.position.x = FlxG.width + width * 0.5;
+		}
 		
 		super.update();
 	}

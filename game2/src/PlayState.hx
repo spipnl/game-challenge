@@ -49,6 +49,8 @@ class PlayState extends FlxNapeState
 	private var gameSpeed:Int = 100;
 	private var levelRowCounter:Int = 0;
 	
+	//public var ball:Body;
+	
 	override public function create():Void 
 	{
 		FlxG.debugger.visible = true;
@@ -102,6 +104,11 @@ class PlayState extends FlxNapeState
 		
 		add(player);
 		
+		//var playerClone:Player = new Player(FlxG.width * 0.8, FlxG.height * 0.5);
+		//playerClone.loadGraphic(Assets.getBitmapData("images/player.png"));
+		//add(playerClone);
+		
+		
 		FlxNapeState.space.listeners.add(new PreListener(
 			InteractionType.COLLISION,
 			Platform.CB_PLATFORM_ONE_WAY,
@@ -143,33 +150,26 @@ class PlayState extends FlxNapeState
 		var portalsBody:Body = new Body(BodyType.STATIC);
 		var portalsManager:PortalManager = new PortalManager(FlxNapeState.space);
 		
-		var portalLeft:Portal = Portals.genPortal(FlxG.height, Vec2.get(0, FlxG.height * 0.5), 0, portalsBody, portalsManager);
-		var portalRight:Portal = Portals.genPortal(FlxG.height, Vec2.get(FlxG.width, FlxG.height * 0.5), Math.PI, portalsBody, portalsManager);
+		var portalLeft:Portal = Portals.genPortal(FlxG.height, Vec2.get(50, FlxG.height * 0.5), 0, portalsBody, portalsManager);
+		var portalRight:Portal = Portals.genPortal(FlxG.height, Vec2.get(FlxG.width-100, FlxG.height * 0.5), Math.PI, portalsBody, portalsManager);
 		
 		portalLeft.target = portalRight;
 		portalRight.target = portalLeft;
 		
-        portalsBody.setShapeMaterials(Material.steel());
+        //portalsBody.setShapeMaterials(Material.steel());
 		portalsBody.space = FlxNapeState.space;
 		
-		trace(player.body.shapes);
         player.body.shapes.at(0).cbTypes.add(portalsManager.PORTABLE);
 		
-		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-	}
-	
-	/**
-	 * Listen to keydowns to switch to different states
-	 *
-	 * @param Event 		The KeyboardEvent
-	 */
-	private function onKeyUp(event:KeyboardEvent ):Void
-	{
-		#if android
-		event.stopImmediatePropagation();
-		#end
+		//var radius = 80;
+            //ball = new Body();
+            //ball.shapes.add(new Circle(radius/2));
+            //ball.position.setxy(280, 40);
+            //ball.space = FlxNapeState.space;
+//
+            //// Manager requires PORTABLE CbType to be given to portable shapes.
+            //ball.shapes.at(0).cbTypes.add(portalsManager.PORTABLE);
 		
-		hud.test = event.keyCode;
 	}
 	
 	private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup
@@ -239,7 +239,7 @@ class PlayState extends FlxNapeState
 	}
 	
 	override public function update():Void
-	{/*
+	{
 		platforms.forEachAlive(function(platform:FlxSprite) {
 			var platform:Platform = cast(platform);
 			if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
@@ -262,7 +262,14 @@ class PlayState extends FlxNapeState
 				enemy.revive();
 			}
 		}
-		*/
+		
+		
+		//if (FlxG.keys.justPressed.K)
+		//{
+			//player.addPremadeBody(ball);
+		//}
+		
+		
 		if (FlxG.keys.justPressed.G)
 		{
 			napeDebugEnabled = !napeDebugEnabled;
@@ -272,7 +279,21 @@ class PlayState extends FlxNapeState
 		{
 			FlxG.resetState();
 		}
-		
+			/*if (FlxG.keys.anyPressed(["LEFT", "A"]))
+			{
+				ball.applyImpulse(new Vec2(-60, 0));
+			}
+			
+			if (FlxG.keys.anyPressed(["RIGHT", "D"]))
+			{
+				ball.applyImpulse(new Vec2(60, 0));
+			}
+			
+			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]))
+			{
+				ball.velocity.y = -1000;
+			}
+		*/
 		Reg.score += Std.int(gameSpeed / 100);
 		hud.score = Reg.score;
 		

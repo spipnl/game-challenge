@@ -13,6 +13,7 @@ package;
  *
  */
 
+import flixel.addons.nape.FlxNapeSprite;
 import nape.callbacks.CbEvent;
 import nape.callbacks.CbType;
 import nape.callbacks.InteractionCallback;
@@ -201,7 +202,9 @@ class PortalManager {
         var shapeData:PortableShapeData = cast shape.userData;
         var bodyData:PortableBodyData = cast body.userData;
         var portal = portalData.__portal;
-
+		
+		trace(body.position.x);
+		
         // Cases to consider:
         //
         // Either this shape is already interacting via this portal
@@ -436,6 +439,11 @@ class PortalManager {
         var shapeData:PortableShapeData = cast shape.userData;
         var bodyData:PortableBodyData = cast body.userData;
         var portal = portalData.__portal;
+		
+		var sprite:FlxNapeSprite = cast body.userData.data;
+		if (sprite != null) {
+			trace(sprite.x);
+		}
 
         // Two main cases to consider:
         //    The shape has exited the portal sensor from the front
@@ -554,6 +562,11 @@ class PortalManager {
             // Cull any dangling portal pairs.
             var survivorBody = survivor.body;
             var bodyData:PortableBodyData = cast survivorBody.userData;
+			
+			if (sprite != null) {
+				trace(survivorBody.position.x);
+				sprite.addPremadeBody(survivorBody);
+			}
             var i = 0;
             while (i < bodyData.__portal_pairs.length) {
                 var pair = bodyData.__portal_pairs[i];
