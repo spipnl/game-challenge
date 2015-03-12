@@ -90,7 +90,6 @@ class PlayState extends FlxNapeState
 		platforms = generatePlatforms(platforms, 100, Platform.MATERIAL_WOOD, 10);
 		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_WOOD, 10);
 		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_WOOD, 10);
-		add(platforms);
 		
 		enemies = new FlxSpriteGroup();
 		enemies = generateEnemies(enemies, 5);
@@ -103,6 +102,7 @@ class PlayState extends FlxNapeState
 		FlxG.cameras.bgColor = 0xffd0f4f7;
 		
 		add(player);
+		add(platforms);
 		
 		//var playerClone:Player = new Player(FlxG.width * 0.8, FlxG.height * 0.5);
 		//playerClone.loadGraphic(Assets.getBitmapData("images/player.png"));
@@ -115,7 +115,7 @@ class PlayState extends FlxNapeState
 			Player.CB_PLAYER,
 			onPlayerStartsCollidingWithOneWayPlatform
 		));
-		/*
+		
 		FlxNapeState.space.listeners.add(new InteractionListener(
 			CbEvent.ONGOING,
 			InteractionType.COLLISION,
@@ -123,7 +123,7 @@ class PlayState extends FlxNapeState
 			CB_FLOOR,
 			onPlayerIsCollidingWithFloor
 		));
-		*/
+		
 		FlxNapeState.space.listeners.add(new InteractionListener(
 			CbEvent.ONGOING,
 			InteractionType.COLLISION,
@@ -147,19 +147,19 @@ class PlayState extends FlxNapeState
 		//quicksand = new Quicksand();
 		//add(quicksand);
 		
-		var portalsBody:Body = new Body(BodyType.STATIC);
-		var portalsManager:PortalManager = new PortalManager(FlxNapeState.space);
-		
-		var portalLeft:Portal = Portals.genPortal(FlxG.height, Vec2.get(50, FlxG.height * 0.5), 0, portalsBody, portalsManager);
-		var portalRight:Portal = Portals.genPortal(FlxG.height, Vec2.get(FlxG.width-100, FlxG.height * 0.5), Math.PI, portalsBody, portalsManager);
-		
-		portalLeft.target = portalRight;
-		portalRight.target = portalLeft;
-		
-        //portalsBody.setShapeMaterials(Material.steel());
-		portalsBody.space = FlxNapeState.space;
-		
-        player.body.shapes.at(0).cbTypes.add(portalsManager.PORTABLE);
+		//var portalsBody:Body = new Body(BodyType.STATIC);
+		//var portalsManager:PortalManager = new PortalManager(FlxNapeState.space);
+		//
+		//var portalLeft:Portal = Portals.genPortal(FlxG.height, Vec2.get(50, FlxG.height * 0.5), 0, portalsBody, portalsManager);
+		//var portalRight:Portal = Portals.genPortal(FlxG.height, Vec2.get(FlxG.width-100, FlxG.height * 0.5), Math.PI, portalsBody, portalsManager);
+		//
+		//portalLeft.target = portalRight;
+		//portalRight.target = portalLeft;
+		//
+        ////portalsBody.setShapeMaterials(Material.steel());
+		//portalsBody.space = FlxNapeState.space;
+		//
+        //player.body.shapes.at(0).cbTypes.add(portalsManager.PORTABLE);
 		
 		//var radius = 80;
             //ball = new Body();

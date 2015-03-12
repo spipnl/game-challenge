@@ -1,5 +1,6 @@
 package;
 
+import flixel.effects.FlxSpriteFilter;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -9,6 +10,7 @@ import flixel.addons.nape.FlxNapeSprite;
 import nape.callbacks.CbType;
 import nape.geom.Vec2;
 import openfl.Assets;
+import openfl.filters.DropShadowFilter;
 
 using flixel.util.FlxAngle;
 
@@ -29,6 +31,9 @@ class Player extends FlxNapeSprite
 	private var xText:FlxText;
 	private var yText:FlxText;
 	private var zText:FlxText;
+    
+    private var dropShadowFilter:DropShadowFilter;
+    private var spriteFilter:FlxSpriteFilter;
 	
 	public function new(X:Float, Y:Float)
 	{
@@ -44,6 +49,10 @@ class Player extends FlxNapeSprite
 		
 		body.cbTypes.add(Player.CB_PLAYER);
 		body.userData.data = this;
+        
+        dropShadowFilter = new DropShadowFilter(5, 0, 0, .4, 4, 4, 1, 1);
+		spriteFilter = new FlxSpriteFilter(this, 50, 50);
+        spriteFilter.addFilter(dropShadowFilter);
 	}
 	
 	public function get_canJump():Bool
@@ -95,13 +104,16 @@ class Player extends FlxNapeSprite
 	{
 		movement();
 		
-		if (body.position.x > FlxG.width + width * 0.5) {
-			body.position.x = 0 - width * 0.5;
+		if (body.position.x > FlxG.width) {
+			body.position.x = 0;
 		}
 		
-		if (body.position.x < 0 - width * 0.5) {
-			body.position.x = FlxG.width + width * 0.5;
+		if (body.position.x < 0) {
+			body.position.x = FlxG.width;
 		}
+        
+		dropShadowFilter.angle = 45 - angle;
+        spriteFilter.applyFilters();
 		
 		super.update();
 	}
