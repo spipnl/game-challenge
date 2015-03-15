@@ -11,7 +11,7 @@
 	<android install-location="preferExternal" />
 	
 	<window background="#d0f4f7" fps="60" />
-	<window width="480" height="800" unless="mobile" />
+	<window width="540" height="960" unless="mobile" />
 	<window orientation="portrait" vsync="false" antialiasing="0" if="cpp" />
 	
 	<set name="SWF_VERSION" value="11.8" />
