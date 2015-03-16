@@ -142,7 +142,7 @@ class PlayState extends FlxNapeState
 		
 		add(background.bigClouds);
 		
-		hud = new HUD(0, 20);
+		hud = new HUD(0, 0);
 		add(hud);
 		//quicksand = new Quicksand();
 		//add(quicksand);
@@ -170,6 +170,7 @@ class PlayState extends FlxNapeState
             //// Manager requires PORTABLE CbType to be given to portable shapes.
             //ball.shapes.at(0).cbTypes.add(portalsManager.PORTABLE);
 		
+        background.gameSpeed = 100;
 	}
 	
 	private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup

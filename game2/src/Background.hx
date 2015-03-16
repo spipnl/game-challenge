@@ -11,9 +11,7 @@ import flixel.group.FlxSpriteGroup;
  * @author spipnl (Jip Spinnewijn)
  */
 class Background extends FlxSpriteGroup
-{
-	private var _gameSpeed:Float = 100;
-	
+{	
 	private var _bigCloudInterval:Int = 150;
 	private var _smallCloudInterval:Int = 50;
 	
@@ -21,6 +19,8 @@ class Background extends FlxSpriteGroup
 	public var bigClouds:FlxSpriteGroup;
 	public var smallClouds:FlxSpriteGroup;
 	
+	@:isVar public var gameSpeed(get, set):Int;
+    
 	public function new(X:Float=0, Y:Float=0) 
 	{
 		super(X, Y);
@@ -48,11 +48,23 @@ class Background extends FlxSpriteGroup
 		//add(bigClouds);
 		//add(smallClouds);
 	}
+    
+	public function get_gameSpeed():Int
+	{
+		return gameSpeed;
+	}
+	
+	public function set_gameSpeed(GameSpeed:Int):Int
+	{
+		gameSpeed = GameSpeed;
+		
+		return gameSpeed;
+	}
 	
 	override public function update():Void
 	{
 		if (_startBackground.y < FlxG.height) {
-			_startBackground.y += _gameSpeed / 150;
+			_startBackground.y += gameSpeed / 150;
 		}
 		
 		var newBigCloud:Bool = true;
@@ -70,7 +82,7 @@ class Background extends FlxSpriteGroup
 			var bigCloud:FlxSprite = bigClouds.recycle(FlxSprite);
 			bigCloud.x = FlxG.width * Math.random() - bigCloud.width * 0.5;
 			bigCloud.y = -bigCloud.height;
-			bigCloud.velocity.y = _gameSpeed / (40 + 10 * Math.random());
+			bigCloud.velocity.y = gameSpeed / (40 + 10 * Math.random());
 		}
 		
 		var newSmallCloud:Bool = true;
@@ -88,7 +100,7 @@ class Background extends FlxSpriteGroup
 			var smallCloud:FlxSprite = smallClouds.recycle(FlxSprite);
 			smallCloud.x = FlxG.width * Math.random() - smallCloud.width * 0.5;
 			smallCloud.y = -smallCloud.height;
-			smallCloud.velocity.y = _gameSpeed / (60 + 20 * Math.random());
+			smallCloud.velocity.y = gameSpeed / (60 + 20 * Math.random());
 		}
 	}
 }
