@@ -45,8 +45,6 @@ class Background extends FlxSpriteGroup
 		}
 		
 		add(_startBackground);
-		//add(bigClouds);
-		//add(smallClouds);
 	}
     
 	public function get_gameSpeed():Int
