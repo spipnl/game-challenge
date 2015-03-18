@@ -65,8 +65,6 @@ class Platform extends FlxNapeSprite
 			}
 		}
 		
-		
-		
 		super.update();
 	}
 }

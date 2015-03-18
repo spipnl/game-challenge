@@ -51,4 +51,3 @@ class Enemy extends FlxNapeSprite
 		super.update();
 	}
 }
-

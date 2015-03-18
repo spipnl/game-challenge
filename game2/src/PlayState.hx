@@ -26,7 +26,6 @@ import nape.phys.Material;
 import nape.shape.Circle;
 import nape.shape.Polygon;
 import openfl.Assets;
-import Portals;
 
 /**
  * Initial PlayState
@@ -59,25 +58,15 @@ class PlayState extends FlxNapeState
 		super.create();
 		
 		background = new Background();
-		add(background);
-		add(background.smallClouds);
-		
+        
 		FlxNapeState.space.gravity.setxy(0, 1500);
 		
-		//createWalls(0, 0, FlxG.width, FlxG.height);
-		
 		floorBody = new Body(BodyType.KINEMATIC);
-		//floorBody.shapes.add(new Polygon(Polygon.rect(0, 0, -2, FlxG.height)));
-		//floorBody.shapes.add(new Polygon(Polygon.rect(0, 0, FlxG.width, -2)));
-		//floorBody.shapes.add(new Polygon(Polygon.rect(FlxG.width, 0, 2, FlxG.height)));
 		floorBody.shapes.add(new Polygon(Polygon.rect(0, FlxG.height, FlxG.width, 2)));
 		
 		var CB_FLOOR:CbType = new CbType();
 		floorBody.cbTypes.add(CB_FLOOR);
 		
-		//floorBody = new Body(BodyType.KINEMATIC);
-		//floorShape = new Polygon(Polygon.rect(0, FlxG.height, FlxG.width, 1));
-		//floorShape.body = floorBody;
 		floorBody.space = FlxNapeState.space;
 		
 		platforms = new FlxSpriteGroup();
@@ -93,21 +82,12 @@ class PlayState extends FlxNapeState
 		
 		enemies = new FlxSpriteGroup();
 		enemies = generateEnemies(enemies, 5);
-		add(enemies);
 		
 		player = new Player(FlxG.width * 0.5, FlxG.height * 0.5);
 		
 		FlxG.camera.follow(player, FlxCamera.STYLE_LOCKON, null, 0);
 		FlxG.camera.setBounds(0, 0, FlxG.width, FlxG.height);
 		FlxG.cameras.bgColor = 0xffd0f4f7;
-		
-		add(player);
-		add(platforms);
-		
-		//var playerClone:Player = new Player(FlxG.width * 0.8, FlxG.height * 0.5);
-		//playerClone.loadGraphic(Assets.getBitmapData("images/player.png"));
-		//add(playerClone);
-		
 		
 		FlxNapeState.space.listeners.add(new PreListener(
 			InteractionType.COLLISION,
@@ -140,37 +120,18 @@ class PlayState extends FlxNapeState
 			onPlayerStopsCollidingWithPlatform
 		));
 		
-		add(background.bigClouds);
-		
 		hud = new HUD(0, 0);
-		add(hud);
-		//quicksand = new Quicksand();
-		//add(quicksand);
-		
-		//var portalsBody:Body = new Body(BodyType.STATIC);
-		//var portalsManager:PortalManager = new PortalManager(FlxNapeState.space);
-		//
-		//var portalLeft:Portal = Portals.genPortal(FlxG.height, Vec2.get(50, FlxG.height * 0.5), 0, portalsBody, portalsManager);
-		//var portalRight:Portal = Portals.genPortal(FlxG.height, Vec2.get(FlxG.width-100, FlxG.height * 0.5), Math.PI, portalsBody, portalsManager);
-		//
-		//portalLeft.target = portalRight;
-		//portalRight.target = portalLeft;
-		//
-        ////portalsBody.setShapeMaterials(Material.steel());
-		//portalsBody.space = FlxNapeState.space;
-		//
-        //player.body.shapes.at(0).cbTypes.add(portalsManager.PORTABLE);
-		
-		//var radius = 80;
-            //ball = new Body();
-            //ball.shapes.add(new Circle(radius/2));
-            //ball.position.setxy(280, 40);
-            //ball.space = FlxNapeState.space;
-//
-            //// Manager requires PORTABLE CbType to be given to portable shapes.
-            //ball.shapes.at(0).cbTypes.add(portalsManager.PORTABLE);
-		
+        
         background.gameSpeed = 100;
+        
+        // Add all sprites in correct z-index order
+		add(background);
+		add(background.smallClouds);
+		add(enemies);
+		add(player);
+		add(platforms);
+		add(background.bigClouds);
+		add(hud);
 	}
 	
 	private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup
@@ -264,13 +225,6 @@ class PlayState extends FlxNapeState
 			}
 		}
 		
-		
-		//if (FlxG.keys.justPressed.K)
-		//{
-			//player.addPremadeBody(ball);
-		//}
-		
-		
 		if (FlxG.keys.justPressed.G)
 		{
 			napeDebugEnabled = !napeDebugEnabled;
@@ -280,21 +234,7 @@ class PlayState extends FlxNapeState
 		{
 			FlxG.resetState();
 		}
-			/*if (FlxG.keys.anyPressed(["LEFT", "A"]))
-			{
-				ball.applyImpulse(new Vec2(-60, 0));
-			}
-			
-			if (FlxG.keys.anyPressed(["RIGHT", "D"]))
-			{
-				ball.applyImpulse(new Vec2(60, 0));
-			}
-			
-			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]))
-			{
-				ball.velocity.y = -1000;
-			}
-		*/
+        
 		Reg.score += Std.int(gameSpeed / 100);
 		hud.score = Reg.score;
 		
