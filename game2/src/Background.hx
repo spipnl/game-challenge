@@ -62,7 +62,7 @@ class Background extends FlxSpriteGroup
 	override public function update():Void
 	{
 		if (_startBackground.y < FlxG.height) {
-			_startBackground.y += gameSpeed / 150;
+			//_startBackground.y += gameSpeed / 150;
 		}
 		
 		var newBigCloud:Bool = true;

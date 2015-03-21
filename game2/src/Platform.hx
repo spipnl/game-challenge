@@ -1,11 +1,13 @@
 package;
 
+import flixel.effects.FlxSpriteFilter;
 import flixel.FlxG;
 import flixel.addons.nape.FlxNapeSprite;
 import nape.callbacks.CbType;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import openfl.Assets;
+import openfl.filters.DropShadowFilter;
 
 /**
  * A Platform
@@ -21,18 +23,25 @@ class Platform extends FlxNapeSprite
 	public static inline var MATERIAL_GLASS:String = 'glass';
 	public static inline var MATERIAL_WOOD:String = 'wood';
 	
+    private var dropShadowFilter:DropShadowFilter;
+    private var spriteFilter:FlxSpriteFilter;
+    
 	public var breakable:Bool = false;
 	
-	public function new(X:Float, Y:Float, Width:Float = 100, Material:String = Platform.MATERIAL_STONE)
+	@:isVar public var gameSpeed(get, set):Int;
+	@:isVar public var platformWidth(get, set):Float;
+    
+	public function new(X:Float, Y:Float, Width:Float = 96, Material:String = Platform.MATERIAL_STONE)
 	{
 		super();
 		
+        platformWidth = Width;
+        
 		setPosition(X, Y);
 		loadGraphic("images/level/" + Material + "-" + Std.string(Width) + ".png", true, Std.int(Width), 32);
 		createRectangularBody(width, height, BodyType.KINEMATIC);
 		antialiasing = true;
 		setBodyMaterial(.5, .5, .5, 2);
-		body.velocity.y = 50;
 		health = 100;
 		
 		body.cbTypes.add(Platform.CB_PLATFORM);
@@ -46,8 +55,37 @@ class Platform extends FlxNapeSprite
 		{
 			breakable = true;
 		}
+        
+        dropShadowFilter = new DropShadowFilter(5, 45, 0, .3, 4, 4, 1, 1);
+		spriteFilter = new FlxSpriteFilter(this, 50, 50);
+        spriteFilter.addFilter(dropShadowFilter);
+	}
+    
+	public function get_gameSpeed():Int
+	{
+		return gameSpeed;
 	}
 	
+	public function set_gameSpeed(GameSpeed:Int):Int
+	{
+		gameSpeed = GameSpeed;
+		body.velocity.y = gameSpeed;
+		
+		return gameSpeed;
+	}
+	
+	public function get_platformWidth():Float
+	{
+		return platformWidth;
+	}
+	
+	public function set_platformWidth(PlatformWidth:Float):Float
+	{
+		platformWidth = PlatformWidth;
+		
+		return platformWidth;
+	}
+    
 	override public function update():Void
 	{
 		if (breakable && health <= 0)

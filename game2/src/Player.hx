@@ -50,7 +50,7 @@ class Player extends FlxNapeSprite
 		body.cbTypes.add(Player.CB_PLAYER);
 		body.userData.data = this;
         
-        dropShadowFilter = new DropShadowFilter(5, 0, 0, .4, 4, 4, 1, 1);
+        dropShadowFilter = new DropShadowFilter(5, 0, 0, .3, 4, 4, 1, 1);
 		spriteFilter = new FlxSpriteFilter(this, 50, 50);
         spriteFilter.addFilter(dropShadowFilter);
 	}

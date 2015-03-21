@@ -16,7 +16,7 @@ import openfl.Assets;
  */
 class LevelRow extends FlxSpriteGroup
 {
-	public function new(X:Float, Y:Float, platforms:FlxSpriteGroup)
+	public function new(X:Float, Y:Float, platforms:FlxSpriteGroup, gameSpeed:Int)
 	{
 		super();
 		
@@ -34,8 +34,9 @@ class LevelRow extends FlxSpriteGroup
 			platform.body.position.y = - 32;
 			platform.revive();
 			platform.health = 100;
+            platform.gameSpeed = gameSpeed;
 			
-			beginPosition += platform.width;
+			beginPosition += platform.platformWidth;
 		} while (beginPosition < FlxG.width);
 	}
 }

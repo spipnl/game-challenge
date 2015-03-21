@@ -70,13 +70,13 @@ class PlayState extends FlxNapeState
 		floorBody.space = FlxNapeState.space;
 		
 		platforms = new FlxSpriteGroup();
-		platforms = generatePlatforms(platforms, 100, Platform.MATERIAL_STONE, 10);
+		platforms = generatePlatforms(platforms, 96, Platform.MATERIAL_STONE, 10);
 		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_STONE, 10);
 		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_STONE, 10);
-		platforms = generatePlatforms(platforms, 100, Platform.MATERIAL_GLASS, 10);
+		platforms = generatePlatforms(platforms, 96, Platform.MATERIAL_GLASS, 10);
 		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_GLASS, 10);
 		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_GLASS, 10);
-		platforms = generatePlatforms(platforms, 100, Platform.MATERIAL_WOOD, 10);
+		platforms = generatePlatforms(platforms, 96, Platform.MATERIAL_WOOD, 10);
 		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_WOOD, 10);
 		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_WOOD, 10);
 		
@@ -122,7 +122,7 @@ class PlayState extends FlxNapeState
 		
 		hud = new HUD(0, 0);
         
-        background.gameSpeed = 100;
+        background.gameSpeed = gameSpeed;
         
         // Add all sprites in correct z-index order
 		add(background);
@@ -214,7 +214,7 @@ class PlayState extends FlxNapeState
 		if (levelRowCounter > 150)
 		{
 			levelRowCounter = 0;
-			var levelRow:LevelRow = new LevelRow(0, 0, platforms);
+			var levelRow:LevelRow = new LevelRow(0, 0, platforms, gameSpeed);
 		
 			if (enemies.countLiving() < 5) {
 				var enemy:Enemy = cast(enemies.getFirstDead());
