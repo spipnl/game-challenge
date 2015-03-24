@@ -29,6 +29,8 @@ class LevelRow extends FlxSpriteGroup
 			{
 				platform = cast(platforms.getRandom());
 			} while (platform.alive);
+            
+            platform.setMaterial(Platform.MATERIAL_GLASS);
 			
 			platform.body.position.x = beginPosition + platform.width * 0.5;
 			platform.body.position.y = - 32;

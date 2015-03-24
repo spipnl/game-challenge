@@ -38,7 +38,9 @@ class Platform extends FlxNapeSprite
         platformWidth = Width;
         
 		setPosition(X, Y);
-		loadGraphic("images/level/" + Material + "-" + Std.string(Width) + ".png", true, Std.int(Width), 32);
+        
+        setMaterial(Material);
+        
 		createRectangularBody(width, height, BodyType.KINEMATIC);
 		antialiasing = true;
 		setBodyMaterial(.5, .5, .5, 2);
@@ -46,20 +48,27 @@ class Platform extends FlxNapeSprite
 		
 		body.cbTypes.add(Platform.CB_PLATFORM);
 		body.userData.data = this;
-		
+        
+        //dropShadowFilter = new DropShadowFilter(5, 45, 0, .3, 4, 4, 1, 1);
+		//spriteFilter = new FlxSpriteFilter(this, 50, 50);
+        //spriteFilter.addFilter(dropShadowFilter);
+	}
+    
+    public function setMaterial(Material:String)
+    {
+		loadGraphic("images/level/" + Material + "-" + Std.string(platformWidth) + ".png", true, Std.int(platformWidth), 32);
+        
 		if (Material == Platform.MATERIAL_GLASS)
 		{
 			body.cbTypes.add(Platform.CB_PLATFORM_ONE_WAY);
+			breakable = false;
 		}
 		if (Material == Platform.MATERIAL_WOOD)
 		{
+			body.cbTypes.remove(Platform.CB_PLATFORM_ONE_WAY);
 			breakable = true;
 		}
-        
-        dropShadowFilter = new DropShadowFilter(5, 45, 0, .3, 4, 4, 1, 1);
-		spriteFilter = new FlxSpriteFilter(this, 50, 50);
-        spriteFilter.addFilter(dropShadowFilter);
-	}
+    }
     
 	public function get_gameSpeed():Int
 	{
