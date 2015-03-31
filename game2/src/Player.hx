@@ -26,7 +26,7 @@ class Player extends FlxNapeSprite
 	@:isVar public var canJump(get, set):Bool = true;
 	
 	private var moveSpeed:Float = 60;
-	private var jumpSpeed:Float = 1000;
+	private var jumpSpeed:Float = 1200;
 	
 	private var xText:FlxText;
 	private var yText:FlxText;
@@ -43,7 +43,6 @@ class Player extends FlxNapeSprite
 		loadGraphic(Assets.getBitmapData("images/player.png"));
 		createCircularBody(width * 0.5);
 		antialiasing = true;
-		//setBodyMaterial(-1.0,1.0,1.4,1.5,0.01);
 		setBodyMaterial(-1.0, .5, .5, 2);
 		setDrag(0.98, 1);
 		

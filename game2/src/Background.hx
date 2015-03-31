@@ -12,8 +12,8 @@ import flixel.group.FlxSpriteGroup;
  */
 class Background extends FlxSpriteGroup
 {	
-	private var _bigCloudInterval:Int = 150;
-	private var _smallCloudInterval:Int = 50;
+	private var _bigCloudInterval:Int = 200;
+	private var _smallCloudInterval:Int = 150;
 	
 	private var _startBackground:FlxSprite;
 	public var bigClouds:FlxSpriteGroup;
@@ -98,7 +98,7 @@ class Background extends FlxSpriteGroup
 			var smallCloud:FlxSprite = smallClouds.recycle(FlxSprite);
 			smallCloud.x = FlxG.width * Math.random() - smallCloud.width * 0.5;
 			smallCloud.y = -smallCloud.height;
-			smallCloud.velocity.y = gameSpeed / (60 + 20 * Math.random());
+			smallCloud.velocity.y = gameSpeed / (120 + 10 * Math.random());
 		}
 	}
 }

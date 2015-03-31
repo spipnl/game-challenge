@@ -59,7 +59,7 @@ class PlayState extends FlxNapeState
 		
 		background = new Background();
         
-		FlxNapeState.space.gravity.setxy(0, 1500);
+		FlxNapeState.space.gravity.setxy(0, 2000);
 		
 		floorBody = new Body(BodyType.KINEMATIC);
 		floorBody.shapes.add(new Polygon(Polygon.rect(0, FlxG.height, FlxG.width, 2)));
