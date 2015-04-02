@@ -35,7 +35,7 @@ import openfl.Assets;
 class PlayState extends FlxNapeState
 {
 	public var background:Background;
-	public var platforms:FlxSpriteGroup;
+	public var levelGenerator:LevelGenerator;
 	public var enemies:FlxSpriteGroup;
 	public var floorBody:Body;
 	public var floorShape:Polygon;
@@ -46,7 +46,6 @@ class PlayState extends FlxNapeState
 	public var hud:HUD;
 	
 	private var gameSpeed:Int = 100;
-	private var levelRowCounter:Int = 0;
 	
 	//public var ball:Body;
 	
@@ -57,8 +56,6 @@ class PlayState extends FlxNapeState
 		
 		super.create();
 		
-		background = new Background();
-        
 		FlxNapeState.space.gravity.setxy(0, 2000);
 		
 		floorBody = new Body(BodyType.KINEMATIC);
@@ -68,22 +65,6 @@ class PlayState extends FlxNapeState
 		floorBody.cbTypes.add(CB_FLOOR);
 		
 		floorBody.space = FlxNapeState.space;
-		
-		platforms = new FlxSpriteGroup();
-		platforms = generatePlatforms(platforms, 96, Platform.MATERIAL_STONE, 10);
-		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_STONE, 10);
-		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_STONE, 10);
-		platforms = generatePlatforms(platforms, 96, Platform.MATERIAL_GLASS, 10);
-		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_GLASS, 10);
-		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_GLASS, 10);
-		platforms = generatePlatforms(platforms, 96, Platform.MATERIAL_WOOD, 10);
-		platforms = generatePlatforms(platforms, 64, Platform.MATERIAL_WOOD, 10);
-		platforms = generatePlatforms(platforms, 32, Platform.MATERIAL_WOOD, 10);
-		
-		enemies = new FlxSpriteGroup();
-		enemies = generateEnemies(enemies, 5);
-		
-		player = new Player(FlxG.width * 0.5, FlxG.height * 0.5);
 		
 		FlxG.camera.follow(player, FlxCamera.STYLE_LOCKON, null, 0);
 		FlxG.camera.setBounds(0, 0, FlxG.width, FlxG.height);
@@ -122,16 +103,28 @@ class PlayState extends FlxNapeState
 		
 		hud = new HUD(0, 0);
         
+		background = new Background();
+        
+        levelGenerator = new LevelGenerator();
+        
+		enemies = new FlxSpriteGroup();
+		
+		player = new Player(FlxG.width * 0.5, FlxG.height * 0.5);
+		
         background.gameSpeed = gameSpeed;
+        levelGenerator.gameSpeed = gameSpeed;
         
         // Add all sprites in correct z-index order
 		add(background);
 		add(background.smallClouds);
 		add(enemies);
 		add(player);
-		add(platforms);
+		add(levelGenerator);
+		add(levelGenerator.platforms);
 		add(background.bigClouds);
 		add(hud);
+        
+		enemies = generateEnemies(enemies, 5);
 	}
 	
 	private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup
@@ -145,20 +138,7 @@ class PlayState extends FlxNapeState
 		
 		return enemies;
 	}
-	
-	private function generatePlatforms(platforms:FlxSpriteGroup, platformWidth:Float, platformMaterial:String, amount:Int):FlxSpriteGroup
-	{
-		for (i in 0...amount)
-		{
-			var platform:Platform;
-			platform = new Platform(0, 0, platformWidth, platformMaterial);
-			platform.kill();
-			platforms.add(platform);
-		}
-		
-		return platforms;
-	}
-	
+    
 	private function onPlayerStartsCollidingWithOneWayPlatform(cb:PreCallback):PreFlag
 	{
 		var colArb:CollisionArbiter = cb.arbiter.collisionArbiter;
@@ -202,29 +182,6 @@ class PlayState extends FlxNapeState
 	
 	override public function update():Void
 	{
-		platforms.forEachAlive(function(platform:FlxSprite) {
-			var platform:Platform = cast(platform);
-			if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
-			{
-				platform.kill();
-			}
-		});
-		
-		levelRowCounter += 1;
-		if (levelRowCounter > 150)
-		{
-			levelRowCounter = 0;
-			var levelRow:LevelRow = new LevelRow(0, 0, platforms, gameSpeed);
-		
-			if (enemies.countLiving() < 5) {
-				var enemy:Enemy = cast(enemies.getFirstDead());
-				enemy.body.position.x = Math.random() * FlxG.width;
-				enemy.body.position.y = -100;
-				enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
-				enemy.revive();
-			}
-		}
-		
 		if (FlxG.keys.justPressed.G)
 		{
 			napeDebugEnabled = !napeDebugEnabled;
@@ -238,6 +195,14 @@ class PlayState extends FlxNapeState
 		Reg.score += Std.int(gameSpeed / 100);
 		hud.score = Reg.score;
 		
+        if (enemies.countLiving() < 5) {
+            var enemy:Enemy = cast(enemies.getFirstDead());
+            enemy.body.position.x = Math.random() * FlxG.width;
+            enemy.body.position.y = -100;
+            enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
+            enemy.revive();
+        }
+        
 		super.update();
 	}
 }

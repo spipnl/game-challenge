@@ -29,9 +29,9 @@ class Platform extends FlxNapeSprite
 	public var breakable:Bool = false;
 	
 	@:isVar public var gameSpeed(get, set):Int;
-	@:isVar public var platformWidth(get, set):Float;
+	@:isVar public var platformWidth(get, set):Int;
     
-	public function new(X:Float, Y:Float, Width:Float = 96, Material:String = Platform.MATERIAL_STONE)
+	public function new(X:Float, Y:Float, Width:Int = 3, Material:String = Platform.MATERIAL_STONE)
 	{
 		super();
 		
@@ -49,6 +49,8 @@ class Platform extends FlxNapeSprite
 		body.cbTypes.add(Platform.CB_PLATFORM);
 		body.userData.data = this;
         
+        setMaterial(Material);
+        
         //dropShadowFilter = new DropShadowFilter(5, 45, 0, .3, 4, 4, 1, 1);
 		//spriteFilter = new FlxSpriteFilter(this, 50, 50);
         //spriteFilter.addFilter(dropShadowFilter);
@@ -56,7 +58,7 @@ class Platform extends FlxNapeSprite
     
     public function setMaterial(Material:String)
     {
-		loadGraphic("images/level/" + Material + "-" + Std.string(platformWidth) + ".png", true, Std.int(platformWidth), 32);
+		loadGraphic("images/level/" + Material + "-" + Std.string(platformWidth) + ".png", true, platformWidth * 36, 36);
         
 		if (Material == Platform.MATERIAL_GLASS)
 		{
@@ -83,12 +85,12 @@ class Platform extends FlxNapeSprite
 		return gameSpeed;
 	}
 	
-	public function get_platformWidth():Float
+	public function get_platformWidth():Int
 	{
 		return platformWidth;
 	}
 	
-	public function set_platformWidth(PlatformWidth:Float):Float
+	public function set_platformWidth(PlatformWidth:Int):Int
 	{
 		platformWidth = PlatformWidth;
 		
