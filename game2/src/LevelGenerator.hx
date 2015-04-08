@@ -21,8 +21,10 @@ class LevelGenerator extends FlxSpriteGroup
 	@:isVar public var gameSpeed(get, set):Int;
     
 	private var levelRowCounter:Int = 0;
+	private var currentLevel:Int = 1;
     
     private var platformCollection:Map<String,Map<Int,FlxSpriteGroup>>;
+    private var levels:Map<Int,Map<String,Int>>;
     
 	public function new()
 	{
@@ -44,6 +46,15 @@ class LevelGenerator extends FlxSpriteGroup
 		generatePlatforms(2, Platform.MATERIAL_WOOD, 100);
 		generatePlatforms(1, Platform.MATERIAL_WOOD, 100);
         
+        levels = [
+            1 => [
+                Platform.MATERIAL_GLASS => 15,
+            ],
+            2 => [
+                Platform.MATERIAL_GLASS => 4,
+                Platform.MATERIAL_STONE => 4,
+            ],
+        ];
 	}
     
 	public function get_gameSpeed():Int
@@ -92,18 +103,58 @@ class LevelGenerator extends FlxSpriteGroup
 			levelRowCounter = 0;
             
             var beginPosition:Float = 0;
-            do
-            {
-                var platform:Platform = cast(platformCollection[Platform.MATERIAL_GLASS][1].getFirstDead());
+            var level = levels[currentLevel];
+            
+            var createdPlatforms:Map = new Map();
+            
+            for (platformMaterial in level.keys()) {
+                var materialAmount:Int = level[platformMaterial];
                 
-                platform.body.position.x = beginPosition + platform.width * 0.5;
-                platform.body.position.y = - 36;
-                platform.revive();
-                platform.health = 100;
-                platform.gameSpeed = gameSpeed;
-                
-                beginPosition += platform.platformWidth * 36;
-            } while (beginPosition < FlxG.width);
+                do
+                {
+                    var platformSize:Int = Math.round((Math.random() * 2)) + 1;
+                    if (platformSize > materialAmount) {
+                        platformSize = materialAmount;
+                    }
+                    materialAmount -= platformSize;
+                    
+                    var platform:Platform = cast(platformCollection[platformMaterial][platformSize].getFirstDead());
+                    //createdPlatforms.add(platform);
+                    platform.body.position.x = beginPosition + platform.width * 0.5;
+                    platform.body.position.y = - 36;
+                    platform.revive();
+                    platform.health = 100;
+                    platform.gameSpeed = gameSpeed;
+                    
+                    beginPosition += platform.platformWidth * 36;
+                } while (materialAmount > 0);
+            }
+            
+            //createdPlatforms.forEach(function(platform:FlxSprite) {
+                //var platform:Platform = cast(platform);
+                //
+                //platform.body.position.x = beginPosition + platform.width * 0.5;
+                //platform.body.position.y = - 36;
+                //platform.revive();
+                //platform.health = 100;
+                //platform.gameSpeed = gameSpeed;
+                //
+                //beginPosition += platform.platformWidth * 36;
+            //});
+            
+            //
+            //do
+            //{
+                //var platform:Platform = cast(platformCollection[Platform.MATERIAL_GLASS][3].getFirstDead());
+                //
+                //platform.body.position.x = beginPosition + platform.width * 0.5;
+                //platform.body.position.y = - 36;
+                //platform.revive();
+                //platform.health = 100;
+                //platform.gameSpeed = gameSpeed;
+                //
+                //beginPosition += platform.platformWidth * 36;
+            //} while (beginPosition < FlxG.width);
 		}
     }
 }
