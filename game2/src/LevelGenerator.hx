@@ -8,6 +8,9 @@ import nape.callbacks.CbType;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import openfl.Assets;
+import flixel.util.FlxArrayUtil;
+
+import flixel.util.FlxRandom;
 
 /**
  * A Row of Platforms
@@ -51,8 +54,23 @@ class LevelGenerator extends FlxSpriteGroup
                 Platform.MATERIAL_GLASS => 15,
             ],
             2 => [
-                Platform.MATERIAL_GLASS => 4,
-                Platform.MATERIAL_STONE => 4,
+                Platform.MATERIAL_GLASS => 5,
+                Platform.MATERIAL_STONE => 5,
+                Platform.MATERIAL_WOOD  => 5,
+            ],
+            3 => [
+                Platform.MATERIAL_GLASS => 5,
+                Platform.MATERIAL_STONE => 10,
+            ],
+            4 => [
+                Platform.MATERIAL_WOOD  => 5,
+                Platform.MATERIAL_STONE => 5,
+            ],
+            5 => [
+                Platform.MATERIAL_GLASS => 3,
+            ],
+            6 => [
+                Platform.MATERIAL_STONE => 3,
             ],
         ];
 	}
@@ -103,12 +121,15 @@ class LevelGenerator extends FlxSpriteGroup
 			levelRowCounter = 0;
             
             var beginPosition:Float = 0;
-            var level = levels[currentLevel];
+            //var level = levels[currentLevel];
+            var level = levels[Math.round(Math.random() * 5)+1];
             
-            var createdPlatforms:Map = new Map();
+            var createdPlatforms:Array<Platform> = new Array();
             
+            var platformAmount:Int = 0;
             for (platformMaterial in level.keys()) {
                 var materialAmount:Int = level[platformMaterial];
+                platformAmount += materialAmount;
                 
                 do
                 {
@@ -119,42 +140,30 @@ class LevelGenerator extends FlxSpriteGroup
                     materialAmount -= platformSize;
                     
                     var platform:Platform = cast(platformCollection[platformMaterial][platformSize].getFirstDead());
-                    //createdPlatforms.add(platform);
-                    platform.body.position.x = beginPosition + platform.width * 0.5;
-                    platform.body.position.y = - 36;
                     platform.revive();
                     platform.health = 100;
-                    platform.gameSpeed = gameSpeed;
                     
-                    beginPosition += platform.platformWidth * 36;
+                    createdPlatforms.push(platform);
                 } while (materialAmount > 0);
             }
             
-            //createdPlatforms.forEach(function(platform:FlxSprite) {
-                //var platform:Platform = cast(platform);
-                //
-                //platform.body.position.x = beginPosition + platform.width * 0.5;
-                //platform.body.position.y = - 36;
-                //platform.revive();
-                //platform.health = 100;
-                //platform.gameSpeed = gameSpeed;
-                //
-                //beginPosition += platform.platformWidth * 36;
-            //});
+            var spaceAmount = 15 - platformAmount;
             
-            //
-            //do
-            //{
-                //var platform:Platform = cast(platformCollection[Platform.MATERIAL_GLASS][3].getFirstDead());
-                //
-                //platform.body.position.x = beginPosition + platform.width * 0.5;
-                //platform.body.position.y = - 36;
-                //platform.revive();
-                //platform.health = 100;
-                //platform.gameSpeed = gameSpeed;
-                //
-                //beginPosition += platform.platformWidth * 36;
-            //} while (beginPosition < FlxG.width);
+            FlxRandom.shuffleArray(createdPlatforms, 2);
+            
+            for (platform in createdPlatforms) {
+                if (spaceAmount > 0) {
+                    var gap:Int = Math.round(spaceAmount * Math.random());
+                    spaceAmount -= gap;
+                    beginPosition += gap * 36;
+                }
+                
+                platform.body.position.x = beginPosition + platform.width * 0.5;
+                platform.body.position.y = - 36;
+                platform.gameSpeed = gameSpeed;
+                
+                beginPosition += platform.platformWidth * 36;
+            }
 		}
     }
 }
