@@ -76,7 +76,7 @@ class Player extends FlxNapeSprite
 				
 				if (FlxG.mouse.justPressed && canJump)
 				{
-					body.velocity.y = -jumpSpeed;
+                    jump();
 				}
 			} else {
 				trace("No Accelerometer support");
@@ -94,10 +94,16 @@ class Player extends FlxNapeSprite
 			
 			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) && canJump)
 			{
-				body.velocity.y = -jumpSpeed;
+                jump();
 			}
 		#end
 	}
+    
+    private function jump():Void
+    {
+		FlxG.sound.play("jump");
+		body.velocity.y = -jumpSpeed;
+    }
 	
 	override public function update():Void
 	{

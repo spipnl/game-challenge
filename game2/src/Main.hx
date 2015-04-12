@@ -17,6 +17,7 @@ import flixel.FlxG;
  */
 class Main extends Sprite 
 {
+    private var inited:Bool;
 	private var _game:GameClass;
 	
 	/**
@@ -49,6 +50,7 @@ class Main extends Sprite
 		if (hasEventListener(Event.ADDED_TO_STAGE))
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+            stage.addEventListener(Event.RESIZE, resize);
 		}
 		
 		initialize();
@@ -56,12 +58,20 @@ class Main extends Sprite
 		_game = new GameClass();
 		addChild(_game);
 	}
+    
+    private function resize(e) 
+    {
+        initialize();
+    }
 	
 	/**
 	 * Setup of the stage
 	 */
 	private function initialize():Void 
 	{
+        if (inited) return;
+        inited = true;
+        
 		Lib.current.stage.align = StageAlign.TOP_LEFT;
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		

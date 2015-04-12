@@ -10,7 +10,7 @@
 	<app main="Main" file="spipnl-game2" path="bin" />
 	<android install-location="preferExternal" />
 	
-	<window background="#d0f4f7" fps="60" />
+	<window background="#d0f4f7" fps="60" fullscreen="true" />
 	<window width="540" height="960" unless="mobile" />
 	<window orientation="portrait" vsync="false" antialiasing="0" if="cpp" />
 	
@@ -25,11 +25,8 @@
 	<haxelib name="ganalytics" />
 	
 	<!-- assets -->
-	
-	<assets path="assets/sounds" if="flash">
-	</assets>
-	
-	<assets path="assets/sounds" unless="flash">
+	<assets path="assets/sounds">
+		<sound path="jump.wav" id="jump" />
 	</assets>
 	
 	<assets path="assets/fonts" rename="fonts" />
