@@ -19,6 +19,8 @@ class Background extends FlxSpriteGroup
 	public var bigClouds:FlxSpriteGroup;
 	public var smallClouds:FlxSpriteGroup;
 	
+    private var _started:Bool = false;
+    
 	@:isVar public var gameSpeed(get, set):Int;
     
 	public function new(X:Float=0, Y:Float=0) 
@@ -47,6 +49,11 @@ class Background extends FlxSpriteGroup
 		add(_startBackground);
 	}
     
+    public function start():Void
+    {
+        _started = true;
+    }
+    
 	public function get_gameSpeed():Int
 	{
 		return gameSpeed;
@@ -61,44 +68,47 @@ class Background extends FlxSpriteGroup
 	
 	override public function update():Void
 	{
-		if (_startBackground.y < FlxG.height) {
-			//_startBackground.y += gameSpeed / 150;
-		}
-		
-		var newBigCloud:Bool = true;
-		bigClouds.forEachAlive(function(bigCloud:FlxSprite) {
-			bigCloud.y += bigCloud.velocity.y;
-			if (bigCloud.y < _bigCloudInterval) {
-				newBigCloud = false;
-			}
-			if (!bigCloud.isOnScreen()) {
-				bigCloud.kill();
-			}
-		});
-		
-		if (newBigCloud) {
-			var bigCloud:FlxSprite = bigClouds.recycle(FlxSprite);
-			bigCloud.x = FlxG.width * Math.random() - bigCloud.width * 0.5;
-			bigCloud.y = -bigCloud.height;
-			bigCloud.velocity.y = gameSpeed / (40 + 10 * Math.random());
-		}
-		
-		var newSmallCloud:Bool = true;
-		smallClouds.forEachAlive(function(smallCloud:FlxSprite) {
-			smallCloud.y += smallCloud.velocity.y;
-			if (smallCloud.y < _smallCloudInterval) {
-				newSmallCloud = false;
-			}
-			if (!smallCloud.isOnScreen()) {
-				smallCloud.kill();
-			}
-		});
-		
-		if (newSmallCloud) {
-			var smallCloud:FlxSprite = smallClouds.recycle(FlxSprite);
-			smallCloud.x = FlxG.width * Math.random() - smallCloud.width * 0.5;
-			smallCloud.y = -smallCloud.height;
-			smallCloud.velocity.y = gameSpeed / (120 + 10 * Math.random());
-		}
+        if (_started) {
+            if (_startBackground.y < FlxG.height) {
+                _startBackground.y += gameSpeed / 100;
+            }
+            if (_startBackground.y > FlxG.height * 0.5) {
+                var newBigCloud:Bool = true;
+                bigClouds.forEachAlive(function(bigCloud:FlxSprite) {
+                    bigCloud.y += bigCloud.velocity.y;
+                    if (bigCloud.y < _bigCloudInterval) {
+                        newBigCloud = false;
+                    }
+                    if (!bigCloud.isOnScreen()) {
+                        bigCloud.kill();
+                    }
+                });
+                
+                if (newBigCloud) {
+                    var bigCloud:FlxSprite = bigClouds.recycle(FlxSprite);
+                    bigCloud.x = FlxG.width * Math.random() - bigCloud.width * 0.5;
+                    bigCloud.y = -bigCloud.height;
+                    bigCloud.velocity.y = gameSpeed / (40 + 10 * Math.random());
+                }
+                
+                var newSmallCloud:Bool = true;
+                smallClouds.forEachAlive(function(smallCloud:FlxSprite) {
+                    smallCloud.y += smallCloud.velocity.y;
+                    if (smallCloud.y < _smallCloudInterval) {
+                        newSmallCloud = false;
+                    }
+                    if (!smallCloud.isOnScreen()) {
+                        smallCloud.kill();
+                    }
+                });
+                
+                if (newSmallCloud) {
+                    var smallCloud:FlxSprite = smallClouds.recycle(FlxSprite);
+                    smallCloud.x = FlxG.width * Math.random() - smallCloud.width * 0.5;
+                    smallCloud.y = -smallCloud.height;
+                    smallCloud.velocity.y = gameSpeed / (120 + 10 * Math.random());
+                }
+            }
+        }
 	}
 }

@@ -23,6 +23,7 @@ class LevelGenerator extends FlxSpriteGroup
     
 	@:isVar public var gameSpeed(get, set):Int;
     
+	private var highestPlatform:Platform;
 	private var levelRowCounter:Int = 0;
 	private var currentLevel:Int = 1;
     
@@ -75,6 +76,11 @@ class LevelGenerator extends FlxSpriteGroup
         ];
 	}
     
+    public function start():Void
+    {
+        drawRow(-50, 1);
+    }
+    
 	public function get_gameSpeed():Int
 	{
 		return gameSpeed;
@@ -84,6 +90,11 @@ class LevelGenerator extends FlxSpriteGroup
 	{
 		gameSpeed = GameSpeed;
 		
+		platforms.forEachAlive(function(platform:FlxSprite) {
+			var platform:Platform = cast(platform);
+            platform.gameSpeed = gameSpeed;
+		});
+        
 		return gameSpeed;
 	}
 	
@@ -104,6 +115,74 @@ class LevelGenerator extends FlxSpriteGroup
             platformCollection[platformMaterial][platformWidth].add(platform);
 		}
 	}
+    
+    public function isPlatformInJumpRange():Bool
+    {
+        var lowestPlatform:Float = 0;
+		platforms.forEachAlive(function(platform:FlxSprite) {
+			var platform:Platform = cast(platform);
+            
+            if (platform.y > lowestPlatform) {
+                lowestPlatform = platform.y;
+            }
+		});
+        
+        return lowestPlatform > 300;
+    }
+    
+    private function drawRow(Ypos:Float, Level:Int):Void
+    {
+        trace(Ypos);
+        
+        var beginPosition:Float = 0;
+        var level = levels[Level];
+        //var level = levels[Math.round(Math.random() * 5)+1];
+        
+        var createdPlatforms:Array<Platform> = new Array();
+        
+        var platformAmount:Int = 0;
+        for (platformMaterial in level.keys()) {
+            var materialAmount:Int = level[platformMaterial];
+            platformAmount += materialAmount;
+            
+            do
+            {
+                //var platformSize:Int = Math.round((Math.random() * 2)) + 1;
+                var platformSize:Int = 3;
+                if (platformSize > materialAmount) {
+                    platformSize = materialAmount;
+                }
+                materialAmount -= platformSize;
+                
+                var platform:Platform = cast(platformCollection[platformMaterial][platformSize].getFirstDead());
+                platform.revive();
+                platform.health = 100;
+                
+                createdPlatforms.push(platform);
+            } while (materialAmount > 0);
+        }
+        
+        var spaceAmount = 15 - platformAmount;
+        
+        FlxRandom.shuffleArray(createdPlatforms, 2);
+        
+        for (platform in createdPlatforms) {
+            if (spaceAmount > 0) {
+                var gap:Int = Math.round(spaceAmount * Math.random());
+                spaceAmount -= gap;
+                beginPosition += gap * 36;
+            }
+            
+            platform.body.position.x = beginPosition + platform.width * 0.5;
+            platform.body.position.y = Ypos;
+            platform.gameSpeed = gameSpeed;
+            
+            beginPosition += platform.platformWidth * 36;
+            
+            // Set the platform as highest platform to know when to draw new platforms
+            highestPlatform = platform;
+        }
+    }
 	
 	override public function update():Void
     {
@@ -115,55 +194,9 @@ class LevelGenerator extends FlxSpriteGroup
 			}
 		});
 		
-		levelRowCounter += 1;
-		if (levelRowCounter > 150)
-		{
-			levelRowCounter = 0;
-            
-            var beginPosition:Float = 0;
-            //var level = levels[currentLevel];
-            var level = levels[Math.round(Math.random() * 5)+1];
-            
-            var createdPlatforms:Array<Platform> = new Array();
-            
-            var platformAmount:Int = 0;
-            for (platformMaterial in level.keys()) {
-                var materialAmount:Int = level[platformMaterial];
-                platformAmount += materialAmount;
-                
-                do
-                {
-                    var platformSize:Int = Math.round((Math.random() * 2)) + 1;
-                    if (platformSize > materialAmount) {
-                        platformSize = materialAmount;
-                    }
-                    materialAmount -= platformSize;
-                    
-                    var platform:Platform = cast(platformCollection[platformMaterial][platformSize].getFirstDead());
-                    platform.revive();
-                    platform.health = 100;
-                    
-                    createdPlatforms.push(platform);
-                } while (materialAmount > 0);
-            }
-            
-            var spaceAmount = 15 - platformAmount;
-            
-            FlxRandom.shuffleArray(createdPlatforms, 2);
-            
-            for (platform in createdPlatforms) {
-                if (spaceAmount > 0) {
-                    var gap:Int = Math.round(spaceAmount * Math.random());
-                    spaceAmount -= gap;
-                    beginPosition += gap * 36;
-                }
-                
-                platform.body.position.x = beginPosition + platform.width * 0.5;
-                platform.body.position.y = - 36;
-                platform.gameSpeed = gameSpeed;
-                
-                beginPosition += platform.platformWidth * 36;
-            }
-		}
+        if (highestPlatform != null && highestPlatform.y != 0 && highestPlatform.y > -100) {
+            trace('highest: ' + highestPlatform.y);
+            drawRow(-300, Math.round(Math.random() * 5)+1);
+        }
     }
 }

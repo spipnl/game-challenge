@@ -11,6 +11,7 @@ import nape.callbacks.CbType;
 import nape.geom.Vec2;
 import openfl.Assets;
 import openfl.filters.DropShadowFilter;
+import nape.phys.BodyType;
 
 using flixel.util.FlxAngle;
 
@@ -23,9 +24,9 @@ class Player extends FlxNapeSprite
 {
 	public static var CB_PLAYER:CbType = new CbType();
 	
-	@:isVar public var canJump(get, set):Bool = true;
+	@:isVar public var isTouchingPlatform(get, set):Bool = false;
 	
-	private var moveSpeed:Float = 60;
+	private var moveSpeed:Float = 70;
 	private var jumpSpeed:Float = 1200;
 	
 	private var xText:FlxText;
@@ -34,6 +35,11 @@ class Player extends FlxNapeSprite
     
     private var dropShadowFilter:DropShadowFilter;
     private var spriteFilter:FlxSpriteFilter;
+    
+    private var numberOfJumps:Int = 20;
+    private var numberOfJumpsLeft:Int = 20;
+    
+    private var _isStarted:Bool = false;
 	
 	public function new(X:Float, Y:Float)
 	{
@@ -41,9 +47,9 @@ class Player extends FlxNapeSprite
 		
 		setPosition(X, Y);
 		loadGraphic(Assets.getBitmapData("images/player.png"));
-		createCircularBody(width * 0.5);
+		createCircularBody(width * 0.5, BodyType.KINEMATIC);
 		antialiasing = true;
-		setBodyMaterial(-1.0, .5, .5, 2);
+		setBodyMaterial(-1.0, .5, .5, 1.5);
 		setDrag(0.98, 1);
 		
 		body.cbTypes.add(Player.CB_PLAYER);
@@ -53,18 +59,37 @@ class Player extends FlxNapeSprite
 		spriteFilter = new FlxSpriteFilter(this, 50, 50);
         spriteFilter.addFilter(dropShadowFilter);
 	}
+    
+    public function start():Void
+    {
+        _isStarted = true;
+        body.type = BodyType.DYNAMIC;
+        jump();
+    }
 	
-	public function get_canJump():Bool
+    public function isStarted()
+    {
+        return _isStarted;
+    }
+	
+	public function get_isTouchingPlatform():Bool
 	{
-		return canJump;
+		return isTouchingPlatform;
 	}
 	
-	public function set_canJump(CanJump:Bool):Bool
+	public function set_isTouchingPlatform(IsTouchingPlatform:Bool):Bool
 	{
-		canJump = CanJump;
+		isTouchingPlatform = IsTouchingPlatform;
 
-		return canJump;
+		return isTouchingPlatform;
 	}
+    
+    public function resetJumps():Void
+    {
+        if (!isTouchingPlatform) {
+            numberOfJumpsLeft = numberOfJumps;
+        }
+    }
 	
 	private function movement():Void
 	{
@@ -74,7 +99,7 @@ class Player extends FlxNapeSprite
 				
 				body.applyImpulse(new Vec2(moveSpeed * accelX, 0));
 				
-				if (FlxG.mouse.justPressed && canJump)
+				if (FlxG.mouse.justPressed)
 				{
                     jump();
 				}
@@ -92,7 +117,7 @@ class Player extends FlxNapeSprite
 				body.applyImpulse(new Vec2(moveSpeed, 0));
 			}
 			
-			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]) && canJump)
+			if (FlxG.keys.anyJustPressed(["SPACE", "UP", "W"]))
 			{
                 jump();
 			}
@@ -101,13 +126,18 @@ class Player extends FlxNapeSprite
     
     private function jump():Void
     {
-		FlxG.sound.play("jump");
-		body.velocity.y = -jumpSpeed;
+        if (numberOfJumpsLeft > 0) {
+            numberOfJumpsLeft--;
+            FlxG.sound.play("jump");
+            body.velocity.y = -jumpSpeed;
+        }
     }
 	
 	override public function update():Void
 	{
-		movement();
+        if (body.type == BodyType.DYNAMIC) {
+            movement();
+        }
 		
 		if (body.position.x > FlxG.width) {
 			body.position.x = 0;

@@ -1,8 +1,8 @@
 package; 
 
 import flixel.FlxG;
-import flixel.FlxState;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import openfl.Assets;
@@ -12,31 +12,27 @@ import openfl.Assets;
  * 
  * @author spipnl (Jip Spinnewijn)
  */
-class MainMenuState extends FlxState
+class MainMenu extends FlxGroup
 {
 	private var _menuTitle:FlxSprite;
+    private var _isStarted:Bool = false;
 	
 	public function new()
 	{
-		super();
-	}
-	
-	override public function create():Void 
-	{
-		createBackground();
-		
-		_menuTitle = new FlxSprite(0, 0, Assets.getBitmapData("images/menutitle.png"));
-		_menuTitle.x = (FlxG.width - _menuTitle.width) * 0.5;
-		_menuTitle.y = 200;
-		
+        super();
+        
 		var startButton:FlxButton = new FlxButton(0, 0, "Start", onStart);
 		startButton.x = (FlxG.width - startButton.width) * 0.5;
 		startButton.y = 380;
 		
 		add(startButton);
-		add(_menuTitle);
 	}
 	
+    public function isStarted()
+    {
+        return _isStarted;
+    }
+    
 	/**
 	 * Create the default background
 	 */
@@ -55,8 +51,6 @@ class MainMenuState extends FlxState
 	
 	private function onStart():Void
 	{
-		FlxTween.tween(_menuTitle, {alpha: 0}, 0.5, {complete: function(tween:FlxTween){
-			FlxG.switchState(new PlayState());
-		}});
+        _isStarted = true;
 	}
 }
