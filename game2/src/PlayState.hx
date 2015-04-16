@@ -172,6 +172,7 @@ class PlayState extends FlxNapeState
         remove(mainMenu);
         levelGenerator.start();
         background.start();
+        player.start();
     }
 	
 	override public function update():Void
@@ -193,12 +194,6 @@ class PlayState extends FlxNapeState
             
             Reg.score += Std.int(gameSpeed / 100);
             hud.score = Reg.score;
-            
-            if (!player.isStarted()) {
-                if (levelGenerator.isPlatformInJumpRange()) {
-                    player.start();
-                }
-            }
             
             if (enemies.countLiving() < 5) {
                 var enemy:Enemy = cast(enemies.getFirstDead());

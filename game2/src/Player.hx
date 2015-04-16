@@ -38,8 +38,6 @@ class Player extends FlxNapeSprite
     
     private var numberOfJumps:Int = 20;
     private var numberOfJumpsLeft:Int = 20;
-    
-    private var _isStarted:Bool = false;
 	
 	public function new(X:Float, Y:Float)
 	{
@@ -62,14 +60,8 @@ class Player extends FlxNapeSprite
     
     public function start():Void
     {
-        _isStarted = true;
         body.type = BodyType.DYNAMIC;
         jump();
-    }
-	
-    public function isStarted()
-    {
-        return _isStarted;
     }
 	
 	public function get_isTouchingPlatform():Bool

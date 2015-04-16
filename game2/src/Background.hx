@@ -70,7 +70,7 @@ class Background extends FlxSpriteGroup
 	{
         if (_started) {
             if (_startBackground.y < FlxG.height) {
-                _startBackground.y += gameSpeed / 100;
+                _startBackground.y += gameSpeed / 80;
             }
             if (_startBackground.y > FlxG.height * 0.5) {
                 var newBigCloud:Bool = true;

@@ -9,6 +9,7 @@ import nape.phys.Body;
 import nape.phys.BodyType;
 import openfl.Assets;
 import flixel.util.FlxArrayUtil;
+import flixel.tweens.FlxTween;
 
 import flixel.util.FlxRandom;
 
@@ -78,7 +79,9 @@ class LevelGenerator extends FlxSpriteGroup
     
     public function start():Void
     {
-        drawRow(-50, 1);
+        drawRow(600, 1);
+        drawRow(400, 1);
+        drawRow(200, 1);
     }
     
 	public function get_gameSpeed():Int
@@ -116,20 +119,6 @@ class LevelGenerator extends FlxSpriteGroup
 		}
 	}
     
-    public function isPlatformInJumpRange():Bool
-    {
-        var lowestPlatform:Float = 0;
-		platforms.forEachAlive(function(platform:FlxSprite) {
-			var platform:Platform = cast(platform);
-            
-            if (platform.y > lowestPlatform) {
-                lowestPlatform = platform.y;
-            }
-		});
-        
-        return lowestPlatform > 300;
-    }
-    
     private function drawRow(Ypos:Float, Level:Int):Void
     {
         trace(Ypos);
@@ -157,6 +146,7 @@ class LevelGenerator extends FlxSpriteGroup
                 var platform:Platform = cast(platformCollection[platformMaterial][platformSize].getFirstDead());
                 platform.revive();
                 platform.health = 100;
+                platform.alpha = 0;
                 
                 createdPlatforms.push(platform);
             } while (materialAmount > 0);
@@ -177,6 +167,8 @@ class LevelGenerator extends FlxSpriteGroup
             platform.body.position.y = Ypos;
             platform.gameSpeed = gameSpeed;
             
+            FlxTween.tween(platform, { alpha: 1 }, 1);
+            
             beginPosition += platform.platformWidth * 36;
             
             // Set the platform as highest platform to know when to draw new platforms
@@ -194,9 +186,8 @@ class LevelGenerator extends FlxSpriteGroup
 			}
 		});
 		
-        if (highestPlatform != null && highestPlatform.y != 0 && highestPlatform.y > -100) {
-            trace('highest: ' + highestPlatform.y);
-            drawRow(-300, Math.round(Math.random() * 5)+1);
+        if (highestPlatform != null && highestPlatform.y != 0 && highestPlatform.y > 300) {
+            drawRow(100, Math.round(Math.random() * 5)+1);
         }
     }
 }
