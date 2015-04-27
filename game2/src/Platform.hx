@@ -1,6 +1,7 @@
 package;
 
 import flixel.effects.FlxSpriteFilter;
+import flixel.effects.particles.FlxEmitterExt;
 import flixel.FlxG;
 import flixel.addons.nape.FlxNapeSprite;
 import nape.callbacks.CbType;
@@ -30,6 +31,7 @@ class Platform extends FlxNapeSprite
 	
 	@:isVar public var gameSpeed(get, set):Int;
 	@:isVar public var platformWidth(get, set):Int;
+	@:isVar public var explosion(get, set):FlxEmitterExt;
     
 	public function new(X:Float, Y:Float, Width:Int = 3, Material:String = Platform.MATERIAL_STONE)
 	{
@@ -97,6 +99,32 @@ class Platform extends FlxNapeSprite
 		return platformWidth;
 	}
     
+	public function get_explosion():FlxEmitterExt
+	{
+		return explosion;
+	}
+	
+	public function set_explosion(Explosion:FlxEmitterExt):FlxEmitterExt
+	{
+		explosion = Explosion;
+		
+		return explosion;
+	}
+    
+    private function createParticles():Void
+    {
+		explosion.setRotation(0, 0);
+		explosion.setMotion(0, 5, 0.2, 360, 200, 1.8);
+		explosion.makeParticles("images/particles.png", 1200, 0, true, 0);
+		explosion.setAlpha(1, 1, 0, 0);
+		explosion.gravity = 400;
+    
+        explosion.x = this.x;
+        explosion.y = this.y;
+        explosion.start(true, 2, 0, 100);
+        //explosion.update();
+    }
+    
 	override public function update():Void
 	{
 		if (breakable && health <= 0)
@@ -108,6 +136,7 @@ class Platform extends FlxNapeSprite
 			if (health >= 80) {
 				animation.frameIndex = 0;
 			} else if (health >= 30 && animation.frameIndex == 0) {
+                createParticles();
 				animation.frameIndex = 1;
 			} else if (health < 30 && animation.frameIndex == 1) {
 				animation.frameIndex = 2;
