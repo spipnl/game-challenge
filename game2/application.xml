@@ -27,6 +27,7 @@
 	<!-- assets -->
 	<assets path="assets/sounds">
 		<sound path="jump.wav" id="jump" />
+		<sound path="woodbreak.wav" id="woodbreak" />
 	</assets>
 	
 	<assets path="assets/fonts" rename="fonts" />

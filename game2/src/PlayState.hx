@@ -143,7 +143,7 @@ class PlayState extends FlxNapeState
 	private function onPlayerIsCollidingWithPlatform(i:InteractionCallback):Void
 	{
 		var platform:Platform = cast(i.int2, Body).userData.data;
-		platform.health -= 2;
+        platform.isStanding();
 		
 		var colArb:CollisionArbiter = cast(i.arbiters.at(0));
 		
@@ -155,7 +155,7 @@ class PlayState extends FlxNapeState
 		
 		if (colArb.normal.y >= 0 && platform.breakable)
 		{
-			platform.health -= 100;
+            platform.isStomped();
 		}
 	}
 	

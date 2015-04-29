@@ -27,11 +27,12 @@ class Platform extends FlxNapeSprite
     private var dropShadowFilter:DropShadowFilter;
     private var spriteFilter:FlxSpriteFilter;
     
+    private var _stomped:Bool = false;
+    
 	public var breakable:Bool = false;
 	
 	@:isVar public var gameSpeed(get, set):Int;
 	@:isVar public var platformWidth(get, set):Int;
-	@:isVar public var explosion(get, set):FlxEmitterExt;
     
 	public function new(X:Float, Y:Float, Width:Int = 3, Material:String = Platform.MATERIAL_STONE)
 	{
@@ -99,30 +100,42 @@ class Platform extends FlxNapeSprite
 		return platformWidth;
 	}
     
-	public function get_explosion():FlxEmitterExt
-	{
-		return explosion;
-	}
-	
-	public function set_explosion(Explosion:FlxEmitterExt):FlxEmitterExt
-	{
-		explosion = Explosion;
-		
-		return explosion;
-	}
-    
     private function createParticles():Void
     {
-		explosion.setRotation(0, 0);
-		explosion.setMotion(0, 5, 0.2, 360, 200, 1.8);
-		explosion.makeParticles("images/particles.png", 1200, 0, true, 0);
+		// Add exlposion emitter
+		var explosion = new FlxEmitterExt();
+		explosion.setRotation(0, 360);
 		explosion.setAlpha(1, 1, 0, 0);
 		explosion.gravity = 400;
+        explosion.x = this.x + this.width * 0.5;
+        explosion.y = this.y + this.height * 0.5;
+        
+        if (_stomped) {
+            explosion.makeParticles("images/particles.png", 12, 0, true, 0);
+            explosion.setMotion(0, this.width, 0.2, 360, this.width, 1.8);
+        } else {
+            explosion.makeParticles("images/particles.png", 3, 0, true, 0);
+            explosion.setMotion(0, this.width, 0.2, 360, this.width * (100 - health) / 100, 1.8);
+        }
+        
+        // Increase cracking volume when health declines
+        FlxG.sound.play("woodbreak", (100 - health) / 100);
+        
+        explosion.start(true, 2, 0, 0);
+        
+        FlxG.state.add(explosion);
+    }
     
-        explosion.x = this.x;
-        explosion.y = this.y;
-        explosion.start(true, 2, 0, 100);
-        //explosion.update();
+    public function isStanding():Void
+    {
+        _stomped = false;
+        health -= 2;
+    }
+    
+    public function isStomped():Void
+    {
+        _stomped = true;
+        health -= 100;
     }
     
 	override public function update():Void
@@ -138,8 +151,11 @@ class Platform extends FlxNapeSprite
 			} else if (health >= 30 && animation.frameIndex == 0) {
                 createParticles();
 				animation.frameIndex = 1;
-			} else if (health < 30 && animation.frameIndex == 1) {
+			} else if (health > 0 && health < 30 && animation.frameIndex == 1) {
+                createParticles();
 				animation.frameIndex = 2;
+			} else if (health <= 0) {
+                createParticles();
 			}
 		}
 		

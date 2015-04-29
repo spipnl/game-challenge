@@ -1,6 +1,5 @@
 package;
 
-import flixel.effects.particles.FlxEmitterExt;
 import flixel.FlxG;
 import flixel.addons.nape.FlxNapeSprite;
 import flixel.FlxSprite;
@@ -28,7 +27,6 @@ class LevelGenerator extends FlxSpriteGroup
 	private var highestPlatform:Platform;
 	private var levelRowCounter:Int = 0;
 	private var currentLevel:Int = 1;
-	private var _explosion:FlxEmitterExt;
     
     private var platformCollection:Map<String,Map<Int,FlxSpriteGroup>>;
     private var levels:Map<Int,Map<String,Int>>;
@@ -38,14 +36,6 @@ class LevelGenerator extends FlxSpriteGroup
         var screenWidth = FlxG.width;
         
 		super();
-        
-		// Add exlposion emitter
-		_explosion = new FlxEmitterExt();
-		_explosion.setRotation(0, 0);
-		_explosion.setMotion(0, 5, 0.2, 360, 200, 1.8);
-		_explosion.makeParticles("images/particles.png", 1200, 0, true, 0);
-		_explosion.setAlpha(1, 1, 0, 0);
-		_explosion.gravity = 400;
         
         platformCollection = new Map();
         
@@ -85,8 +75,6 @@ class LevelGenerator extends FlxSpriteGroup
                 Platform.MATERIAL_STONE => 3,
             ],
         ];
-        
-        FlxG.state.add(_explosion);
 	}
     
     public function start():Void
@@ -119,7 +107,6 @@ class LevelGenerator extends FlxSpriteGroup
 		{
 			var platform:Platform;
 			platform = new Platform(0, 0, platformWidth, platformMaterial);
-            platform.explosion = _explosion;
 			platform.kill();
 			platforms.add(platform);
             if (platformCollection[platformMaterial] == null) {
