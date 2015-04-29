@@ -27,6 +27,7 @@ class LevelGenerator extends FlxSpriteGroup
 	private var highestPlatform:Platform;
 	private var levelRowCounter:Int = 0;
 	private var currentLevel:Int = 1;
+    private var _highestPlatformPosition:Float = 300;
     
     private var platformCollection:Map<String,Map<Int,FlxSpriteGroup>>;
     private var levels:Map<Int,Map<String,Int>>;
@@ -121,8 +122,6 @@ class LevelGenerator extends FlxSpriteGroup
     
     private function drawRow(Ypos:Float, Level:Int):Void
     {
-        trace(Ypos);
-        
         var beginPosition:Float = 0;
         var level = levels[Level];
         //var level = levels[Math.round(Math.random() * 5)+1];
@@ -186,8 +185,9 @@ class LevelGenerator extends FlxSpriteGroup
 			}
 		});
 		
-        if (highestPlatform != null && highestPlatform.y != 0 && highestPlatform.y > 300) {
-            drawRow(100, Math.round(Math.random() * 5)+1);
+        if (highestPlatform != null && highestPlatform.y != 0 && highestPlatform.y > _highestPlatformPosition) {
+            drawRow(50, Math.round(Math.random() * 5) + 1);
+            _highestPlatformPosition = 150 + 150 * Math.random();
         }
     }
 }

@@ -36,8 +36,8 @@ class Player extends FlxNapeSprite
     private var dropShadowFilter:DropShadowFilter;
     private var spriteFilter:FlxSpriteFilter;
     
-    private var numberOfJumps:Int = 20;
-    private var numberOfJumpsLeft:Int = 20;
+    private var numberOfJumps:Int = 2;
+    private var numberOfJumpsLeft:Int = 2;
 	
 	public function new(X:Float, Y:Float)
 	{

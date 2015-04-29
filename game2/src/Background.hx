@@ -89,6 +89,8 @@ class Background extends FlxSpriteGroup
                     bigCloud.x = FlxG.width * Math.random() - bigCloud.width * 0.5;
                     bigCloud.y = -bigCloud.height;
                     bigCloud.velocity.y = gameSpeed / (40 + 10 * Math.random());
+                    
+                    _bigCloudInterval = Std.int(50 + 250 * Math.random());
                 }
                 
                 var newSmallCloud:Bool = true;
@@ -107,6 +109,8 @@ class Background extends FlxSpriteGroup
                     smallCloud.x = FlxG.width * Math.random() - smallCloud.width * 0.5;
                     smallCloud.y = -smallCloud.height;
                     smallCloud.velocity.y = gameSpeed / (120 + 10 * Math.random());
+                    
+                    _smallCloudInterval = Std.int(10 + 200 * Math.random());
                 }
             }
         }
