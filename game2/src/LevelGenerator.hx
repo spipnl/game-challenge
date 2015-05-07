@@ -24,10 +24,10 @@ class LevelGenerator extends FlxSpriteGroup
     
 	@:isVar public var gameSpeed(get, set):Int;
     
-	private var highestPlatform:Platform;
-	private var levelRowCounter:Int = 0;
-	private var currentLevel:Int = 1;
-    private var _highestPlatformPosition:Float = 300;
+	private var _currentLevel:Int = 1;
+	private var _levelRowCounter:Int = 0;
+    private var _nextRowPosition:Float = 0;
+    private var _started = false;
     
     private var platformCollection:Map<String,Map<Int,FlxSpriteGroup>>;
     private var levels:Map<Int,Map<String,Int>>;
@@ -83,6 +83,8 @@ class LevelGenerator extends FlxSpriteGroup
         drawRow(600, 1);
         drawRow(400, 1);
         drawRow(200, 1);
+        
+        _started = true;
     }
     
 	public function get_gameSpeed():Int
@@ -169,9 +171,6 @@ class LevelGenerator extends FlxSpriteGroup
             FlxTween.tween(platform, { alpha: 1 }, 1);
             
             beginPosition += platform.platformWidth * 36;
-            
-            // Set the platform as highest platform to know when to draw new platforms
-            highestPlatform = platform;
         }
     }
 	
@@ -184,10 +183,15 @@ class LevelGenerator extends FlxSpriteGroup
 				platform.kill();
 			}
 		});
-		
-        if (highestPlatform != null && highestPlatform.y != 0 && highestPlatform.y > _highestPlatformPosition) {
-            drawRow(50, Math.round(Math.random() * 5) + 1);
-            _highestPlatformPosition = 150 + 150 * Math.random();
+        
+        if (_started) {
+            _levelRowCounter += gameSpeed;
+            
+            if (_levelRowCounter >= _nextRowPosition) {
+                _nextRowPosition = 7500 + 10000 * Math.random();
+                drawRow(50, Math.round(Math.random() * 5) + 1);
+                _levelRowCounter = 0;
+            }
         }
     }
 }
