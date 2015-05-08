@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="TBD" package="nl.spip.gamechallenge.game2" version="0.0.1" company="spipnl (Jip Spinnewijn)" />
+	<meta title="Skyroll" package="nl.spip.gamechallenge.game2" version="0.0.1" company="spipnl (Jip Spinnewijn)" />
 	
 	<!-- load the global settings file of the game challenge -->
 	<include path="../global.xml" />
