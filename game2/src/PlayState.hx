@@ -26,6 +26,7 @@ import nape.phys.Material;
 import nape.shape.Circle;
 import nape.shape.Polygon;
 import openfl.Assets;
+import flixel.util.FlxColor;
 
 /**
  * Initial PlayState
@@ -112,6 +113,8 @@ class PlayState extends FlxNapeState
 		add(hud);
         
 		enemies = generateEnemies(enemies, 5);
+        
+		FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
 	}
 	
 	private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup
@@ -174,6 +177,13 @@ class PlayState extends FlxNapeState
         background.start();
         player.start();
     }
+    
+    private function onLost():Void
+    {
+		FlxG.camera.fade(FlxColor.WHITE, 0.5, false, function() {
+            FlxG.switchState(new PlayState());
+        });        
+    }
 	
 	override public function update():Void
 	{
@@ -195,12 +205,17 @@ class PlayState extends FlxNapeState
             Reg.score += Std.int(gameSpeed / 100);
             hud.score = Reg.score;
             
-            if (enemies.countLiving() < 5) {
-                var enemy:Enemy = cast(enemies.getFirstDead());
-                enemy.body.position.x = Math.random() * FlxG.width;
-                enemy.body.position.y = -100;
-                enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
-                enemy.revive();
+            //if (enemies.countLiving() < 5) {
+                //var enemy:Enemy = cast(enemies.getFirstDead());
+                //enemy.body.position.x = Math.random() * FlxG.width;
+                //enemy.body.position.y = -100;
+                //enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
+                //enemy.revive();
+            //}
+                    
+            if (player.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
+            {
+                onLost();
             }
         }
         

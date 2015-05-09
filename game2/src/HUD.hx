@@ -29,11 +29,11 @@ class HUD extends FlxGroup
 		background.alpha = 0.7;
 		background.makeGraphic(FlxG.width, 50, FlxColor.BLACK);
 		
-		_scoreText = new FlxText(background.x + 10, background.y + 0, 200);
+		_scoreText = new FlxText(background.x + 10, background.y + 2, 200);
 		_scoreText.font = "fonts/FredokaOne-Regular.ttf";
 		_scoreText.alignment = "left";
 		_scoreText.color = 0xFFFFFF;
-		_scoreText.size = 24;
+		_scoreText.size = 32;
 		
 		_testText = new FlxText(background.x + 300, background.y + 0, 100);
 		_testText.font = "fonts/FredokaOne-Regular.ttf";
