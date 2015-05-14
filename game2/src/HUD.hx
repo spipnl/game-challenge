@@ -3,16 +3,21 @@ package;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.FlxSprite;
+import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 
 /**
  * The Enemy
  * 
  * @author spipnl (Jip Spinnewijn)
  */
-class HUD extends FlxGroup
+class HUD extends FlxSpriteGroup
 {
+    private var _hudHeight:Int = 50;
+    
 	private var _scoreText:FlxText;
 	private var _testText:FlxText;
 	
@@ -23,9 +28,9 @@ class HUD extends FlxGroup
 
 	public function new(X:Float = 0, Y:Float = 0) 
 	{
-		super();
+		super(0, -_hudHeight);
 		
-		background = new FlxSprite(X, Y);
+		background = new FlxSprite(0, 0);
 		background.alpha = 0.7;
 		background.makeGraphic(FlxG.width, 50, FlxColor.BLACK);
 		
@@ -45,6 +50,11 @@ class HUD extends FlxGroup
 		add(_scoreText);
 		add(_testText);
 	}
+    
+    public function start():Void
+    {
+		FlxTween.tween(this, {y: 0}, 1.0, {type: FlxTween.ONESHOT, ease: FlxEase.bounceOut});
+    }
 	
 	public function get_score():Int
 	{

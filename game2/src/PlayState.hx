@@ -86,7 +86,7 @@ class PlayState extends FlxNapeState
 			onPlayerStopsCollidingWithPlatform
 		));
 		
-		hud = new HUD(0, 0);
+		hud = new HUD();
         
 		background = new Background();
         
@@ -170,12 +170,15 @@ class PlayState extends FlxNapeState
     
     private function start():Void
     {
+        Reg.score = 0;
+        
         gameStarted = true;
         
         remove(mainMenu);
         levelGenerator.start();
         background.start();
         player.start();
+        hud.start();
     }
     
     private function onLost():Void
