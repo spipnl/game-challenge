@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 import flixel.ui.FlxButton;
 import openfl.Assets;
 import flixel.util.FlxSpriteUtil;
@@ -21,32 +22,41 @@ class MainMenu extends FlxSpriteGroup
     
 	private var _buttonsBG:FlxSprite;
     
+	private var _logo:FlxSprite;
+    
 	private var _startButton:MenuButton;
 	private var _aboutButton:MenuButton;
 	
 	private var _buttonsContainerWidth:Int = 300;
-	private var _buttonsContainerHeight:Int = 250;
+	private var _buttonsContainerHeight:Int = 520;
 	
 	public function new()
 	{
-        super((FlxG.width - _buttonsContainerWidth) * 0.5,  300);
+        super((FlxG.width - _buttonsContainerWidth) * 0.5,  0);
         
 		_buttonsBG = new FlxSprite(0, 0);
 		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
 		//FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
         
+		_logo = new FlxSprite();
+		_logo.loadGraphic(Assets.getBitmapData("images/menutitle.png"));
+        _logo.y = -_logo.height;
+		
 		_startButton = new MenuButton("Start", onStart);
 		_aboutButton = new MenuButton("About", onAbout);
         
         _startButton.x = (_buttonsContainerWidth - _startButton.width) * 0.5;
-        _startButton.y = 30;
+        _startButton.y = _buttonsContainerHeight - _startButton.height - 100;
         
         _aboutButton.x = (_buttonsContainerWidth - _aboutButton.width) * 0.5;
-        _aboutButton.y = _buttonsContainerHeight - _aboutButton.height - 30;
+        _aboutButton.y = _buttonsContainerHeight - _aboutButton.height;
 		
 		add(_buttonsBG);
+        add(_logo);
 		add(_startButton);
 		add(_aboutButton);
+        
+		FlxTween.tween(_logo, {y: 180}, 1.0, {type: FlxTween.ONESHOT, ease: FlxEase.bounceOut});
 	}
 	
     public function isStarted()
