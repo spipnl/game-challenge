@@ -27,6 +27,7 @@ import nape.shape.Circle;
 import nape.shape.Polygon;
 import openfl.Assets;
 import flixel.util.FlxColor;
+import popup.Popup;
 
 /**
  * Initial PlayState
@@ -183,9 +184,11 @@ class PlayState extends FlxNapeState
     
     private function onLost():Void
     {
-		FlxG.camera.fade(FlxColor.WHITE, 0.5, false, function() {
+        gameSpeed = 0;
+        
+		FlxG.camera.fade(FlxColor.WHITE, 5, false, function() {
             FlxG.switchState(new PlayState());
-        });        
+        });
     }
 	
 	override public function update():Void
@@ -220,6 +223,11 @@ class PlayState extends FlxNapeState
             {
                 onLost();
             }
+        }
+        
+        if (mainMenu.showAbout()) {
+            var popup:Popup = new Popup();
+            add(popup);            
         }
         
 		super.update();

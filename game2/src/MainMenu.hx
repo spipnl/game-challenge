@@ -10,6 +10,7 @@ import flixel.ui.FlxButton;
 import openfl.Assets;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxColor;
+import popup.Popup;
 
 /**
  * Initial MainMenu
@@ -19,6 +20,7 @@ import flixel.util.FlxColor;
 class MainMenu extends FlxSpriteGroup
 {
     private var _isStarted:Bool = false;
+    private var _showAbout:Bool = false;
     
 	private var _buttonsBG:FlxSprite;
     
@@ -61,7 +63,18 @@ class MainMenu extends FlxSpriteGroup
 	
     public function isStarted()
     {
-        return _isStarted;
+        var result = _isStarted;
+        _isStarted = false;
+        
+        return result;
+    }
+	
+    public function showAbout()
+    {
+        var result = _showAbout;
+        _showAbout = false;
+        
+        return result;
     }
     
 	/**
@@ -87,5 +100,6 @@ class MainMenu extends FlxSpriteGroup
 	
 	private function onAbout():Void
 	{
+        _showAbout = true;
 	}
 }
