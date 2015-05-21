@@ -28,12 +28,12 @@ class About extends Popup
     {
 		super.create();
         
-		_aboutText = new FlxText(20, 70, _background.width - 40);
+		_aboutText = new FlxText(80, 60, _background.width - 160);
         
 		_aboutText.font = "fonts/FredokaOne-Regular.ttf";
 		_aboutText.alignment = "left";
 		_aboutText.color = 0xFFFFFF;
-		_aboutText.size = 16;
+		_aboutText.size = 18;
         _aboutText.text = "Roll yourself to the top in this thrilling sky adventure in the second game of my game challenge.\n\nClick on the logo’s to visit my site or the GitHub repository with the source of all my games";
         
 		_logoSpipnl = new FlxButton(0, 0, '', onSpipnl);
@@ -45,14 +45,14 @@ class About extends Popup
         _logoGithub.x = _background.width * 0.5 + 30;
         
         _logoSpipnl.y =
-        _logoGithub.y = _background.height - 190;
+        _logoGithub.y = _background.height - 240;
         
-		_kenneyText = new FlxText(20, _background.height - 50, 110);
+		_kenneyText = new FlxText(80, _background.height - 70, 120);
         
 		_kenneyText.font = "fonts/FredokaOne-Regular.ttf";
 		_kenneyText.alignment = "left";
 		_kenneyText.color = 0xFFFFFF;
-		_kenneyText.size = 16;
+		_kenneyText.size = 18;
         _kenneyText.text = "Graphics by:";
         
 		_logoKenney = new FlxButton(0, 0, '', onKenney);
