@@ -2,6 +2,7 @@ package popup;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxSubState;
 import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
@@ -13,33 +14,55 @@ import openfl.Assets;
  * 
  * @author spipnl (Jip Spinnewijn)
  */
-class Popup extends FlxSpriteGroup
+class Popup extends FlxSubState
 {
+    private var _container:FlxSpriteGroup;
+    private var _background:FlxSprite;
+    private var _closeButton:FlxButton;
+    
 	public function new() 
 	{
-		super(0, 0);
-        
-		var background:FlxSprite = new FlxSprite();
-		background.loadGraphic(Assets.getBitmapData("images/popup-bg.png"));
-		//background.makeGraphic(FlxG.width, 50, FlxColor.BLACK);
-        
-		var closeButton:FlxButton = new FlxButton(0, 0, '', onClose);
-		closeButton.loadGraphic(Assets.getBitmapData("images/close.png"));
-        
-        closeButton.x = background.width - 20 - closeButton.width;
-        closeButton.y = 20;
-        
-        add(background);
-        add(closeButton);
-        
-        x = -background.width;
-        y = (FlxG.height - background.height) * 0.3;
-        
-		FlxTween.tween(this, {x: (FlxG.width - background.width) * 0.5}, 0.5, {type: FlxTween.ONESHOT, ease: FlxEase.elasticOut});
+        super(0x66000000);
 	}
+    
+    override public function create()
+    {
+        _container = new FlxSpriteGroup();
+        
+		_background = new FlxSprite();
+		_background.loadGraphic(Assets.getBitmapData("images/popup-bg.png"));
+        
+		_closeButton = new FlxButton(0, 0, '', onClose);
+		_closeButton.loadGraphic(Assets.getBitmapData("images/close.png"));
+        
+        _closeButton.x = _background.width - 25 - _closeButton.width;
+        _closeButton.y = 25;
+        
+        _container.add(_background);
+        _container.add(_closeButton);
+        add(_container);
+    }
+    
+    private function show()
+    {
+        _container.x = -_background.width;
+        _container.y = (FlxG.height - _background.height) * 0.3;
+        
+		FlxTween.tween(_container, {x: (FlxG.width - _background.width) * 0.5}, 0.5, {type: FlxTween.ONESHOT, ease: FlxEase.elasticOut});
+    }
     
     private function onClose()
     {
-		FlxTween.tween(this, {x: FlxG.width}, 0.3, {type: FlxTween.ONESHOT, ease: FlxEase.expoOut});
+		FlxTween.tween(_container, {x: FlxG.width}, 0.1, {type: FlxTween.ONESHOT, complete: onCloseTweenFinished});
     }
+	
+	/**
+	 * When the popup has moved out of the screen, close the popup
+	 * 
+	 * @param	tween
+	 */
+	private function onCloseTweenFinished(tween:FlxTween):Void
+	{
+        close();
+	}
 }

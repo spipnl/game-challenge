@@ -38,7 +38,6 @@ class MainMenu extends FlxSpriteGroup
         
 		_buttonsBG = new FlxSprite(0, 0);
 		_buttonsBG.makeGraphic(_buttonsContainerWidth, _buttonsContainerHeight, FlxColor.TRANSPARENT);
-		//FlxSpriteUtil.drawRoundRect(_buttonsBG, 0, 0, _buttonsBG.width, _buttonsBG.height, 8, 8, 0xFFFFFFFF);
         
 		_logo = new FlxSprite();
 		_logo.loadGraphic(Assets.getBitmapData("images/menutitle.png"));
@@ -63,10 +62,7 @@ class MainMenu extends FlxSpriteGroup
 	
     public function isStarted()
     {
-        var result = _isStarted;
-        _isStarted = false;
-        
-        return result;
+        return _isStarted;
     }
 	
     public function showAbout()

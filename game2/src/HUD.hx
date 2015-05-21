@@ -7,7 +7,6 @@ import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase;
 
 /**
  * The Enemy
@@ -53,7 +52,7 @@ class HUD extends FlxSpriteGroup
     
     public function start():Void
     {
-		FlxTween.tween(this, {y: 0}, 1.0, {type: FlxTween.ONESHOT, ease: FlxEase.bounceOut});
+		FlxTween.tween(this, {y: 0}, 0.5, {type: FlxTween.ONESHOT});
     }
 	
 	public function get_score():Int

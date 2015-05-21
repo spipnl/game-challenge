@@ -27,6 +27,8 @@ import nape.shape.Circle;
 import nape.shape.Polygon;
 import openfl.Assets;
 import flixel.util.FlxColor;
+import popup.About;
+import popup.Died;
 import popup.Popup;
 
 /**
@@ -188,6 +190,7 @@ class PlayState extends FlxNapeState
         
 		FlxG.camera.fade(FlxColor.WHITE, 5, false, function() {
             FlxG.switchState(new PlayState());
+                //openSubState(new Died());
         });
     }
 	
@@ -226,8 +229,7 @@ class PlayState extends FlxNapeState
         }
         
         if (mainMenu.showAbout()) {
-            var popup:Popup = new Popup();
-            add(popup);            
+            openSubState(new About());
         }
         
 		super.update();
