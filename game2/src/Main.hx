@@ -79,7 +79,7 @@ class Main extends Sprite
 	}
 	
 	/**
-	 * Listen to keydowns to switch to different states
+	 * Listen to keydowns to close the popup
 	 *
 	 * @param Event 		The KeyboardEvent
 	 */
@@ -90,9 +90,22 @@ class Main extends Sprite
 		#end
 		if ( event.keyCode == 27 ) // 27 == esc == android back key
 		{
-			#if !(flash || js)
-			Lib.exit();
-			#end
+            var currentState = FlxG.state;
+			var stateType = Type.getClassName(Type.getClass(currentState));
+			
+			switch (stateType)
+			{
+				case "PlayState":
+                    var playState:PlayState = cast(currentState);
+                    playState.back();
+                    
+					//#if !(flash || js)
+					//GAnalytics.trackEvent("Player", "Stopped", "The Game");
+					//GAnalytics.stopSession();
+					//Lib.exit();
+					//#end
+			}
+            
 		}
 	}
 }

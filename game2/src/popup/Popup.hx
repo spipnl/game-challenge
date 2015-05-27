@@ -20,6 +20,11 @@ class Popup extends FlxSubState
     private var _background:FlxSprite;
     private var _closeButton:FlxButton;
     
+	public static inline var ENTER_FROM_LEFT:String = 'left';
+	public static inline var ENTER_FROM_TOP:String = 'top';
+    
+    private var _enterFrom:String;
+    
 	public function new() 
 	{
         super(0x66000000);
@@ -27,12 +32,15 @@ class Popup extends FlxSubState
     
     override public function create()
     {
+        // Default from left
+        _enterFrom = ENTER_FROM_LEFT;
+        
         _container = new FlxSpriteGroup();
         
 		_background = new FlxSprite();
 		_background.loadGraphic(Assets.getBitmapData("images/popup-bg.png"));
         
-		_closeButton = new FlxButton(0, 0, '', onClose);
+		_closeButton = new FlxButton(0, 0, '', close);
 		_closeButton.loadGraphic(Assets.getBitmapData("images/close.png"));
         
         _closeButton.x = _background.width - 25 - _closeButton.width;
@@ -45,15 +53,26 @@ class Popup extends FlxSubState
     
     private function show()
     {
-        _container.x = -_background.width;
-        _container.y = (FlxG.height - _background.height) * 0.3;
-        
-		FlxTween.tween(_container, {x: (FlxG.width - _background.width) * 0.5}, 0.5, {type: FlxTween.ONESHOT, ease: FlxEase.elasticOut});
+        if (_enterFrom == ENTER_FROM_LEFT) {
+            _container.x = -_background.width;
+            _container.y = (FlxG.height - _background.height) * 0.3;
+            
+            FlxTween.tween(_container, { x: (FlxG.width - _background.width) * 0.5 }, 0.5, { type: FlxTween.ONESHOT, ease: FlxEase.elasticOut } );
+        } else if (_enterFrom == ENTER_FROM_TOP) {
+            _container.x = (FlxG.width - _background.width) * 0.5;
+            _container.y = -_background.height;
+            
+            FlxTween.tween(_container, { y: (FlxG.height - _background.height) * 0.3 }, 0.5, { type: FlxTween.ONESHOT, ease: FlxEase.elasticOut } );
+        }
     }
     
-    private function onClose()
+    override public function close()
     {
-		FlxTween.tween(_container, {x: FlxG.width}, 0.1, {type: FlxTween.ONESHOT, complete: onCloseTweenFinished});
+        if (_enterFrom == ENTER_FROM_LEFT) {
+            FlxTween.tween(_container, {x: FlxG.width}, 0.1, {type: FlxTween.ONESHOT, complete: onCloseTweenFinished});
+        } else if (_enterFrom == ENTER_FROM_TOP) {
+            FlxTween.tween(_container, {y: FlxG.height}, 0.1, {type: FlxTween.ONESHOT, complete: onCloseTweenFinished});
+        }
     }
 	
 	/**
@@ -63,6 +82,6 @@ class Popup extends FlxSubState
 	 */
 	private function onCloseTweenFinished(tween:FlxTween):Void
 	{
-        close();
+        super.close();
 	}
 }

@@ -47,7 +47,7 @@ class About extends Popup
         _logoSpipnl.y =
         _logoGithub.y = _background.height - 240;
         
-		_kenneyText = new FlxText(80, _background.height - 70, 120);
+		_kenneyText = new FlxText(80, _background.height - 70, 125);
         
 		_kenneyText.font = "fonts/FredokaOne-Regular.ttf";
 		_kenneyText.alignment = "left";
@@ -58,7 +58,7 @@ class About extends Popup
 		_logoKenney = new FlxButton(0, 0, '', onKenney);
 		_logoKenney.loadGraphic(Assets.getBitmapData("images/logo-kenney.png"));
         _logoKenney.x = _kenneyText.x + _kenneyText.width;
-        _logoKenney.y = _kenneyText.y + 2;
+        _logoKenney.y = _kenneyText.y;
         
         _container.add(_aboutText);
         _container.add(_logoSpipnl);

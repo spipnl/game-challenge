@@ -118,6 +118,19 @@ class PlayState extends FlxNapeState
 		enemies = generateEnemies(enemies, 5);
         
 		FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
+    }
+    
+	public function back():Void
+	{
+        var popupType = Type.getClassName(Type.getClass(subState));
+        if (popupType == 'popup.About') {
+            var popup:Popup = cast(subState);
+            popup.close();
+        } else {
+            #if !(flash || js)
+            Lib.exit();
+            #end
+        }
 	}
 	
 	private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup
