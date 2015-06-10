@@ -26,6 +26,9 @@ class GameClass extends FlxGame
 		
 		var fps:Int = 60;
 		
+		FlxG.sound.cache('menu-music');
+		FlxG.sound.cache('game-music');
+		
 		super(Math.ceil(stageWidth / ratio), Math.ceil(stageHeight / ratio), SpipnlSplashState, ratio, fps, fps);
 	}
 }

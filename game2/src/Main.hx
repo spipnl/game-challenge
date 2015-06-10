@@ -51,12 +51,9 @@ class Main extends Sprite
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
             stage.addEventListener(Event.RESIZE, resize);
+		} else {
+			initialize();
 		}
-		
-		initialize();
-		FlxG.log.redirectTraces = true;
-		_game = new GameClass();
-		addChild(_game);
 	}
     
     private function resize(e) 
@@ -76,6 +73,10 @@ class Main extends Sprite
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyDown);
+		
+		FlxG.log.redirectTraces = true;
+		_game = new GameClass();
+		addChild(_game);
 	}
 	
 	/**

@@ -10,6 +10,7 @@ import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.tweens.FlxTween;
 import nape.callbacks.CbEvent;
 import nape.callbacks.CbType;
 import nape.callbacks.InteractionCallback;
@@ -118,6 +119,7 @@ class PlayState extends FlxNapeState
 		enemies = generateEnemies(enemies, 5);
         
 		FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
+		FlxG.sound.playMusic("menu-music", 0.5);
     }
     
 	public function back():Void
@@ -195,13 +197,21 @@ class PlayState extends FlxNapeState
         background.start();
         player.start();
         hud.start();
+		
+		FlxTween.tween(FlxG.sound.music, {volume: 0}, 1, {complete: onPlayGameMusic});
     }
+	
+	private function onPlayGameMusic(tween:FlxTween):Void
+	{
+		FlxG.sound.playMusic("game-music", 0.5);
+	}
     
     private function onLost():Void
     {
         gameSpeed = 0;
         
-		FlxG.camera.fade(FlxColor.WHITE, 5, false, function() {
+		FlxTween.tween(FlxG.sound.music, {volume: 0}, 2);
+		FlxG.camera.fade(FlxColor.WHITE, 2, false, function() {
             FlxG.switchState(new PlayState());
                 //openSubState(new Died());
         });
