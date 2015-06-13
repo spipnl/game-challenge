@@ -24,6 +24,7 @@
 	<!-- classpath, haxe libs -->
 	<source path="src" />
 	<haxelib name="openfl" />
+	<set name="no-custom-backend"/>
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" />
 	<haxelib name="nape" />
