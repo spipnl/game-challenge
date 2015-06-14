@@ -30,7 +30,8 @@ class LevelGenerator extends FlxSpriteGroup
     private var _started = false;
     
     private var platformCollection:Map<String,Map<Int,FlxSpriteGroup>>;
-    private var levels:Map<Int,Map<String,Int>>;
+    //private var levels:Map<Int,Map<Int,Map<String,Int>>>;
+    private var levels:Map<Int,Array<Map<String, Int>>>;
     
 	public function new()
 	{
@@ -52,7 +53,7 @@ class LevelGenerator extends FlxSpriteGroup
 		generatePlatforms(2, Platform.MATERIAL_WOOD, 100);
 		generatePlatforms(1, Platform.MATERIAL_WOOD, 100);
         
-        levels = [
+        /*levels = [
             1 => [
                 Platform.MATERIAL_GLASS => 15,
             ],
@@ -74,6 +75,60 @@ class LevelGenerator extends FlxSpriteGroup
             ],
             6 => [
                 Platform.MATERIAL_STONE => 3,
+            ],
+        ];*/
+		
+        levels = [
+            1 => [
+				[
+					Platform.MATERIAL_GLASS => 15,
+				],
+            ],
+            2 => [
+				[
+					Platform.MATERIAL_WOOD  => 5,
+					Platform.MATERIAL_STONE => 5,
+				],
+				[
+					Platform.MATERIAL_WOOD  => 1,
+					Platform.MATERIAL_STONE => 1,
+				],
+            ],
+            3 => [
+				[
+					Platform.MATERIAL_WOOD => 15,
+				],
+				[
+					Platform.MATERIAL_WOOD  => 5,
+					Platform.MATERIAL_STONE => 5,
+				],
+            ],
+            4 => [
+				[
+					Platform.MATERIAL_WOOD => 5,
+				],
+				[
+					Platform.MATERIAL_WOOD  => 5,
+					Platform.MATERIAL_STONE => 5,
+				],
+            ],
+            5 => [
+				[
+					Platform.MATERIAL_WOOD => 4,
+				],
+				[
+					Platform.MATERIAL_WOOD  => 5,
+					Platform.MATERIAL_STONE => 5,
+				],
+            ],
+            6 => [
+				[
+					Platform.MATERIAL_WOOD => 10,
+				],
+				[
+					Platform.MATERIAL_WOOD  => 2,
+					Platform.MATERIAL_STONE => 4,
+				],
             ],
         ];
 	}
@@ -126,13 +181,14 @@ class LevelGenerator extends FlxSpriteGroup
     {
         var beginPosition:Float = 0;
         var level = levels[Level];
+		var levelElements = level[0];
         //var level = levels[Math.round(Math.random() * 5)+1];
         
         var createdPlatforms:Array<Platform> = new Array();
         
         var platformAmount:Int = 0;
-        for (platformMaterial in level.keys()) {
-            var materialAmount:Int = level[platformMaterial];
+        for (platformMaterial in levelElements.keys()) {
+            var materialAmount:Int = levelElements[platformMaterial];
             platformAmount += materialAmount;
             
             do
