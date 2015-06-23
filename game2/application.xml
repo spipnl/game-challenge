@@ -31,7 +31,7 @@
 	<haxelib name="ganalytics" />
 	
 	<!-- assets -->
-	<assets path="assets/sounds" type="sounds">
+	<assets path="assets/sounds">
 		<sound path="jump.wav" id="jump" />
 		<sound path="woodbreak.wav" id="woodbreak" />
 	</assets>
