@@ -181,7 +181,7 @@ class LevelGenerator extends FlxSpriteGroup
     {
         var beginPosition:Float = 0;
         var level = levels[Level];
-		var levelElements = level[0];
+		var levelElements = level[Std.random(level.length)];
         //var level = levels[Math.round(Math.random() * 5)+1];
         
         var createdPlatforms:Array<Platform> = new Array();
@@ -245,7 +245,8 @@ class LevelGenerator extends FlxSpriteGroup
             
             if (_levelRowCounter >= _nextRowPosition) {
                 _nextRowPosition = 7500 + 10000 * Math.random();
-                drawRow(50, Math.round(Math.random() * 5) + 1);
+                //drawRow(50, Math.round(Math.random() * 5) + 1);
+                drawRow(50, 3);
                 _levelRowCounter = 0;
             }
         }
