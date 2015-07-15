@@ -36,7 +36,7 @@ class Died extends Popup
 		_aboutText.alignment = "left";
 		_aboutText.color = 0xFFFFFF;
 		_aboutText.size = 18;
-        _aboutText.text = "Roll yourself to the top in this thrilling sky adventure in the second game of my game challenge.\n\nClick on the logo’s to visit my site or the GitHub repository with the source of all my games";
+        _aboutText.text = "YOU DIED";
         
 		_logoSpipnl = new FlxButton(0, 0, '', onSpipnl);
 		_logoSpipnl.loadGraphic(Assets.getBitmapData("images/logo-spipnl.png"));

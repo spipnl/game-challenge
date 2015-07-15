@@ -31,6 +31,7 @@ import flixel.util.FlxColor;
 import popup.About;
 import popup.Died;
 import popup.Popup;
+import spipnl.Settings;
 
 /**
  * Initial PlayState
@@ -51,8 +52,9 @@ class PlayState extends FlxNapeState
 	public var hud:HUD;
     public var mainMenu:MainMenu;
 	
-	private var gameSpeed:Int = 100;
 	private var gameStarted:Bool = false;
+	
+	@:isVar public var gameSpeed(get, set):Int;
 	
 	override public function create():Void 
 	{
@@ -100,9 +102,6 @@ class PlayState extends FlxNapeState
 		
 		player = new Player(290, 740);
 		
-        background.gameSpeed = gameSpeed;
-        levelGenerator.gameSpeed = gameSpeed;
-        
         mainMenu = new MainMenu();
         
         // Add all sprites in correct z-index order
@@ -120,7 +119,24 @@ class PlayState extends FlxNapeState
         
 		FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
 		FlxG.sound.playMusic("menu-music", 0.5);
+		
+		gameSpeed = 100;
     }
+    
+	public function get_gameSpeed():Int
+	{
+		return gameSpeed;
+	}
+	
+	public function set_gameSpeed(GameSpeed:Int):Int
+	{
+		gameSpeed = GameSpeed;
+		
+        background.gameSpeed = gameSpeed;
+        levelGenerator.gameSpeed = gameSpeed;
+		
+		return gameSpeed;
+	}
     
 	public function back():Void
 	{
@@ -208,14 +224,21 @@ class PlayState extends FlxNapeState
     
     private function onLost():Void
     {
+		gameStarted = false;
+		player.kill();
         gameSpeed = 0;
         
-		FlxTween.tween(FlxG.sound.music, {volume: 0}, 2);
-		FlxG.camera.fade(FlxColor.WHITE, 2, false, function() {
-            FlxG.switchState(new PlayState());
-                //openSubState(new Died());
-        });
+		FlxTween.tween(FlxG.sound.music, {volume: 0}, 2, {complete: showDiedPopup});
+		//FlxG.camera.fade(0x88FFFFFF, 2, false, function() {
+           // FlxG.switchState(new PlayState());
+           // openSubState(new Died());
+        //});
     }
+	
+	private function showDiedPopup(tween:FlxTween):Void
+	{
+		openSubState(new Died());
+	}
 	
 	override public function update():Void
 	{
@@ -229,11 +252,11 @@ class PlayState extends FlxNapeState
 			FlxG.resetState();
 		}
         
-        if (mainMenu.isStarted()) {
-            if (!gameStarted) {
-                start();
-            }
-            
+        if (mainMenu.isStarted() && !gameStarted) {
+			start();
+		}
+        
+		if (gameStarted) {
             Reg.score += Std.int(gameSpeed / 100);
             hud.score = Reg.score;
             

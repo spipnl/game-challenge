@@ -62,7 +62,10 @@ class MainMenu extends FlxSpriteGroup
 	
     public function isStarted()
     {
-        return _isStarted;
+        var result = _isStarted;
+        _isStarted = false;
+        
+        return result;
     }
 	
     public function showAbout()

@@ -75,7 +75,9 @@ class Background extends FlxSpriteGroup
             if (_startBackground.y > FlxG.height * 0.5) {
                 var newBigCloud:Bool = true;
                 bigClouds.forEachAlive(function(bigCloud:FlxSprite) {
-                    bigCloud.y += bigCloud.velocity.y;
+					if (gameSpeed > 0) {
+						bigCloud.y += bigCloud.velocity.y;
+					}
                     if (bigCloud.y < _bigCloudInterval) {
                         newBigCloud = false;
                     }
@@ -95,7 +97,9 @@ class Background extends FlxSpriteGroup
                 
                 var newSmallCloud:Bool = true;
                 smallClouds.forEachAlive(function(smallCloud:FlxSprite) {
-                    smallCloud.y += smallCloud.velocity.y;
+					if (gameSpeed > 0) {
+						smallCloud.y += smallCloud.velocity.y;
+					}
                     if (smallCloud.y < _smallCloudInterval) {
                         newSmallCloud = false;
                     }

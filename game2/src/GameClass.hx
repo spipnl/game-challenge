@@ -5,6 +5,7 @@ import flixel.FlxGame;
 import flixel.FlxG;
 import flixel.FlxState;
 import spipnl.Settings;
+//import extension.gpg.GooglePlayGames;
 
 /**
  * Initial Game
@@ -16,6 +17,11 @@ class GameClass extends FlxGame
 	public function new()
 	{
 		Settings.loadXml("texts/local.xml");
+		
+		GAnalytics.startSession(Settings.settings.get('googleanalytics'));
+		GAnalytics.trackEvent("Player", "Started", "The Game");
+		
+		//GooglePlayGames.init(true);
 		
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
