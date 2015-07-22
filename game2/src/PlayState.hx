@@ -228,17 +228,13 @@ class PlayState extends FlxNapeState
 		player.kill();
         gameSpeed = 0;
         
-		FlxTween.tween(FlxG.sound.music, {volume: 0}, 2, {complete: showDiedPopup});
+		openSubState(new Died());
+		FlxTween.tween(FlxG.sound.music, {volume: 0}, 2);
 		//FlxG.camera.fade(0x88FFFFFF, 2, false, function() {
            // FlxG.switchState(new PlayState());
            // openSubState(new Died());
         //});
     }
-	
-	private function showDiedPopup(tween:FlxTween):Void
-	{
-		openSubState(new Died());
-	}
 	
 	override public function update():Void
 	{

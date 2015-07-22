@@ -30,7 +30,7 @@ class Died extends Popup
         
         _enterFrom = Popup.ENTER_FROM_TOP;
         
-		_aboutText = new FlxText(80, 60, _background.width - 160);
+		_aboutText = new FlxText(80, 60, _containerBackground.width - 160);
         
 		_aboutText.font = "fonts/FredokaOne-Regular.ttf";
 		_aboutText.alignment = "left";
@@ -43,13 +43,13 @@ class Died extends Popup
 		_logoGithub = new FlxButton(0, 0, '', onGithub);
 		_logoGithub.loadGraphic(Assets.getBitmapData("images/logo-github.png"));
         
-        _logoSpipnl.x = _background.width * 0.5 - _logoSpipnl.width - 30;
-        _logoGithub.x = _background.width * 0.5 + 30;
+        _logoSpipnl.x = _containerBackground.width * 0.5 - _logoSpipnl.width - 30;
+        _logoGithub.x = _containerBackground.width * 0.5 + 30;
         
         _logoSpipnl.y =
-        _logoGithub.y = _background.height - 240;
+        _logoGithub.y = _containerBackground.height - 240;
         
-		_kenneyText = new FlxText(80, _background.height - 70, 125);
+		_kenneyText = new FlxText(80, _containerBackground.height - 70, 125);
         
 		_kenneyText.font = "fonts/FredokaOne-Regular.ttf";
 		_kenneyText.alignment = "left";
