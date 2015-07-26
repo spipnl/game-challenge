@@ -7,6 +7,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.net.URLRequest;
@@ -18,81 +19,62 @@ import openfl.net.URLRequest;
  */
 class Died extends Popup
 {
-    private var _aboutText:FlxText;
-    private var _kenneyText:FlxText;
-    private var _logoSpipnl:FlxButton;
-    private var _logoGithub:FlxButton;
-    private var _logoKenney:FlxButton;
+	private var _playerSad:FlxSprite;
+    private var _diedText:FlxText;
+    private var _scoreText:FlxText;
+	private var _resetButton:MenuButton;
     
     override public function create()
     {
+        _enterFrom = Popup.ENTER_FROM_TOP;
+		_showCloseButton = false;
+		
 		super.create();
         
-        _enterFrom = Popup.ENTER_FROM_TOP;
+		_playerSad = new FlxSprite();
+		_playerSad.loadGraphic(Assets.getBitmapData("images/player-sad.png"));
+        _playerSad.x = (_container.width - _playerSad.width) * 0.5;
+        _playerSad.y = 50;
+		
+		_diedText = new FlxText(0, 200, _containerBackground.width);
+		_diedText.font = "fonts/FredokaOne-Regular.ttf";
+		_diedText.alignment = "center";
+		_diedText.color = 0xFFFFFF;
+		_diedText.size = 32;
+        _diedText.text = "YOU DIED";
         
-		_aboutText = new FlxText(80, 60, _containerBackground.width - 160);
+		_scoreText = new FlxText(0, 260, _containerBackground.width);
+		_scoreText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.WHITE, 2, 1);
+		_scoreText.font = "fonts/FredokaOne-Regular.ttf";
+		_scoreText.alignment = "center";
+		_scoreText.color = 0xA06D3D;
+		_scoreText.size = 32;
+        _scoreText.text = "Score: " + Reg.score;
+		
+		if (Reg.score > Reg.highScore) {
+			Reg.highScore = Reg.score;
+			Reg.saveData();
+			_scoreText.text += "\nNEW HIGH SCORE!";
+		}
+		
+        _resetButton = new MenuButton("Close", onReturnToMain);
         
-		_aboutText.font = "fonts/FredokaOne-Regular.ttf";
-		_aboutText.alignment = "left";
-		_aboutText.color = 0xFFFFFF;
-		_aboutText.size = 18;
-        _aboutText.text = "YOU DIED";
+        _resetButton.x = (_container.width - _resetButton.width) * 0.5;
+        _resetButton.y = _container.height - _resetButton.height - 50;
         
-		_logoSpipnl = new FlxButton(0, 0, '', onSpipnl);
-		_logoSpipnl.loadGraphic(Assets.getBitmapData("images/logo-spipnl.png"));
-		_logoGithub = new FlxButton(0, 0, '', onGithub);
-		_logoGithub.loadGraphic(Assets.getBitmapData("images/logo-github.png"));
-        
-        _logoSpipnl.x = _containerBackground.width * 0.5 - _logoSpipnl.width - 30;
-        _logoGithub.x = _containerBackground.width * 0.5 + 30;
-        
-        _logoSpipnl.y =
-        _logoGithub.y = _containerBackground.height - 240;
-        
-		_kenneyText = new FlxText(80, _containerBackground.height - 70, 125);
-        
-		_kenneyText.font = "fonts/FredokaOne-Regular.ttf";
-		_kenneyText.alignment = "left";
-		_kenneyText.color = 0xFFFFFF;
-		_kenneyText.size = 18;
-        _kenneyText.text = "Graphics by:";
-        
-		_logoKenney = new FlxButton(0, 0, '', onKenney);
-		_logoKenney.loadGraphic(Assets.getBitmapData("images/logo-kenney.png"));
-        _logoKenney.x = _kenneyText.x + _kenneyText.width;
-        _logoKenney.y = _kenneyText.y;
-        
-        _container.add(_aboutText);
-        _container.add(_logoSpipnl);
-        _container.add(_logoGithub);
-        
-        _container.add(_kenneyText);
-        _container.add(_logoKenney);
-        
+        _container.add(_playerSad);
+        _container.add(_diedText);
+        _container.add(_scoreText);
+		_container.add(_resetButton);
+		
         show();
     }
     
 	/**
-	 * When the users clicks on the spip.nl logo, launch the browser with spip.nl url
+	 * When the user clicks the reset button, return to the main menu
 	 */
-	private function onSpipnl():Void
+	private function onReturnToMain():Void
 	{
-		Lib.getURL(new URLRequest("http://spip.nl/"));
-	}
-    
-	/**
-	 * When the users clicks on the GitHub logo, launch the browser with the github repo url
-	 */
-	private function onGithub():Void
-	{
-		Lib.getURL(new URLRequest("https://github.com/spipnl/game-challenge/tree/master/game2"));
-	}
-    
-	/**
-	 * When the users clicks on the Kenney logo, launch the browser with kenney.nl url
-	 */
-	private function onKenney():Void
-	{
-		Lib.getURL(new URLRequest("http://kenney.nl/"));
+		FlxG.resetState();
 	}
 }

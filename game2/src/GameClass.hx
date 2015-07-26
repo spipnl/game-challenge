@@ -21,6 +21,7 @@ class GameClass extends FlxGame
 		GAnalytics.startSession(Settings.settings.get('googleanalytics'));
 		GAnalytics.trackEvent("Player", "Started", "The Game");
 		
+		Reg.loadData();
 		//GooglePlayGames.init(true);
 		
 		var stageWidth:Int = Lib.current.stage.stageWidth;

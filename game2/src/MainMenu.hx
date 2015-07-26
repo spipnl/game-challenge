@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.ui.FlxButton;
@@ -29,6 +30,9 @@ class MainMenu extends FlxSpriteGroup
 	private var _startButton:MenuButton;
 	private var _aboutButton:MenuButton;
 	
+	private var _highScoreText:FlxText;
+	private var _highScoreAmountText:FlxText;
+	
 	private var _buttonsContainerWidth:Int = 300;
 	private var _buttonsContainerHeight:Int = 520;
 	
@@ -52,10 +56,28 @@ class MainMenu extends FlxSpriteGroup
         _aboutButton.x = (_buttonsContainerWidth - _aboutButton.width) * 0.5;
         _aboutButton.y = _buttonsContainerHeight - _aboutButton.height;
 		
+		_highScoreText = new FlxText(0, FlxG.height - 150, _buttonsContainerWidth);
+		_highScoreText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.WHITE, 2, 1);
+		_highScoreText.font = "fonts/FredokaOne-Regular.ttf";
+		_highScoreText.alignment = "center";
+		_highScoreText.color = 0xA06D3D;
+		_highScoreText.size = 32;
+        _highScoreText.text = "High Score";
+		
+		_highScoreAmountText = new FlxText(0, FlxG.height - 110, _buttonsContainerWidth);
+		_highScoreAmountText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.WHITE, 2, 1);
+		_highScoreAmountText.font = "fonts/FredokaOne-Regular.ttf";
+		_highScoreAmountText.alignment = "center";
+		_highScoreAmountText.color = 0xA06D3D;
+		_highScoreAmountText.size = 44;
+        _highScoreAmountText.text = Std.string(Reg.highScore);
+		
 		add(_buttonsBG);
         add(_logo);
 		add(_startButton);
 		add(_aboutButton);
+		add(_highScoreText);
+		add(_highScoreAmountText);
         
 		FlxTween.tween(_logo, {y: 180}, 1.0, {type: FlxTween.ONESHOT, ease: FlxEase.bounceOut});
 	}

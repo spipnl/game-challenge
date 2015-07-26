@@ -25,13 +25,11 @@ class Popup extends FlxSubState
 	public static inline var ENTER_FROM_LEFT:String = 'left';
 	public static inline var ENTER_FROM_TOP:String = 'top';
     
-    private var _enterFrom:String;
+    private var _enterFrom:String = ENTER_FROM_LEFT;
+	private var _showCloseButton:Bool = true;
     
     override public function create()
     {
-        // Default from left
-        _enterFrom = ENTER_FROM_LEFT;
-        
         _container = new FlxSpriteGroup();
         
 		_background = new FlxSprite();
@@ -43,15 +41,18 @@ class Popup extends FlxSubState
 		_containerBackground = new FlxSprite();
 		_containerBackground.loadGraphic(Assets.getBitmapData("images/popup-bg.png"));
         
-		_closeButton = new FlxButton(0, 0, '', close);
-		_closeButton.loadGraphic(Assets.getBitmapData("images/close.png"));
-        
-        _closeButton.x = _containerBackground.width - 25 - _closeButton.width;
-        _closeButton.y = 25;
-        
         _container.add(_containerBackground);
-        _container.add(_closeButton);
 		
+		if (_showCloseButton) {
+			_closeButton = new FlxButton(0, 0, '', close);
+			_closeButton.loadGraphic(Assets.getBitmapData("images/close.png"));
+			
+			_closeButton.x = _containerBackground.width - 25 - _closeButton.width;
+			_closeButton.y = 25;
+			
+			_container.add(_closeButton);
+		}
+        
 		add(_background);
         add(_container);
     }

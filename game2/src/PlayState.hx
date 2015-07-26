@@ -122,7 +122,7 @@ class PlayState extends FlxNapeState
 		
 		gameSpeed = 100;
     }
-    
+	
 	public function get_gameSpeed():Int
 	{
 		return gameSpeed;
@@ -205,7 +205,11 @@ class PlayState extends FlxNapeState
     private function start():Void
     {
         Reg.score = 0;
+		Reg.numberOfPlays += 1;
+		Reg.saveData();
         
+		GAnalytics.trackEvent("Player", "Began", "Game " + Reg.numberOfPlays);
+		
         gameStarted = true;
         
         remove(mainMenu);
@@ -227,6 +231,7 @@ class PlayState extends FlxNapeState
 		gameStarted = false;
 		player.kill();
         gameSpeed = 0;
+		GAnalytics.trackEvent("Player", "Died", "Game " + Reg.numberOfPlays, Reg.score);
         
 		openSubState(new Died());
 		FlxTween.tween(FlxG.sound.music, {volume: 0}, 2);
