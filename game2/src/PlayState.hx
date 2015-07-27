@@ -77,6 +77,14 @@ class PlayState extends FlxNapeState
 		));
 		
 		FlxNapeState.space.listeners.add(new InteractionListener(
+			CbEvent.BEGIN,
+			InteractionType.COLLISION,
+			Player.CB_PLAYER,
+			Platform.CB_PLATFORM,
+			onPlayerStartsCollidingWithPlatform
+		));
+		
+		FlxNapeState.space.listeners.add(new InteractionListener(
 			CbEvent.ONGOING,
 			InteractionType.COLLISION,
 			Player.CB_PLAYER,
@@ -176,12 +184,10 @@ class PlayState extends FlxNapeState
 			return PreFlag.ACCEPT;
 		}
 	}
-	
-	private function onPlayerIsCollidingWithPlatform(i:InteractionCallback):Void
+    
+	private function onPlayerStartsCollidingWithPlatform(i:InteractionCallback):Void
 	{
 		var platform:Platform = cast(i.int2, Body).userData.data;
-        platform.isStanding();
-		
 		var colArb:CollisionArbiter = cast(i.arbiters.at(0));
 		
         // When the player starts 'standing' on the platform, reset the number op jumps
@@ -194,6 +200,12 @@ class PlayState extends FlxNapeState
 		{
             platform.isStomped();
 		}
+	}
+	
+	private function onPlayerIsCollidingWithPlatform(i:InteractionCallback):Void
+	{
+		var platform:Platform = cast(i.int2, Body).userData.data;
+        platform.isStanding();
 	}
 	
 	private function onPlayerStopsCollidingWithPlatform(i:InteractionCallback):Void
@@ -235,10 +247,6 @@ class PlayState extends FlxNapeState
         
 		openSubState(new Died());
 		FlxTween.tween(FlxG.sound.music, {volume: 0}, 2);
-		//FlxG.camera.fade(0x88FFFFFF, 2, false, function() {
-           // FlxG.switchState(new PlayState());
-           // openSubState(new Died());
-        //});
     }
 	
 	override public function update():Void
@@ -261,13 +269,13 @@ class PlayState extends FlxNapeState
             Reg.score += Std.int(gameSpeed / 100);
             hud.score = Reg.score;
             
-            //if (enemies.countLiving() < 5) {
-                //var enemy:Enemy = cast(enemies.getFirstDead());
-                //enemy.body.position.x = Math.random() * FlxG.width;
-                //enemy.body.position.y = -100;
-                //enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
-                //enemy.revive();
-            //}
+            if (enemies.countLiving() < 5) {
+                var enemy:Enemy = cast(enemies.getFirstDead());
+                enemy.body.position.x = Math.random() * FlxG.width;
+                enemy.body.position.y = -100;
+                enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
+                enemy.revive();
+            }
                     
             if (player.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
             {
