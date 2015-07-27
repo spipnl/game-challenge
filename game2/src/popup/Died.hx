@@ -48,7 +48,7 @@ class Died extends Popup
 		_scoreText.font = "fonts/FredokaOne-Regular.ttf";
 		_scoreText.alignment = "center";
 		_scoreText.color = 0xA06D3D;
-		_scoreText.size = 32;
+		_scoreText.size = 40;
         _scoreText.text = "Score: " + Reg.score;
 		
 		if (Reg.score > Reg.highScore) {
@@ -60,7 +60,7 @@ class Died extends Popup
         _resetButton = new MenuButton("Close", onReturnToMain);
         
         _resetButton.x = (_container.width - _resetButton.width) * 0.5;
-        _resetButton.y = _container.height - _resetButton.height - 50;
+        _resetButton.y = _container.height - _resetButton.height - 30;
         
         _container.add(_playerSad);
         _container.add(_diedText);
