@@ -7,6 +7,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
+import openfl.Assets;
 
 /**
  * The Enemy
@@ -19,6 +20,7 @@ class HUD extends FlxSpriteGroup
     
 	private var _scoreText:FlxText;
 	private var _testText:FlxText;
+	private var _powerUps:FlxSpriteGroup;
 	
 	public var background:FlxSprite;
 	
@@ -45,9 +47,12 @@ class HUD extends FlxSpriteGroup
 		_testText.color = 0xFFFFFF;
 		_testText.size = 24;
 		
+		_powerUps = new FlxSpriteGroup(background.x + background.width, background.y);
+		
 		add(background);
 		add(_scoreText);
 		add(_testText);
+		add(_powerUps);
 	}
     
     public function start():Void
@@ -79,5 +84,24 @@ class HUD extends FlxSpriteGroup
 		_testText.text = Std.string(Test);
 		
 		return test;
+	}
+	
+	public function setPowerUps(powerUps:FlxSpriteGroup)
+	{
+		if (powerUps.length != _powerUps.length) {
+			_powerUps.clear();
+			
+			var i:Int = 0;
+			powerUps.forEach(function(powerUp:FlxSprite) {
+				i++;
+				var powerUp:PowerUp = cast(powerUp);
+				var powerUpImage:FlxSprite = new FlxSprite();
+				powerUpImage.loadGraphic(powerUp.getImageBitmapData());
+				powerUpImage.x = -(powerUpImage.width + 10) * i;
+				powerUpImage.y = 10;
+				
+				_powerUps.add(powerUpImage);
+			});
+		}
 	}
 }
