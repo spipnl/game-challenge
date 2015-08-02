@@ -20,12 +20,12 @@ import flixel.util.FlxRandom;
  */
 class LevelGenerator extends FlxSpriteGroup
 {
-	public var platforms:FlxSpriteGroup;
+    public var platforms:FlxSpriteGroup;
     
-	@:isVar public var gameSpeed(get, set):Int;
+    @:isVar public var gameSpeed(get, set):Int;
     
-	private var _currentLevel:Int = 1;
-	private var _levelRowCounter:Int = 0;
+    private var _currentLevel:Int = 1;
+    private var _levelRowCounter:Int = 0;
     private var _nextRowPosition:Float = 0;
     private var _started = false;
     
@@ -33,25 +33,25 @@ class LevelGenerator extends FlxSpriteGroup
     //private var levels:Map<Int,Map<Int,Map<String,Int>>>;
     private var levels:Map<Int,Array<Map<String, Int>>>;
     
-	public function new()
-	{
+    public function new()
+    {
         var screenWidth = FlxG.width;
         
-		super();
+        super();
         
         platformCollection = new Map();
         
-		platforms = new FlxSpriteGroup();
+        platforms = new FlxSpriteGroup();
         
-		generatePlatforms(3, Platform.MATERIAL_STONE, 100);
-		generatePlatforms(2, Platform.MATERIAL_STONE, 100);
-		generatePlatforms(1, Platform.MATERIAL_STONE, 100);
-		generatePlatforms(3, Platform.MATERIAL_GLASS, 100);
-		generatePlatforms(2, Platform.MATERIAL_GLASS, 100);
-		generatePlatforms(1, Platform.MATERIAL_GLASS, 100);
-		generatePlatforms(3, Platform.MATERIAL_WOOD, 100);
-		generatePlatforms(2, Platform.MATERIAL_WOOD, 100);
-		generatePlatforms(1, Platform.MATERIAL_WOOD, 100);
+        generatePlatforms(3, Platform.MATERIAL_STONE, 100);
+        generatePlatforms(2, Platform.MATERIAL_STONE, 100);
+        generatePlatforms(1, Platform.MATERIAL_STONE, 100);
+        generatePlatforms(3, Platform.MATERIAL_GLASS, 100);
+        generatePlatforms(2, Platform.MATERIAL_GLASS, 100);
+        generatePlatforms(1, Platform.MATERIAL_GLASS, 100);
+        generatePlatforms(3, Platform.MATERIAL_WOOD, 100);
+        generatePlatforms(2, Platform.MATERIAL_WOOD, 100);
+        generatePlatforms(1, Platform.MATERIAL_WOOD, 100);
         
         /*levels = [
             1 => [
@@ -77,61 +77,61 @@ class LevelGenerator extends FlxSpriteGroup
                 Platform.MATERIAL_STONE => 3,
             ],
         ];*/
-		
+        
         levels = [
             1 => [
-				[
-					Platform.MATERIAL_GLASS => 15,
-				],
+                [
+                    Platform.MATERIAL_GLASS => 15,
+                ],
             ],
             2 => [
-				[
-					Platform.MATERIAL_WOOD  => 5,
-					Platform.MATERIAL_STONE => 5,
-				],
-				[
-					Platform.MATERIAL_WOOD  => 1,
-					Platform.MATERIAL_STONE => 1,
-				],
+                [
+                    Platform.MATERIAL_WOOD  => 5,
+                    Platform.MATERIAL_STONE => 5,
+                ],
+                [
+                    Platform.MATERIAL_WOOD  => 1,
+                    Platform.MATERIAL_STONE => 1,
+                ],
             ],
             3 => [
-				[
-					Platform.MATERIAL_WOOD => 15,
-				],
-				[
-					Platform.MATERIAL_WOOD  => 5,
-					Platform.MATERIAL_STONE => 5,
-				],
+                [
+                    Platform.MATERIAL_WOOD => 15,
+                ],
+                [
+                    Platform.MATERIAL_WOOD  => 5,
+                    Platform.MATERIAL_STONE => 5,
+                ],
             ],
             4 => [
-				[
-					Platform.MATERIAL_WOOD => 5,
-				],
-				[
-					Platform.MATERIAL_WOOD  => 5,
-					Platform.MATERIAL_STONE => 5,
-				],
+                [
+                    Platform.MATERIAL_WOOD => 5,
+                ],
+                [
+                    Platform.MATERIAL_WOOD  => 5,
+                    Platform.MATERIAL_STONE => 5,
+                ],
             ],
             5 => [
-				[
-					Platform.MATERIAL_WOOD => 4,
-				],
-				[
-					Platform.MATERIAL_WOOD  => 5,
-					Platform.MATERIAL_STONE => 5,
-				],
+                [
+                    Platform.MATERIAL_WOOD => 4,
+                ],
+                [
+                    Platform.MATERIAL_WOOD  => 5,
+                    Platform.MATERIAL_STONE => 5,
+                ],
             ],
             6 => [
-				[
-					Platform.MATERIAL_WOOD => 10,
-				],
-				[
-					Platform.MATERIAL_WOOD  => 2,
-					Platform.MATERIAL_STONE => 4,
-				],
+                [
+                    Platform.MATERIAL_WOOD => 10,
+                ],
+                [
+                    Platform.MATERIAL_WOOD  => 2,
+                    Platform.MATERIAL_STONE => 4,
+                ],
             ],
         ];
-	}
+    }
     
     public function start():Void
     {
@@ -142,31 +142,31 @@ class LevelGenerator extends FlxSpriteGroup
         _started = true;
     }
     
-	public function get_gameSpeed():Int
-	{
-		return gameSpeed;
-	}
-	
-	public function set_gameSpeed(GameSpeed:Int):Int
-	{
-		gameSpeed = GameSpeed;
-		
-		platforms.forEachAlive(function(platform:FlxSprite) {
-			var platform:Platform = cast(platform);
-            platform.gameSpeed = gameSpeed;
-		});
+    public function get_gameSpeed():Int
+    {
+        return gameSpeed;
+    }
+    
+    public function set_gameSpeed(GameSpeed:Int):Int
+    {
+        gameSpeed = GameSpeed;
         
-		return gameSpeed;
-	}
-	
-	private function generatePlatforms(platformWidth:Int, platformMaterial:String, amount:Int):Void
-	{
-		for (i in 0...amount)
-		{
-			var platform:Platform;
-			platform = new Platform(0, 0, platformWidth, platformMaterial);
-			platform.kill();
-			platforms.add(platform);
+        platforms.forEachAlive(function(platform:FlxSprite) {
+            var platform:Platform = cast(platform);
+            platform.gameSpeed = gameSpeed;
+        });
+        
+        return gameSpeed;
+    }
+    
+    private function generatePlatforms(platformWidth:Int, platformMaterial:String, amount:Int):Void
+    {
+        for (i in 0...amount)
+        {
+            var platform:Platform;
+            platform = new Platform(0, 0, platformWidth, platformMaterial);
+            platform.kill();
+            platforms.add(platform);
             if (platformCollection[platformMaterial] == null) {
                 platformCollection[platformMaterial] = new Map();
             }
@@ -174,14 +174,14 @@ class LevelGenerator extends FlxSpriteGroup
                 platformCollection[platformMaterial][platformWidth] = new FlxSpriteGroup();
             }
             platformCollection[platformMaterial][platformWidth].add(platform);
-		}
-	}
+        }
+    }
     
     private function drawRow(Ypos:Float, Level:Int):Void
     {
         var beginPosition:Float = 0;
         var level = levels[Level];
-		var levelElements = level[Std.random(level.length)];
+        var levelElements = level[Std.random(level.length)];
         //var level = levels[Math.round(Math.random() * 5)+1];
         
         var createdPlatforms:Array<Platform> = new Array();
@@ -229,16 +229,16 @@ class LevelGenerator extends FlxSpriteGroup
             beginPosition += platform.platformWidth * 36;
         }
     }
-	
-	override public function update():Void
+    
+    override public function update():Void
     {
-		platforms.forEachAlive(function(platform:FlxSprite) {
-			var platform:Platform = cast(platform);
-			if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
-			{
-				platform.kill();
-			}
-		});
+        platforms.forEachAlive(function(platform:FlxSprite) {
+            var platform:Platform = cast(platform);
+            if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
+            {
+                platform.kill();
+            }
+        });
         
         if (_started) {
             _levelRowCounter += gameSpeed;

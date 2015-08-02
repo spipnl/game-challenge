@@ -16,21 +16,21 @@ using flixel.util.FlxSpriteUtil;
  */
 class MenuButton extends FlxButton
 {
-	public function new(?Label:String, ?OnClick:Void -> Void) 
-	{
-		super(0, 0, Label, OnClick);
+    public function new(?Label:String, ?OnClick:Void -> Void) 
+    {
+        super(0, 0, Label, OnClick);
         loadGraphic(Assets.getBitmapData("images/menubutton.png"));
         
-		var labelOffsetNormal:FlxPoint = new FlxPoint(0, 10);
-		var labelOffsetPress:FlxPoint = new FlxPoint(0, 12);
-		labelOffsets = [labelOffsetNormal, labelOffsetNormal, labelOffsetPress];
-		label.font = "fonts/FredokaOne-Regular.ttf";
-		label.color = 0xFFFFFF;
-		label.size = 40;
-	}
+        var labelOffsetNormal:FlxPoint = new FlxPoint(0, 10);
+        var labelOffsetPress:FlxPoint = new FlxPoint(0, 12);
+        labelOffsets = [labelOffsetNormal, labelOffsetNormal, labelOffsetPress];
+        label.font = "fonts/FredokaOne-Regular.ttf";
+        label.color = 0xFFFFFF;
+        label.size = 40;
+    }
     
-	override public function update():Void
-	{
+    override public function update():Void
+    {
         if (status == FlxButton.PRESSED) {
             offset.y = -2;
         } else {

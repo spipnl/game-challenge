@@ -40,121 +40,129 @@ import spipnl.Settings;
  */
 class PlayState extends FlxNapeState
 {
-	public var background:Background;
-	public var levelGenerator:LevelGenerator;
-	public var enemies:FlxSpriteGroup;
-	public var floorBody:Body;
-	public var floorShape:Polygon;
-	public var player:Player;
-	public var quicksand:Quicksand;
-	public var cirt:FlxShapeCircle;
-	
-	public var hud:HUD;
+    public var background:Background;
+    public var levelGenerator:LevelGenerator;
+    public var enemies:FlxSpriteGroup;
+    public var floorBody:Body;
+    public var floorShape:Polygon;
+    public var player:Player;
+    public var quicksand:Quicksand;
+    public var cirt:FlxShapeCircle;
+    
+    public var hud:HUD;
     public var mainMenu:MainMenu;
-	
-	private var gameStarted:Bool = false;
-	
-	@:isVar public var gameSpeed(get, set):Int;
-	
-	override public function create():Void 
-	{
-		FlxG.debugger.visible = true;
-		//napeDebugEnabled = true;
-		
-		super.create();
-		
-		FlxNapeState.space.gravity.setxy(0, 2000);
-		
-		FlxG.camera.follow(player, FlxCamera.STYLE_LOCKON, null, 0);
-		FlxG.camera.setBounds(0, 0, FlxG.width, FlxG.height);
-		FlxG.cameras.bgColor = 0xffd0f4f7;
-		
-		FlxNapeState.space.listeners.add(new PreListener(
-			InteractionType.COLLISION,
-			Platform.CB_PLATFORM_ONE_WAY,
-			Player.CB_PLAYER,
-			onPlayerStartsCollidingWithOneWayPlatform
-		));
-		
-		FlxNapeState.space.listeners.add(new InteractionListener(
-			CbEvent.BEGIN,
-			InteractionType.COLLISION,
-			Player.CB_PLAYER,
-			Platform.CB_PLATFORM,
-			onPlayerStartsCollidingWithPlatform
-		));
-		
-		FlxNapeState.space.listeners.add(new InteractionListener(
-			CbEvent.ONGOING,
-			InteractionType.COLLISION,
-			Player.CB_PLAYER,
-			Platform.CB_PLATFORM,
-			onPlayerIsCollidingWithPlatform
-		));
-		
-		FlxNapeState.space.listeners.add(new InteractionListener(
-			CbEvent.END,
-			InteractionType.COLLISION,
-			Player.CB_PLAYER,
-			Platform.CB_PLATFORM,
-			onPlayerStopsCollidingWithPlatform
-		));
-		
-		FlxNapeState.space.listeners.add(new PreListener(
-			InteractionType.COLLISION,
-			Player.CB_PLAYER,
-			PowerUp.CB_POWER_UP,
-			onPlayerStartsCollidingWithPowerUp
-		));
-		
-		hud = new HUD();
-		
-		background = new Background();
+    
+    private var gameStarted:Bool = false;
+    
+    @:isVar public var gameSpeed(get, set):Int;
+    
+    override public function create():Void 
+    {
+        FlxG.debugger.visible = true;
+        //napeDebugEnabled = true;
+        
+        super.create();
+        
+        FlxNapeState.space.gravity.setxy(0, 2000);
+        
+        FlxG.camera.follow(player, FlxCamera.STYLE_LOCKON, null, 0);
+        FlxG.camera.setBounds(0, 0, FlxG.width, FlxG.height);
+        FlxG.cameras.bgColor = 0xffd0f4f7;
+        
+        FlxNapeState.space.listeners.add(new PreListener(
+            InteractionType.COLLISION,
+            Platform.CB_PLATFORM_ONE_WAY,
+            Player.CB_PLAYER,
+            onPlayerStartsCollidingWithOneWayPlatform
+        ));
+        
+        FlxNapeState.space.listeners.add(new InteractionListener(
+            CbEvent.BEGIN,
+            InteractionType.COLLISION,
+            Player.CB_PLAYER,
+            Platform.CB_PLATFORM,
+            onPlayerStartsCollidingWithPlatform
+        ));
+        
+        FlxNapeState.space.listeners.add(new InteractionListener(
+            CbEvent.ONGOING,
+            InteractionType.COLLISION,
+            Player.CB_PLAYER,
+            Platform.CB_PLATFORM,
+            onPlayerIsCollidingWithPlatform
+        ));
+        
+        FlxNapeState.space.listeners.add(new InteractionListener(
+            CbEvent.END,
+            InteractionType.COLLISION,
+            Player.CB_PLAYER,
+            Platform.CB_PLATFORM,
+            onPlayerStopsCollidingWithPlatform
+        ));
+        
+        FlxNapeState.space.listeners.add(new PreListener(
+            InteractionType.COLLISION,
+            Player.CB_PLAYER,
+            PowerUp.CB_POWER_UP,
+            onPlayerStartsCollidingWithPowerUp
+        ));
+        
+        FlxNapeState.space.listeners.add(new InteractionListener(
+            CbEvent.BEGIN,
+            InteractionType.COLLISION,
+            Player.CB_PLAYER,
+            Enemy.CB_ENEMY,
+            onPlayerStartsCollidingWithEnemy
+        ));
+        
+        hud = new HUD();
+        
+        background = new Background();
         
         levelGenerator = new LevelGenerator();
         
-		enemies = new FlxSpriteGroup();
-		
-		player = new Player(290, 740);
-		
+        enemies = new FlxSpriteGroup();
+        
+        player = new Player(290, 740);
+        
         mainMenu = new MainMenu();
         
         // Add all sprites in correct z-index order
-		add(background);
-		add(background.smallClouds);
-		add(enemies);
-		add(player);
-		add(levelGenerator);
-		add(levelGenerator.platforms);
-		add(background.bigClouds);
+        add(background);
+        add(background.smallClouds);
+        add(enemies);
+        add(player);
+        add(levelGenerator);
+        add(levelGenerator.platforms);
+        add(background.bigClouds);
         add(mainMenu);
-		add(hud);
+        add(hud);
         
-		enemies = generateEnemies(enemies, 5);
+        enemies = generateEnemies(enemies, 5);
         
-		FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
-		FlxG.sound.playMusic("menu-music", 0.5);
-		
-		gameSpeed = 100;
+        FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
+        FlxG.sound.playMusic("menu-music", 0.5);
+        
+        gameSpeed = 100;
     }
-	
-	public function get_gameSpeed():Int
-	{
-		return gameSpeed;
-	}
-	
-	public function set_gameSpeed(GameSpeed:Int):Int
-	{
-		gameSpeed = GameSpeed;
-		
+    
+    public function get_gameSpeed():Int
+    {
+        return gameSpeed;
+    }
+    
+    public function set_gameSpeed(GameSpeed:Int):Int
+    {
+        gameSpeed = GameSpeed;
+        
         background.gameSpeed = gameSpeed;
         levelGenerator.gameSpeed = gameSpeed;
-		
-		return gameSpeed;
-	}
+        
+        return gameSpeed;
+    }
     
-	public function back():Void
-	{
+    public function back():Void
+    {
         var popupType = Type.getClassName(Type.getClass(subState));
         if (popupType == 'popup.About') {
             var popup:Popup = cast(subState);
@@ -164,79 +172,84 @@ class PlayState extends FlxNapeState
             Lib.exit();
             #end
         }
-	}
-	
-	private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup
-	{
-		for (i in 0...amount)
-		{
-			var enemy:Enemy = new Enemy(0, 0);
-			enemy.kill();
-			enemies.add(enemy);
-		}
-		
-		return enemies;
-	}
+    }
     
-	private function onPlayerStartsCollidingWithOneWayPlatform(cb:PreCallback):PreFlag
-	{
-		var colArb:CollisionArbiter = cb.arbiter.collisionArbiter;
-		
-		if (colArb.normal.y >= 0)
-		{
-			return PreFlag.IGNORE;
-		}
-		else
-		{
-			return PreFlag.ACCEPT;
-		}
-	}
+    private function generateEnemies(enemies:FlxSpriteGroup, amount:Int):FlxSpriteGroup
+    {
+        for (i in 0...amount)
+        {
+            var enemy:Enemy = new Enemy(0, 0);
+            enemy.kill();
+            enemies.add(enemy);
+        }
+        
+        return enemies;
+    }
     
-	private function onPlayerStartsCollidingWithPlatform(i:InteractionCallback):Void
-	{
-		var platform:Platform = cast(i.int2, Body).userData.data;
-		var colArb:CollisionArbiter = cast(i.arbiters.at(0));
-		
+    private function onPlayerStartsCollidingWithOneWayPlatform(cb:PreCallback):PreFlag
+    {
+        var colArb:CollisionArbiter = cb.arbiter.collisionArbiter;
+        
+        if (colArb.normal.y >= 0)
+        {
+            return PreFlag.IGNORE;
+        }
+        else
+        {
+            return PreFlag.ACCEPT;
+        }
+    }
+    
+    private function onPlayerStartsCollidingWithPlatform(i:InteractionCallback):Void
+    {
+        var platform:Platform = cast(i.int2, Body).userData.data;
+        var colArb:CollisionArbiter = cast(i.arbiters.at(0));
+        
         // When the player starts 'standing' on the platform, reset the number op jumps
         if (colArb.normal.y < 0) {
             player.resetJumps();
             player.isTouchingPlatform = true;
         }
-		
-		if (colArb.normal.y >= 0 && platform.breakable)
-		{
+        
+        if (colArb.normal.y >= 0 && platform.breakable)
+        {
             platform.isStomped();
-		}
-	}
-	
-	private function onPlayerIsCollidingWithPlatform(i:InteractionCallback):Void
-	{
-		var platform:Platform = cast(i.int2, Body).userData.data;
+        }
+    }
+    
+    private function onPlayerIsCollidingWithPlatform(i:InteractionCallback):Void
+    {
+        var platform:Platform = cast(i.int2, Body).userData.data;
         platform.isStanding();
-	}
-	
-	private function onPlayerStopsCollidingWithPlatform(i:InteractionCallback):Void
-	{
+    }
+    
+    private function onPlayerStopsCollidingWithPlatform(i:InteractionCallback):Void
+    {
         // Set 'standing' on the platform to false, to prevent unwilling resetting of jumps
         player.isTouchingPlatform = false;
-	}
+    }
     
-	private function onPlayerStartsCollidingWithPowerUp(cb:PreCallback):PreFlag
-	{
-		var powerUp:PowerUp = cast(cb.int2, Body).userData.data;
-		player.addPowerUp(powerUp);
-		remove(powerUp);
-		return PreFlag.IGNORE;
-	}
+    private function onPlayerStartsCollidingWithPowerUp(cb:PreCallback):PreFlag
+    {
+        var powerUp:PowerUp = cast(cb.int2, Body).userData.data;
+        player.addPowerUp(powerUp);
+        remove(powerUp);
+        return PreFlag.IGNORE;
+    }
+    
+    private function onPlayerStartsCollidingWithEnemy(i:InteractionCallback):Void
+    {
+        player.losePowerUps();
+    }
     
     private function start():Void
     {
         Reg.score = 0;
-		Reg.numberOfPlays += 1;
-		Reg.saveData();
+        Reg.numberOfPlays += 1;
+        Reg.saveData();
         
-		GAnalytics.trackEvent("Player", "Began", "Game " + Reg.numberOfPlays);
-		
+        GAnalytics.trackEvent("Player", "Began", "Game " + Reg.numberOfPlays);
+        
         gameStarted = true;
         
         remove(mainMenu);
@@ -244,51 +257,56 @@ class PlayState extends FlxNapeState
         background.start();
         player.start();
         hud.start();
-		
-		FlxTween.tween(FlxG.sound.music, {volume: 0}, 1, {complete: onPlayGameMusic});
+        
+        FlxTween.tween(FlxG.sound.music, {volume: 0}, 1, {complete: onPlayGameMusic});
     }
-	
-	private function onPlayGameMusic(tween:FlxTween):Void
-	{
-		FlxG.sound.playMusic("game-music", 0.5);
-	}
+    
+    private function onPlayGameMusic(tween:FlxTween):Void
+    {
+        FlxG.sound.playMusic("game-music", 0.5);
+    }
     
     private function onLost():Void
     {
-		gameStarted = false;
-		player.kill();
+        gameStarted = false;
+        player.kill();
         gameSpeed = 0;
-		GAnalytics.trackEvent("Player", "Died", "Game " + Reg.numberOfPlays, Reg.score);
+        GAnalytics.trackEvent("Player", "Died", "Game " + Reg.numberOfPlays, Reg.score);
         
-		openSubState(new Died());
-		FlxTween.tween(FlxG.sound.music, {volume: 0}, 2);
+        openSubState(new Died());
+        FlxTween.tween(FlxG.sound.music, {volume: 0}, 2);
     }
-	
-	override public function update():Void
-	{
-		if (FlxG.keys.justPressed.G)
-		{
-			napeDebugEnabled = !napeDebugEnabled;
-		}
-		
-		if (FlxG.keys.justPressed.R)
-		{
-			FlxG.resetState();
-		}
+    
+    override public function update():Void
+    {
+        if (FlxG.keys.justPressed.G)
+        {
+            napeDebugEnabled = !napeDebugEnabled;
+        }
+        
+        if (FlxG.keys.justPressed.R)
+        {
+            FlxG.resetState();
+        }
         
         if (mainMenu.isStarted() && !gameStarted) {
-			start();
-		}
+            start();
+        }
         
-		if (gameStarted) {
+        if (gameStarted) {
             Reg.score += Std.int(gameSpeed / 100);
             hud.score = Reg.score;
             
-			if (Reg.score % 100 == 0) {
-				var extraJump:PowerUp = new PowerUp(Math.random() * FlxG.width, -100);
-				add(extraJump);
-			}
-			
+            // Only add a new power up when the player has fewer than 3 power ups
+            if (player.getPowerUps().length < 3) {
+                // Add power up when the score can be divided by 1000
+                if (Reg.score % 1000 == 0) {
+                    var extraJump:PowerUp = new PowerUp(Math.random() * FlxG.width, -100);
+                    extraJump.body.angularVel = Math.random() > 0.5 ? 20 : -20;
+                    add(extraJump);
+                }
+            }
+            
             if (enemies.countLiving() < 5) {
                 var enemy:Enemy = cast(enemies.getFirstDead());
                 enemy.body.position.x = Math.random() * FlxG.width;
@@ -296,19 +314,19 @@ class PlayState extends FlxNapeState
                 enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
                 enemy.revive();
             }
-                    
+            
             if (player.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
             {
                 onLost();
             }
-			
-			hud.setPowerUps(player.getPowerUps());
+            
+            hud.setPowerUps(player.getPowerUps());
         }
         
         if (mainMenu.showAbout()) {
             openSubState(new About());
         }
         
-		super.update();
-	}
+        super.update();
+    }
 }
