@@ -164,10 +164,13 @@ class PlayState extends FlxNapeState
     public function back():Void
     {
         var popupType = Type.getClassName(Type.getClass(subState));
-        if (popupType == 'popup.About') {
+        if (popupType == 'popup.About')
+        {
             var popup:Popup = cast(subState);
             popup.close();
-        } else {
+        } 
+        else
+        {
             #if !(flash || js)
             Lib.exit();
             #end
@@ -206,7 +209,8 @@ class PlayState extends FlxNapeState
         var colArb:CollisionArbiter = cast(i.arbiters.at(0));
         
         // When the player starts 'standing' on the platform, reset the number op jumps
-        if (colArb.normal.y < 0) {
+        if (colArb.normal.y < 0)
+        {
             player.resetJumps();
             player.isTouchingPlatform = true;
         }
@@ -239,7 +243,7 @@ class PlayState extends FlxNapeState
     
     private function onPlayerStartsCollidingWithEnemy(i:InteractionCallback):Void
     {
-        player.losePowerUps();
+        player.losePowerUp();
     }
     
     private function start():Void
@@ -289,25 +293,27 @@ class PlayState extends FlxNapeState
             FlxG.resetState();
         }
         
-        if (mainMenu.isStarted() && !gameStarted) {
+        if (mainMenu.isStarted() && !gameStarted)
+        {
             start();
         }
         
-        if (gameStarted) {
+        if (gameStarted)
+        {
             Reg.score += Std.int(gameSpeed / 100);
             hud.score = Reg.score;
             
             // Only add a new power up when the player has fewer than 3 power ups
-            if (player.getPowerUps().length < 3) {
-                // Add power up when the score can be divided by 1000
-                if (Reg.score % 1000 == 0) {
-                    var extraJump:PowerUp = new PowerUp(Math.random() * FlxG.width, -100);
-                    extraJump.body.angularVel = Math.random() > 0.5 ? 20 : -20;
-                    add(extraJump);
-                }
+            if (player.getPowerUps().length < 3 && Reg.score % 1000 == 0)
+            {
+                var extraJump:PowerUp = new PowerUp(Math.random() * FlxG.width, -100);
+                extraJump.body.angularVel = Math.random() > 0.5 ? 20 : -20;
+                add(extraJump);
             }
             
-            if (enemies.countLiving() < 5) {
+            // Add enemy up when the score can be divided by 1000
+            if (Reg.score % 200 == 0)
+            {
                 var enemy:Enemy = cast(enemies.getFirstDead());
                 enemy.body.position.x = Math.random() * FlxG.width;
                 enemy.body.position.y = -100;
@@ -321,9 +327,15 @@ class PlayState extends FlxNapeState
             }
             
             hud.setPowerUps(player.getPowerUps());
+            
+            if (gameSpeed < 150 && Reg.score % 100 == 0)
+            {
+                gameSpeed++;
+            }
         }
         
-        if (mainMenu.showAbout()) {
+        if (mainMenu.showAbout())
+        {
             openSubState(new About());
         }
         
