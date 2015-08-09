@@ -108,6 +108,14 @@ class PlayState extends FlxNapeState
         ));
         
         FlxNapeState.space.listeners.add(new InteractionListener(
+            CbEvent.ONGOING,
+            InteractionType.COLLISION,
+            Player.CB_PLAYER,
+            PowerUp.CB_POWER_UP,
+            onPlayerIsCollidingWithPowerUp
+        ));
+        
+        FlxNapeState.space.listeners.add(new InteractionListener(
             CbEvent.BEGIN,
             InteractionType.COLLISION,
             Player.CB_PLAYER,
@@ -235,10 +243,14 @@ class PlayState extends FlxNapeState
     
     private function onPlayerStartsCollidingWithPowerUp(cb:PreCallback):PreFlag
     {
-        var powerUp:PowerUp = cast(cb.int2, Body).userData.data;
-        player.addPowerUp(powerUp);
-        remove(powerUp);
         return PreFlag.IGNORE;
+    }
+    
+    private function onPlayerIsCollidingWithPowerUp(i:InteractionCallback):Void
+    {
+        var powerUp:PowerUp = cast(i.int2, Body).userData.data;
+        player.addPowerUp(powerUp);
+        powerUp.destroy();
     }
     
     private function onPlayerStartsCollidingWithEnemy(i:InteractionCallback):Void
@@ -323,7 +335,7 @@ class PlayState extends FlxNapeState
             
             if (player.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
             {
-                onLost();
+                player.kill();
             }
             
             hud.setPowerUps(player.getPowerUps());
@@ -331,6 +343,10 @@ class PlayState extends FlxNapeState
             if (gameSpeed < 150 && Reg.score % 100 == 0)
             {
                 gameSpeed++;
+            }
+            
+            if (!player.alive) {
+                onLost();
             }
         }
         

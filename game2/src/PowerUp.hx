@@ -31,7 +31,7 @@ class PowerUp extends FlxNapeSprite
     private var _powerUpType:String;
     private var _powerUpImageBitmapData:BitmapData;
     
-    public function new(X:Float, Y:Float, PowerUpType:String = PowerUp.TYPE_EXTRA_JUMP)
+    public function new(X:Float = 0, Y:Float = 0, PowerUpType:String = PowerUp.TYPE_EXTRA_JUMP)
     {
         super(X, Y);
         

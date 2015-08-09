@@ -86,22 +86,23 @@ class HUD extends FlxSpriteGroup
         return test;
     }
     
-    public function setPowerUps(powerUps:FlxSpriteGroup)
+    public function setPowerUps(powerUps:Array<PowerUp>)
     {
-        if (powerUps.length != _powerUps.length) {
+        if (powerUps.length != _powerUps.length)
+        {
             _powerUps.clear();
             
             var i:Int = 0;
-            powerUps.forEach(function(powerUp:FlxSprite) {
+            for (powerUp in powerUps)
+            {
                 i++;
-                var powerUp:PowerUp = cast(powerUp);
                 var powerUpImage:FlxSprite = new FlxSprite();
                 powerUpImage.loadGraphic(powerUp.getImageBitmapData());
                 powerUpImage.x = -(powerUpImage.width + 10) * i;
                 powerUpImage.y = 10;
                 
                 _powerUps.add(powerUpImage);
-            });
+            }
         }
     }
 }

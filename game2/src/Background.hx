@@ -5,6 +5,7 @@ import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
+import flixel.tweens.FlxTween;
 
 /**
  * ...
@@ -14,6 +15,10 @@ class Background extends FlxSpriteGroup
 {    
     private var _bigCloudInterval:Int = 200;
     private var _smallCloudInterval:Int = 150;
+    
+    private var _backgroundEndColor:Int =  0xFF001233;
+    private var _colorTween:FlxTween;
+    private var _colorBackground:FlxSprite;
     
     private var _startBackground:FlxSprite;
     public var bigClouds:FlxSpriteGroup;
@@ -26,6 +31,10 @@ class Background extends FlxSpriteGroup
     public function new(X:Float=0, Y:Float=0) 
     {
         super(X, Y);
+        
+        _colorBackground = new FlxSprite();
+        _colorBackground.alpha = 0;
+        _colorBackground.makeGraphic(FlxG.width, FlxG.height, _backgroundEndColor);
         
         _startBackground = new FlxSprite(0, 0, "images/colored_desert.png");
         
@@ -42,10 +51,12 @@ class Background extends FlxSpriteGroup
         for (i in 0...20) {
             var smallCloud:FlxSprite = new FlxSprite();
             smallCloud.loadGraphic("images/smallCloud.png");
+            smallCloud.alpha = 0.5;
             smallCloud.kill();
             smallClouds.add(smallCloud);
         }
         
+        add(_colorBackground);
         add(_startBackground);
     }
     
@@ -68,11 +79,22 @@ class Background extends FlxSpriteGroup
     
     override public function update():Void
     {
-        if (_started) {
-            if (_startBackground.y < FlxG.height) {
+        if (_started)
+        {
+            if (_startBackground.y < FlxG.height)
+            {
                 _startBackground.y += gameSpeed / 80;
             }
-            if (_startBackground.y > FlxG.height * 0.5) {
+            else
+            {
+                if (_colorTween == null)
+                {
+                    // Slowly change the background color from light blue to dark blue (space)
+                    _colorTween = FlxTween.tween(_colorBackground, {alpha: 1}, 600);
+                }
+            }
+            if (_startBackground.y > FlxG.height * 0.5)
+            {   
                 var newBigCloud:Bool = true;
                 bigClouds.forEachAlive(function(bigCloud:FlxSprite) {
                     if (gameSpeed > 0) {
@@ -86,7 +108,8 @@ class Background extends FlxSpriteGroup
                     }
                 });
                 
-                if (newBigCloud) {
+                // Only add a new cloud when we are not yet in space (background tween ended)
+                if (newBigCloud && (_colorTween == null || _colorTween.active)) {
                     var bigCloud:FlxSprite = bigClouds.recycle(FlxSprite);
                     bigCloud.x = FlxG.width * Math.random() - bigCloud.width * 0.5;
                     bigCloud.y = -bigCloud.height;
@@ -108,7 +131,8 @@ class Background extends FlxSpriteGroup
                     }
                 });
                 
-                if (newSmallCloud) {
+                // Only add a new cloud when we are not yet in space (background tween ended)
+                if (newSmallCloud && (_colorTween == null || _colorTween.active)) {
                     var smallCloud:FlxSprite = smallClouds.recycle(FlxSprite);
                     smallCloud.x = FlxG.width * Math.random() - smallCloud.width * 0.5;
                     smallCloud.y = -smallCloud.height;

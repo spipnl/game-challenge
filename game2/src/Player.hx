@@ -7,6 +7,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxMath;
 import flixel.FlxObject;
 import flixel.addons.nape.FlxNapeSprite;
+import flixel.effects.FlxFlicker;
 import nape.callbacks.CbType;
 import nape.geom.Vec2;
 import openfl.Assets;
@@ -35,7 +36,7 @@ class Player extends FlxNapeSprite
     private var _numberOfJumps:Int = 1;
     private var _numberOfJumpsLeft:Int = 1;
     
-    private var _powerUps:FlxSpriteGroup = new FlxSpriteGroup();
+    private var _powerUps:Array<PowerUp> = new Array();
     
     public function new(X:Float, Y:Float)
     {
@@ -83,23 +84,46 @@ class Player extends FlxNapeSprite
     
     public function addPowerUp(powerUp:PowerUp):Void
     {
-        if (powerUp.getType() == PowerUp.TYPE_EXTRA_JUMP) {
-            _numberOfJumps++;
-        }
-        
-        _powerUps.add(powerUp);
+        _powerUps.push(powerUp);
+        calculateNumberOfJumps();
     }
     
-    public function getPowerUps():FlxSpriteGroup
+    public function getPowerUps():Array<PowerUp>
     {
         return _powerUps;
     }
     
-    public function losePowerUps():Void
+    public function losePowerUp():Void
     {
-        _powerUps.clear();
+        if (!FlxFlicker.isFlickering(this))
+        {
+            if (_powerUps.length == 0)
+            {
+                kill();
+            } 
+            else
+            {
+                FlxFlicker.flicker(this, 5, 0.08);
+                _powerUps.pop();
+                calculateNumberOfJumps();
+            }
+        }
+    }
+    
+    private function calculateNumberOfJumps():Void
+    {
         _numberOfJumps = 1;
-        _numberOfJumpsLeft = 1;
+        
+        for (powerUp in _powerUps) {
+            if (powerUp.getType() == PowerUp.TYPE_EXTRA_JUMP) {
+                _numberOfJumps++;
+            }
+        }
+        
+        // Set number of jumps left no higher than total number of jumps
+        if (_numberOfJumpsLeft > _numberOfJumps) {
+            _numberOfJumpsLeft = _numberOfJumps;
+        }
     }
     
     private function movement():Void
