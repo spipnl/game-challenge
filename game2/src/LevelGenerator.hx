@@ -142,6 +142,16 @@ class LevelGenerator extends FlxSpriteGroup
         _started = true;
     }
     
+    public function goToNextLevel():Void
+    {
+        _currentLevel++;
+        
+        if (_currentLevel > Lambda.count(levels))
+        {
+            _currentLevel = 2;
+        }
+    }
+    
     public function get_gameSpeed():Int
     {
         return gameSpeed;
@@ -245,8 +255,7 @@ class LevelGenerator extends FlxSpriteGroup
             
             if (_levelRowCounter >= _nextRowPosition) {
                 _nextRowPosition = 7500 + 10000 * Math.random();
-                //drawRow(50, Math.round(Math.random() * 5) + 1);
-                drawRow(50, 3);
+                drawRow(50, _currentLevel);
                 _levelRowCounter = 0;
             }
         }

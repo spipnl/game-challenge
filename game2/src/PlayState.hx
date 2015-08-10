@@ -348,6 +348,12 @@ class PlayState extends FlxNapeState
             if (!player.alive) {
                 onLost();
             }
+            
+            // Add enemy up when the score can be divided by 1000
+            if (Reg.score % 500 == 0)
+            {
+                levelGenerator.goToNextLevel();
+            }
         }
         
         if (mainMenu.showAbout())
