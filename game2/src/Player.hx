@@ -85,6 +85,7 @@ class Player extends FlxNapeSprite
     public function addPowerUp(powerUp:PowerUp):Void
     {
         _powerUps.push(powerUp);
+        _numberOfJumpsLeft++;
         calculateNumberOfJumps();
     }
     
@@ -99,7 +100,7 @@ class Player extends FlxNapeSprite
         {
             if (_powerUps.length == 0)
             {
-                kill();
+                health = 0;
             } 
             else
             {

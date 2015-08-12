@@ -24,6 +24,7 @@ class LevelGenerator extends FlxSpriteGroup
     
     @:isVar public var gameSpeed(get, set):Int;
     
+    private var _newLevel:Bool = false;
     private var _currentLevel:Int = 1;
     private var _levelRowCounter:Int = 0;
     private var _nextRowPosition:Float = 0;
@@ -53,31 +54,6 @@ class LevelGenerator extends FlxSpriteGroup
         generatePlatforms(2, Platform.MATERIAL_WOOD, 100);
         generatePlatforms(1, Platform.MATERIAL_WOOD, 100);
         
-        /*levels = [
-            1 => [
-                Platform.MATERIAL_GLASS => 15,
-            ],
-            2 => [
-                Platform.MATERIAL_GLASS => 5,
-                Platform.MATERIAL_STONE => 5,
-                Platform.MATERIAL_WOOD  => 5,
-            ],
-            3 => [
-                Platform.MATERIAL_GLASS => 5,
-                Platform.MATERIAL_STONE => 10,
-            ],
-            4 => [
-                Platform.MATERIAL_WOOD  => 5,
-                Platform.MATERIAL_STONE => 5,
-            ],
-            5 => [
-                Platform.MATERIAL_GLASS => 3,
-            ],
-            6 => [
-                Platform.MATERIAL_STONE => 3,
-            ],
-        ];*/
-        
         levels = [
             1 => [
                 [
@@ -86,48 +62,54 @@ class LevelGenerator extends FlxSpriteGroup
             ],
             2 => [
                 [
-                    Platform.MATERIAL_WOOD  => 5,
-                    Platform.MATERIAL_STONE => 5,
+                    Platform.MATERIAL_GLASS => 8,
                 ],
                 [
-                    Platform.MATERIAL_WOOD  => 1,
-                    Platform.MATERIAL_STONE => 1,
+                    Platform.MATERIAL_GLASS => 10,
                 ],
             ],
             3 => [
                 [
-                    Platform.MATERIAL_WOOD => 15,
+                    Platform.MATERIAL_GLASS => 5,
+                    Platform.MATERIAL_STONE => 4,
                 ],
                 [
-                    Platform.MATERIAL_WOOD  => 5,
+                    Platform.MATERIAL_GLASS => 7,
                     Platform.MATERIAL_STONE => 5,
+                ],
+                [
+                    Platform.MATERIAL_GLASS => 4,
+                    Platform.MATERIAL_STONE => 6,
                 ],
             ],
             4 => [
                 [
-                    Platform.MATERIAL_WOOD => 5,
+                    Platform.MATERIAL_STONE => 6,
                 ],
                 [
-                    Platform.MATERIAL_WOOD  => 5,
-                    Platform.MATERIAL_STONE => 5,
+                    Platform.MATERIAL_STONE => 7,
                 ],
             ],
             5 => [
                 [
+                    Platform.MATERIAL_GLASS => 5,
                     Platform.MATERIAL_WOOD => 4,
                 ],
                 [
+                    Platform.MATERIAL_GLASS => 4,
                     Platform.MATERIAL_WOOD  => 5,
-                    Platform.MATERIAL_STONE => 5,
                 ],
             ],
             6 => [
                 [
-                    Platform.MATERIAL_WOOD => 10,
+                    Platform.MATERIAL_GLASS => 5,
+                    Platform.MATERIAL_STONE => 5,
+                    Platform.MATERIAL_WOOD => 5,
                 ],
                 [
-                    Platform.MATERIAL_WOOD  => 2,
+                    Platform.MATERIAL_GLASS => 4,
                     Platform.MATERIAL_STONE => 4,
+                    Platform.MATERIAL_WOOD => 7,
                 ],
             ],
         ];
@@ -138,6 +120,8 @@ class LevelGenerator extends FlxSpriteGroup
         drawRow(600, 1);
         drawRow(400, 1);
         drawRow(200, 1);
+        
+        _currentLevel = 2;
         
         _started = true;
     }
@@ -150,6 +134,8 @@ class LevelGenerator extends FlxSpriteGroup
         {
             _currentLevel = 2;
         }
+        
+        _newLevel = true;
     }
     
     public function get_gameSpeed():Int
@@ -161,7 +147,8 @@ class LevelGenerator extends FlxSpriteGroup
     {
         gameSpeed = GameSpeed;
         
-        platforms.forEachAlive(function(platform:FlxSprite) {
+        platforms.forEachAlive(function(platform:FlxSprite)
+        {
             var platform:Platform = cast(platform);
             platform.gameSpeed = gameSpeed;
         });
@@ -177,12 +164,17 @@ class LevelGenerator extends FlxSpriteGroup
             platform = new Platform(0, 0, platformWidth, platformMaterial);
             platform.kill();
             platforms.add(platform);
-            if (platformCollection[platformMaterial] == null) {
+            
+            if (platformCollection[platformMaterial] == null)
+            {
                 platformCollection[platformMaterial] = new Map();
             }
-            if (platformCollection[platformMaterial][platformWidth] == null) {
+            
+            if (platformCollection[platformMaterial][platformWidth] == null)
+            {
                 platformCollection[platformMaterial][platformWidth] = new FlxSpriteGroup();
             }
+            
             platformCollection[platformMaterial][platformWidth].add(platform);
         }
     }
@@ -197,14 +189,14 @@ class LevelGenerator extends FlxSpriteGroup
         var createdPlatforms:Array<Platform> = new Array();
         
         var platformAmount:Int = 0;
-        for (platformMaterial in levelElements.keys()) {
+        for (platformMaterial in levelElements.keys())
+        {
             var materialAmount:Int = levelElements[platformMaterial];
             platformAmount += materialAmount;
             
             do
             {
-                //var platformSize:Int = Math.round((Math.random() * 2)) + 1;
-                var platformSize:Int = 3;
+                var platformSize:Int = Math.round(Math.random()) + 2;
                 if (platformSize > materialAmount) {
                     platformSize = materialAmount;
                 }
@@ -216,15 +208,18 @@ class LevelGenerator extends FlxSpriteGroup
                 platform.alpha = 0;
                 
                 createdPlatforms.push(platform);
-            } while (materialAmount > 0);
+            }
+            while (materialAmount > 0);
         }
         
         var spaceAmount = 15 - platformAmount;
         
         FlxRandom.shuffleArray(createdPlatforms, 2);
         
-        for (platform in createdPlatforms) {
-            if (spaceAmount > 0) {
+        for (platform in createdPlatforms)
+        {
+            if (spaceAmount > 0)
+            {
                 var gap:Int = Math.round(spaceAmount * Math.random());
                 spaceAmount -= gap;
                 beginPosition += gap * 36;
@@ -242,7 +237,8 @@ class LevelGenerator extends FlxSpriteGroup
     
     override public function update():Void
     {
-        platforms.forEachAlive(function(platform:FlxSprite) {
+        platforms.forEachAlive(function(platform:FlxSprite)
+        {
             var platform:Platform = cast(platform);
             if (platform.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
             {
@@ -250,12 +246,24 @@ class LevelGenerator extends FlxSpriteGroup
             }
         });
         
-        if (_started) {
+        if (_started)
+        {
             _levelRowCounter += gameSpeed;
             
-            if (_levelRowCounter >= _nextRowPosition) {
+            if (_levelRowCounter >= _nextRowPosition)
+            {
                 _nextRowPosition = 7500 + 10000 * Math.random();
-                drawRow(50, _currentLevel);
+                
+                if (_newLevel)
+                {
+                    _newLevel = false;
+                    drawRow(50, 1);
+                }
+                else
+                {
+                    drawRow(50, _currentLevel);
+                }
+                
                 _levelRowCounter = 0;
             }
         }

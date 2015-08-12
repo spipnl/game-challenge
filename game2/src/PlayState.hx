@@ -285,7 +285,6 @@ class PlayState extends FlxNapeState
     private function onLost():Void
     {
         gameStarted = false;
-        player.kill();
         gameSpeed = 0;
         GAnalytics.trackEvent("Player", "Died", "Game " + Reg.numberOfPlays, Reg.score);
         
@@ -316,26 +315,26 @@ class PlayState extends FlxNapeState
             hud.score = Reg.score;
             
             // Only add a new power up when the player has fewer than 3 power ups
-            if (player.getPowerUps().length < 3 && Reg.score % 1000 == 0)
+            if (player.getPowerUps().length < 3 && Reg.score % 700 == 0)
             {
-                var extraJump:PowerUp = new PowerUp(Math.random() * FlxG.width, -100);
+                var extraJump:PowerUp = new PowerUp(Math.random() * FlxG.width, 0);
                 extraJump.body.angularVel = Math.random() > 0.5 ? 20 : -20;
                 add(extraJump);
             }
             
             // Add enemy up when the score can be divided by 1000
-            if (Reg.score % 200 == 0)
+            if (Reg.score % 300 == 0)
             {
                 var enemy:Enemy = cast(enemies.getFirstDead());
                 enemy.body.position.x = Math.random() * FlxG.width;
-                enemy.body.position.y = -100;
+                enemy.body.position.y = 0;
                 enemy.body.angularVel = Math.random() > 0.5 ? 20 : -20;
                 enemy.revive();
             }
             
             if (player.y > FlxG.camera.bounds.y + FlxG.camera.bounds.height) 
             {
-                player.kill();
+                player.health = 0;
             }
             
             hud.setPowerUps(player.getPowerUps());
@@ -345,12 +344,12 @@ class PlayState extends FlxNapeState
                 gameSpeed++;
             }
             
-            if (!player.alive) {
+            if (player.health == 0) {
                 onLost();
             }
             
             // Add enemy up when the score can be divided by 1000
-            if (Reg.score % 500 == 0)
+            if (Reg.score % 400 == 0)
             {
                 levelGenerator.goToNextLevel();
             }
