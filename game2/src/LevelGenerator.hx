@@ -112,6 +112,19 @@ class LevelGenerator extends FlxSpriteGroup
                     Platform.MATERIAL_WOOD => 7,
                 ],
             ],
+            7 => [
+                [
+                    Platform.MATERIAL_WOOD => 15,
+                ],
+            ],
+            8 => [
+                [
+                    Platform.MATERIAL_WOOD => 3,
+                ],
+                [
+                    Platform.MATERIAL_WOOD => 2,
+                ],
+            ],
         ];
     }
     

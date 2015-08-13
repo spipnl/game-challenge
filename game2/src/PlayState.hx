@@ -315,7 +315,7 @@ class PlayState extends FlxNapeState
             hud.score = Reg.score;
             
             // Only add a new power up when the player has fewer than 3 power ups
-            if (player.getPowerUps().length < 3 && Reg.score % 700 == 0)
+            if (player.getPowerUps().length < 3 && Reg.score % 2000 == 0)
             {
                 var extraJump:PowerUp = new PowerUp(Math.random() * FlxG.width, 0);
                 extraJump.body.angularVel = Math.random() > 0.5 ? 20 : -20;
