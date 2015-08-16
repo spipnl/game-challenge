@@ -87,6 +87,7 @@ class Player extends FlxNapeSprite
         _powerUps.push(powerUp);
         _numberOfJumpsLeft++;
         calculateNumberOfJumps();
+        FlxG.sound.play("powerup");
     }
     
     public function getPowerUps():Array<PowerUp>
@@ -98,6 +99,8 @@ class Player extends FlxNapeSprite
     {
         if (!FlxFlicker.isFlickering(this))
         {
+            FlxG.sound.play("hit");
+            
             if (_powerUps.length == 0)
             {
                 health = 0;

@@ -5,12 +5,12 @@
 	<!-- load the global settings file of the game challenge -->
 	<include path="../global.xml" />
 	<include path="../lib/include.xml" />
-	
+    
     <!-- Override Android template -->
     <template path="templates/AndroidManifest.xml" rename="AndroidManifest.xml" if="android"/>
-	
-	<android target-sdk-version="21" />
-	
+    
+    <android target-sdk-version="21" />
+    
 	<!-- output -->
 	<app main="Main" file="spipnl-game2" path="bin" />
 	<android install-location="preferExternal" />
@@ -28,11 +28,14 @@
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" />
 	<haxelib name="nape" />
-	<haxelib name="ganalytics" />
+    <haxelib name="ganalytics" />
 	
 	<!-- assets -->
 	<assets path="assets/sounds">
+		<sound path="fall.wav" id="fall" />
+		<sound path="hit.wav" id="hit" />
 		<sound path="jump.wav" id="jump" />
+		<sound path="powerup.wav" id="powerup" />
 		<sound path="woodbreak.wav" id="woodbreak" />
 	</assets>
 	
@@ -56,6 +59,7 @@
 	<haxeflag name="-dce full" /> -->
 	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
-	<!--<haxedef name="FLX_NO_DEBUG" unless="debug" />-->
+	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+    
     <haxedef name="fdb" if="flash" />
 </project>
