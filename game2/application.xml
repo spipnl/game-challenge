@@ -28,8 +28,8 @@
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" />
 	<haxelib name="nape" />
-    <haxelib name="ganalytics" />
-	
+    <haxelib name="samcodes-admob" />
+    
 	<!-- assets -->
 	<assets path="assets/sounds">
 		<sound path="fall.wav" id="fall" />
