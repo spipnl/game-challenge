@@ -17,23 +17,27 @@
   <classpaths>
     <class path="C:\HaxeToolkit\haxe\lib\flixel-addons\1,1,0" />
     <class path="C:\HaxeToolkit\haxe\lib\flixel\3,3,11" />
-    <class path="C:\HaxeToolkit\haxe\lib\lime\2,5,2" />
-    <class path="C:\HaxeToolkit\haxe\lib\openfl\3,2,2" />
+    <class path="C:\HaxeToolkit\haxe\lib\openfl\3,3,0" />
     <class path="C:\HaxeToolkit\haxe\lib\nape\2,0,19" />
-    <class path="C:\HaxeToolkit\haxe\lib\ganalytics\0,0,3" />
+    <class path="C:\HaxeToolkit\haxe\lib\linden-flurry\1,2,0" />
+    <class path="C:\HaxeToolkit\haxe\lib\hxcpp\3,2,102" />
+    <class path="C:\HaxeToolkit\haxe\lib\lime\2,5,3" />
+    <class path="C:\HaxeToolkit\haxe\lib\samcodes-admob\1,0,3" />
+    <class path="C:\HaxeToolkit\haxe\lib\openfl-gps-lib\1,0,4" />
     <class path=".." />
     <class path="..\lib" />
     <class path="src" />
-    <class path="bin\android\haxe" />
+    <class path="C:\HaxeToolkit\haxe\lib\linden-flurry\1,2,0\src" />
+    <class path="bin\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel-addons=1.1.0&#xA;flixel=3.3.11&#xA;lime=2.5.2&#xA;openfl=3.2.2&#xA;nape=2.0.19&#xA;ganalytics=0.0.3&#xA;openfl-next&#xA;tools=2.5.2&#xA;no-compilation&#xA;native&#xA;lime-native&#xA;openfl-native&#xA;FLX_RENDER_TILE&#xA;android&#xA;mobile&#xA;android&#xA;android-9" />
+    <option directives="flixel-addons=1.1.0&#xA;flixel=3.3.11&#xA;openfl=3.3.0&#xA;nape=2.0.19&#xA;linden-flurry=1.2.0&#xA;hxcpp=3.2.102&#xA;lime=2.5.3&#xA;samcodes-admob=1.0.3&#xA;openfl-gps-lib=1.0.4&#xA;openfl-next&#xA;tools=2.5.3&#xA;FLX_NO_DEBUG&#xA;no-compilation&#xA;openfl-flash&#xA;FLX_RENDER_BLIT&#xA;fdb&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="--remap flash:openfl&#xA;#--macro keep(&quot;Main&quot;)" />
+    <option additional="-swf-version 11.8" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

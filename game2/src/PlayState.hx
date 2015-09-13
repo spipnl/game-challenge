@@ -1,4 +1,4 @@
-package; 
+package;
 
 import flixel.addons.display.shapes.FlxShapeCircle;
 import flixel.addons.nape.FlxNapeState;
@@ -32,6 +32,11 @@ import popup.About;
 import popup.Died;
 import popup.Popup;
 import spipnl.Settings;
+import ru.zzzzzzerg.linden.Flurry;
+#if android
+import extension.admob.AdMob;
+#end
+//import googleAnalytics.Stats;
 
 /**
  * Initial PlayState
@@ -53,6 +58,8 @@ class PlayState extends FlxNapeState
     public var mainMenu:MainMenu;
     
     private var gameStarted:Bool = false;
+    private var _nextEnemy:Int = 300;
+    private var _nextPowerUp:Int = 2000;
     
     @:isVar public var gameSpeed(get, set):Int;
     
@@ -152,6 +159,10 @@ class PlayState extends FlxNapeState
         FlxG.sound.playMusic("menu-music", 0.5);
         
         gameSpeed = 100;
+        
+        #if android
+        AdMob.showBanner(Settings.settings.get('admob-banner-id'));
+        #end
     }
     
     public function get_gameSpeed():Int
@@ -176,7 +187,11 @@ class PlayState extends FlxNapeState
         {
             var popup:Popup = cast(subState);
             popup.close();
-        } 
+        }
+        else if (gameStarted)
+        {
+            FlxG.resetState();
+        }
         else
         {
             #if !(flash || js)
@@ -260,11 +275,17 @@ class PlayState extends FlxNapeState
     
     private function start():Void
     {
+        #if android
+        AdMob.hideBanner(Settings.settings.get('admob-banner-id'));
+        #end
+        
         Reg.score = 0;
         Reg.numberOfPlays += 1;
         Reg.saveData();
         
-        GAnalytics.trackEvent("Player", "Began", "Game " + Reg.numberOfPlays);
+        //Stats.trackEvent("Player", "Began", "Game " + Reg.numberOfPlays);
+        
+        Flurry.logEvent("New_Game", {'user':Reg.hash, 'count':Reg.numberOfPlays}, true);
         
         gameStarted = true;
         
@@ -286,10 +307,14 @@ class PlayState extends FlxNapeState
     {
         gameStarted = false;
         gameSpeed = 0;
-        GAnalytics.trackEvent("Player", "Died", "Game " + Reg.numberOfPlays, Reg.score);
+        
+        //Stats.trackEvent("Player", "Died", "Game " + Reg.numberOfPlays, Reg.score);
+        
+        Flurry.endTimedEvent("New_Game");
+        Flurry.logEvent("New_Score", {'user':Reg.hash, 'score':Reg.score, 'highScore':Reg.highScore});
         
         openSubState(new Died());
-        FlxTween.tween(FlxG.sound.music, {volume: 0}, 2);
+        FlxTween.tween(FlxG.sound.music, { volume: 0 }, 2);
     }
     
     override public function update():Void
@@ -315,15 +340,15 @@ class PlayState extends FlxNapeState
             hud.score = Reg.score;
             
             // Only add a new power up when the player has fewer than 3 power ups
-            if (player.getPowerUps().length < 3 && Reg.score % 2000 == 0)
+            if (player.getPowerUps().length < 3 && Reg.score % _nextPowerUp == 0)
             {
                 var extraJump:PowerUp = new PowerUp(Math.random() * FlxG.width, 0);
                 extraJump.body.angularVel = Math.random() > 0.5 ? 20 : -20;
                 add(extraJump);
             }
             
-            // Add enemy up when the score can be divided by 1000
-            if (Reg.score % 300 == 0)
+            // Add enemy up
+            if (Reg.score % _nextEnemy == 0)
             {
                 var enemy:Enemy = cast(enemies.getFirstDead());
                 enemy.body.position.x = Math.random() * FlxG.width;
@@ -349,7 +374,7 @@ class PlayState extends FlxNapeState
             }
             
             // Add enemy up when the score can be divided by 1000
-            if (Reg.score % 400 == 0)
+            if (Reg.score % 1000 == 0)
             {
                 levelGenerator.goToNextLevel();
             }

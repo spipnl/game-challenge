@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="Skyroll" package="nl.spip.gamechallenge.game2" version="0.0.1" company="spipnl (Jip Spinnewijn)" />
+	<meta title="Skyroll" package="nl.spip.gamechallenge.game2" version="1.0.0" company="spipnl (Jip Spinnewijn)" />
 	
 	<!-- load the global settings file of the game challenge -->
 	<include path="../global.xml" />
@@ -9,7 +9,7 @@
     <!-- Override Android template -->
     <template path="templates/AndroidManifest.xml" rename="AndroidManifest.xml" if="android"/>
     
-    <android target-sdk-version="21" />
+    <android target-sdk-version="21" minimum-sdk-version="14" if="android" />
     
 	<!-- output -->
 	<app main="Main" file="spipnl-game2" path="bin" />
@@ -28,6 +28,7 @@
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" />
 	<haxelib name="nape" />
+    <haxelib name="linden-flurry"/>
     <haxelib name="samcodes-admob" />
     
 	<!-- assets -->

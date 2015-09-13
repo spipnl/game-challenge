@@ -89,8 +89,22 @@ class LevelGenerator extends FlxSpriteGroup
                 [
                     Platform.MATERIAL_STONE => 7,
                 ],
+                [
+                    Platform.MATERIAL_STONE => 2,
+                ],
             ],
             5 => [
+                [
+                    Platform.MATERIAL_GLASS => 3,
+                ],
+                [
+                    Platform.MATERIAL_GLASS => 2,
+                ],
+                [
+                    Platform.MATERIAL_GLASS => 4,
+                ],
+            ],
+            6 => [
                 [
                     Platform.MATERIAL_GLASS => 5,
                     Platform.MATERIAL_WOOD => 4,
@@ -100,7 +114,7 @@ class LevelGenerator extends FlxSpriteGroup
                     Platform.MATERIAL_WOOD  => 5,
                 ],
             ],
-            6 => [
+            7 => [
                 [
                     Platform.MATERIAL_GLASS => 5,
                     Platform.MATERIAL_STONE => 5,
@@ -112,17 +126,34 @@ class LevelGenerator extends FlxSpriteGroup
                     Platform.MATERIAL_WOOD => 7,
                 ],
             ],
-            7 => [
+            8 => [
                 [
                     Platform.MATERIAL_WOOD => 15,
                 ],
+                [
+                    Platform.MATERIAL_STONE => 5,
+                ],
+                [
+                    Platform.MATERIAL_STONE => 3,
+                ],
             ],
-            8 => [
+            9 => [
                 [
                     Platform.MATERIAL_WOOD => 3,
                 ],
                 [
                     Platform.MATERIAL_WOOD => 2,
+                ],
+            ],
+            10 => [
+                [
+                    Platform.MATERIAL_GLASS=> 4,
+                ],
+                [
+                    Platform.MATERIAL_STONE => 4,
+                ],
+                [
+                    Platform.MATERIAL_WOOD => 4,
                 ],
             ],
         ];

@@ -5,7 +5,14 @@ import flixel.FlxGame;
 import flixel.FlxG;
 import flixel.FlxState;
 import spipnl.Settings;
-//import extension.gpg.GooglePlayGames;
+import ru.zzzzzzerg.linden.Flurry;
+import haxe.crypto.Sha256;
+//import googleAnalytics.Stats;
+#if android
+import extension.admob.AdMob;
+import extension.admob.AdMobListener;
+import extension.admob.AdMobGravity;
+#end
 
 /**
  * Initial Game
@@ -18,11 +25,28 @@ class GameClass extends FlxGame
     {
         Settings.loadXml("texts/local.xml");
         
-        GAnalytics.startSession(Settings.settings.get('googleanalytics'));
-        GAnalytics.trackEvent("Player", "Started", "The Game");
+        //Stats.init(Settings.settings.get('googleanalytics-id'), Settings.settings.get('googleanalytics-domain'));
+        //Stats.trackEvent("Player", "Started", "The Game");
         
         Reg.loadData();
-        //GooglePlayGames.init(true);
+        
+        // Generate a unique hash if not present
+        if (Reg.hash == '') {
+            Reg.hash = Sha256.encode(Std.string(Date.now().getSeconds() + Math.random()));
+            Reg.saveData();
+        }
+        
+        Flurry.onStartSession(Settings.settings.get('flurryanalytics-id'));
+        Flurry.logEvent("Game_Start", { 'user':Reg.hash } );
+        
+        #if android
+        AdMob.init(); // Must be called first. You may specify a test device id for iOS here.
+
+        AdMob.cacheInterstitial(Settings.settings.get('admob-interstitial-id')); // Cache interstitial with the given id from your AdMob dashboard.
+        
+        AdMob.setBannerPosition(AdMobHorizontalGravity.CENTER, AdMobVerticalGravity.TOP); // All banners will appear bottom center of the screen 
+        AdMob.refreshBanner(Settings.settings.get('admob-banner-id'));
+        #end
         
         var stageWidth:Int = Lib.current.stage.stageWidth;
         var stageHeight:Int = Lib.current.stage.stageHeight;

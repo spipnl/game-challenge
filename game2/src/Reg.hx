@@ -11,6 +11,10 @@ class Reg
     private static var _saveData:FlxSave;
     
     /**
+     * variable to hold the generated hash
+     */
+    public static var hash:String = '';
+    /**
      * variable to hold the score
      */
     public static var score:Int = 0;
@@ -38,6 +42,9 @@ class Reg
     {
         var saveData:FlxSave = getSaveData();
         
+        if (saveData.data.hash != null) {
+            hash = saveData.data.hash;
+        }
         if (saveData.data.highScore != null) {
             highScore = saveData.data.highScore;
         }
@@ -50,6 +57,7 @@ class Reg
     {
         var saveData:FlxSave = getSaveData();
         
+        saveData.data.hash = hash;
         saveData.data.highScore = highScore;
         saveData.data.numberOfPlays = numberOfPlays;
         saveData.flush();

@@ -65,12 +65,12 @@ class Popup extends FlxSubState
             _container.x = -_containerBackground.width;
             _container.y = (FlxG.height - _containerBackground.height) * 0.3;
             
-            FlxTween.tween(_container, { x: (FlxG.width - _containerBackground.width) * 0.5 }, 0.5, { startDelay: 0.2, type: FlxTween.ONESHOT, ease: FlxEase.elasticOut } );
+            FlxTween.tween(_container, { x: (FlxG.width - _containerBackground.width) * 0.5 }, 0.5, { startDelay: 0.2, type: FlxTween.ONESHOT, ease: FlxEase.elasticOut, complete: onOpenTweenFinished } );
         } else if (_enterFrom == ENTER_FROM_TOP) {
             _container.x = (FlxG.width - _containerBackground.width) * 0.5;
             _container.y = -_containerBackground.height;
             
-            FlxTween.tween(_container, { y: (FlxG.height - _containerBackground.height) * 0.3 }, 1.5, { startDelay: 0.2, type: FlxTween.ONESHOT, ease: FlxEase.backOut } );
+            FlxTween.tween(_container, { y: (FlxG.height - _containerBackground.height) * 0.3 }, 1.5, { startDelay: 0.2, type: FlxTween.ONESHOT, ease: FlxEase.backOut, complete: onOpenTweenFinished } );
         }
     }
     
@@ -83,6 +83,15 @@ class Popup extends FlxSubState
         }
         
         FlxTween.tween(_background, { alpha: 0 }, 0.2, {complete: onCloseTweenFinished});
+    }
+    
+    /**
+     * When the popup has opened
+     * 
+     * @param    tween
+     */
+    private function onOpenTweenFinished(tween:FlxTween):Void
+    {
     }
     
     /**

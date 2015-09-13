@@ -1,5 +1,9 @@
 package popup;
 
+#if android
+import extension.admob.AdMob;
+#end
+
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
@@ -11,6 +15,7 @@ import flixel.util.FlxColor;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.net.URLRequest;
+import spipnl.Settings;
 
 /**
  * Died popup
@@ -21,6 +26,7 @@ class Died extends Popup
 {
     private var _playerSad:FlxSprite;
     private var _diedText:FlxText;
+    private var _scoreLabels:FlxText;
     private var _scoreText:FlxText;
     private var _resetButton:MenuButton;
     
@@ -43,19 +49,29 @@ class Died extends Popup
         _diedText.size = 32;
         _diedText.text = "YOU DIED";
         
-        _scoreText = new FlxText(0, 260, _containerBackground.width);
+        _scoreLabels = new FlxText(50, 260, _containerBackground.width - 100);
+        _scoreLabels.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.WHITE, 2, 1);
+        _scoreLabels.font = "fonts/FredokaOne-Regular.ttf";
+        _scoreLabels.alignment = "left";
+        _scoreLabels.color = 0xA06D3D;
+        _scoreLabels.size = 30;
+        _scoreLabels.text = "Score:";
+        _scoreLabels.text += "\nHigh score:";
+        
+        _scoreText = new FlxText(50, 260, _containerBackground.width - 100);
         _scoreText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.WHITE, 2, 1);
         _scoreText.font = "fonts/FredokaOne-Regular.ttf";
-        _scoreText.alignment = "center";
+        _scoreText.alignment = "right";
         _scoreText.color = 0xA06D3D;
-        _scoreText.size = 40;
-        _scoreText.text = "Score: " + Reg.score;
+        _scoreText.size = 30;
+        _scoreText.text = Std.string(Reg.score);
+        _scoreText.text += "\n" + Reg.highScore;
         
         if (Reg.score > Reg.highScore) {
             Reg.highScore = Reg.score;
-            Reg.saveData();
             _scoreText.text += "\nNEW HIGH SCORE!";
         }
+        Reg.saveData();
         
         _resetButton = new MenuButton("Close", onReturnToMain);
         
@@ -64,10 +80,24 @@ class Died extends Popup
         
         _container.add(_playerSad);
         _container.add(_diedText);
+        _container.add(_scoreLabels);
         _container.add(_scoreText);
         _container.add(_resetButton);
         
         show();
+    }
+    /**
+     * When the popup has opened
+     * 
+     * @param    tween
+     */
+    override private function onOpenTweenFinished(tween:FlxTween):Void
+    {
+        #if android
+        if(AdMob.hasCachedInterstitial(Settings.settings.get('admob-interstitial-id'))) {
+            AdMob.showInterstitial(Settings.settings.get('admob-interstitial-id'));
+        }
+        #end
     }
     
     /**

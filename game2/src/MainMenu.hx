@@ -79,7 +79,7 @@ class MainMenu extends FlxSpriteGroup
         add(_highScoreText);
         add(_highScoreAmountText);
         
-        FlxTween.tween(_logo, {y: 180}, 1.0, {type: FlxTween.ONESHOT, ease: FlxEase.bounceOut});
+        FlxTween.tween(_logo, { y: 180 }, 1.0, { type: FlxTween.ONESHOT, ease: FlxEase.bounceOut } );
     }
     
     public function isStarted()
