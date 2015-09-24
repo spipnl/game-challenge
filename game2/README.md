@@ -24,3 +24,6 @@ Generated at [as3sfxr](http://www.superflashbros.net/as3sfxr/)
 
 ##### Font
 [Fredoka One](https://www.google.com/fonts/specimen/Fredoka+One)
+
+### Google Play Store
+[![App icon](appicon.png)](https://play.google.com/store/apps/details?id=nl.spip.gamechallenge.game2)

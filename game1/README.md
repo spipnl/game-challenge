@@ -24,3 +24,6 @@ One bullet can destroy multiple targets and will vanish when it's velocity becom
 
 ##### Font
 [Open Sans](http://www.google.com/fonts/specimen/Open+Sans)
+
+### Google Play Store
+[![App icon](appicon.png)](https://play.google.com/store/apps/details?id=nl.spip.gamechallenge.game1)
