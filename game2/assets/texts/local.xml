@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
-	<setting key="googleanalytics" value="UA-XXXXXXXX-X" />
+	<setting key="flurryanalytics-id" value="" />
+	<setting key="admob-banner-id" value="" />
+	<setting key="admob-interstitial-id" value="" />
 </settings>
