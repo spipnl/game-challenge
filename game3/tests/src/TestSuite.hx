@@ -8,12 +8,12 @@ import PlayerTest;
  */
 
 class TestSuite extends massive.munit.TestSuite
-{		
+{        
 
-	public function new()
-	{
-		super();
+    public function new()
+    {
+        super();
 
-		add(PlayerTest);
-	}
+        add(PlayerTest);
+    }
 }
