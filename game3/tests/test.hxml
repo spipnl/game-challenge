@@ -8,9 +8,11 @@
 -lib flixel-addons
 -lib nape
 -cp src
+-cp ../src
 
--cp test
--swf-version 11
+-D FLX_RENDER_BLIT
+
+-swf-version 11.8
 -swf bin/as3_test.swf
 
 --next
