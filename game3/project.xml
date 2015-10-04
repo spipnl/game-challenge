@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<meta title="game3" package="nl.spip.gamechallenge.game3.game3" version="0.0.1" company="spipnl (Jip Spinnewijn)" />
+    
+	<set name="SWF_VERSION" value="11.8" />
+    
+	<!-- output -->
+	<app main="Main" file="spipnl-game3" path="bin" />
+	<android install-location="preferExternal" />
+	
+	<window background="#000000" fps="60" fullscreen="true" />
+	<window width="960" height="540" unless="mobile" />
+	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
+	
+	<!-- classpath, haxe libs -->
+	<source path="src" />
+	<haxelib name="openfl" />
+	<haxelib name="flixel" />
+	<haxelib name="flixel-addons" />
+	<haxelib name="nape" />
+    <haxelib name="munit" />
+	
+	<!-- assets -->
+	<icon path="assets/images/appicon.png" />
+	
+	<!-- optimize output
+	<haxeflag name="-dce full" /> -->
+	
+	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
+	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+</project>

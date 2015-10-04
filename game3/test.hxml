@@ -1,0 +1,28 @@
+## Flash 9+
+-main TestMain
+-lib munit
+-lib mcover
+-lib hamcrest
+-lib openfl
+-lib flixel
+-lib flixel-addons
+-lib nape
+-cp src
+
+-cp test
+-swf-version 11
+-swf build/as3_test.swf
+
+--next
+
+### CPP
+#-main TestMain
+#-lib munit
+#-lib hamcrest
+#-cp src
+
+#-cp test
+##-D HXCPP_M64
+#-cpp build/cpp_test
+
+

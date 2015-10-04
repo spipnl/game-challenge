@@ -1,2 +1,5 @@
+*/.temp
 */bin
+*/build
+*/report
 *.keystore
