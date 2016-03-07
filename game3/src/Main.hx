@@ -42,38 +42,28 @@ class Main extends Sprite
         }
     }
     
-    /**
-     * Initialize the Game
-     */
-    private function init(?E:Event):Void 
-    {
-        if (hasEventListener(Event.ADDED_TO_STAGE))
-        {
-            removeEventListener(Event.ADDED_TO_STAGE, init);
-            stage.addEventListener(Event.RESIZE, resize);
-        } else {
-            initialize();
-        }
-    }
-    
-    private function resize(e) 
-    {
-        initialize();
-    }
-    
-    /**
-     * Setup of the stage
-     */
-    private function initialize():Void 
-    {
-        if (_inited) return;
-        _inited = true;
-        
-        Lib.current.stage.align = StageAlign.TOP_LEFT;
-        Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-        
-        FlxG.log.redirectTraces = true;
-        _game = new GameClass();
-        addChild(_game);
-    }
+	/**
+	 * Initialize the Game
+	 */
+	private function init(?E:Event):Void 
+	{
+		if (hasEventListener(Event.ADDED_TO_STAGE))
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		initialize();
+		
+		_game = new GameClass();
+		addChild(_game);
+	}
+	
+	/**
+	 * Setup of the stage
+	 */
+	private function initialize():Void 
+	{
+		Lib.current.stage.align = StageAlign.TOP_LEFT;
+		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+	}
 }

@@ -12,19 +12,20 @@
 
 -D FLX_RENDER_BLIT
 
+-D doc
+-D FLX_RECORD
+-D FLX_NO_MOUSE_ADVANCED
+-D FLX_NO_NATIVE_CURSOR
+-D FLX_NO_MOUSE
+-D FLX_NO_KEYBOARD
+-D FLX_NO_TOUCH
+-D FLX_NO_GAMEPAD
+-D FLX_NO_SOUND_TRAY
+-D FLX_NO_SOUND_SYSTEM
+-D FLX_NO_FOCUS_LOST_SCREEN
+-D FLX_NO_DEBUG
+
 -swf-version 11.8
 -swf bin/as3_test.swf
 
 --next
-
-### CPP
-#-main TestMain
-#-lib munit
-#-lib hamcrest
-#-cp src
-
-#-cp test
-##-D HXCPP_M64
-#-cpp bin/cpp_test
-
-

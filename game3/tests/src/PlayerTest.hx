@@ -4,8 +4,6 @@ import massive.munit.util.Timer;
 import massive.munit.Assert;
 import massive.munit.async.AsyncFactory;
 
-import Player;
-
 class PlayerTest 
 {
     var player:Player;
