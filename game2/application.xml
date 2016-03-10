@@ -25,8 +25,8 @@
 	<source path="src" />
 	<haxelib name="openfl" />
 	<set name="no-custom-backend"/>
-	<haxelib name="flixel"/>
-	<haxelib name="flixel-addons" />
+	<haxelib name="flixel" version="3.3.12" />
+	<haxelib name="flixel-addons" version="1.1.1" />
 	<haxelib name="nape" />
     <haxelib name="linden-flurry"/>
     <haxelib name="samcodes-admob" />

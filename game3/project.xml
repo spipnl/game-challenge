@@ -15,12 +15,14 @@
 	<!-- classpath, haxe libs -->
 	<source path="src" />
 	<haxelib name="openfl" />
-	<haxelib name="flixel" />
-	<haxelib name="flixel-addons" />
+	<haxelib name="flixel" version="4.0.0" />
+	<haxelib name="flixel-addons" version="2.0.0" />
 	<haxelib name="nape" />
     <haxelib name="munit" />
 	
 	<!-- assets -->
+	<assets path="assets/images" rename="images" />
+    
 	<icon path="assets/images/appicon.png" />
 	
 	<!-- optimize output
